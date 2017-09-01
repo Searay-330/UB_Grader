@@ -1,3 +1,3 @@
 # UB_Grader
 
-CSE 422 project.
+CSE 442 project.
