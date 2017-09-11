@@ -62,7 +62,7 @@ const courseSchema = new Schema({
                 }],
             },
             problems: [{
-                required: true,
+                // required: true,
                 problem_name: { type: String, required: true },
                 score: { type: Number, required: true },
             }],
@@ -101,8 +101,8 @@ var Submission = mongoose.model('Submissions', submissionSchema);
 
 module.exports = {
     User: User,
+    Submission: Submission,
     Course: Course,
-    Submission: Submission
 }
 
 

@@ -3,6 +3,7 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
+import { User, Submission, Course } from './models/Schema.js';
 
 // Webpack Requirements
 import webpack from 'webpack';
