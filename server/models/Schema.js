@@ -59,7 +59,7 @@ const courseSchema = new Schema({
                     name: { type: String, required: true },
                     select_multiple: { type: Boolean },
                     options: { type: [String], required: true }
-                }],
+                },],
             },
             problems: [{
                 // required: true,
@@ -103,7 +103,4 @@ module.exports = {
     User: User,
     Submission: Submission,
     Course: Course,
-}
-
-
-
+};
