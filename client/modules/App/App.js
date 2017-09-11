@@ -9,6 +9,7 @@ import Helmet from 'react-helmet';
 import DevTools from './components/DevTools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Login from './components/Login/Login';
 
 
 export class App extends Component {
@@ -23,6 +24,10 @@ export class App extends Component {
 
 
   render() {
+    let login = null
+    if(this.props.user == ""){
+      login = <Login />
+    }
     return (
       <div>
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -45,6 +50,8 @@ export class App extends Component {
           />
           <Header />
           <div className={styles.container}>
+          {login}
+
            {this.props.children}
          </div>
           <Footer />
@@ -59,8 +66,9 @@ App.propTypes = {
 };
 
 // Retrieve data from store as props
-function mapStateToProps(store) {
+function mapStateToProps(state) {
   return {
+    user: state.app.user,
   };
 }
 
