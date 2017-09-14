@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+//Import Actions
+import {userSwap} from './AppActions'
 
 // Import Style
 import styles from './App.css';
@@ -26,7 +30,7 @@ export class App extends Component {
   render() {
     let login = null
     if(this.props.user == ""){
-      login = <Login />
+      login = <Login changeFunc={this.props.changeUser} />
     }
     return (
       <div>
@@ -47,7 +51,7 @@ export class App extends Component {
               },
             ]}
           />
-          <Header />
+          <Header user={this.props.user}/>
           <div className={styles.container}>
           {login}
 
@@ -60,15 +64,18 @@ export class App extends Component {
   }
 }
 
-App.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
     user: state.app.user,
+    
   };
 }
 
-export default connect(mapStateToProps)(App);
+function mapDispatchToProps(dispatch) {  
+  return bindActionCreators({
+    changeUser:userSwap,
+  }, dispatch);
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

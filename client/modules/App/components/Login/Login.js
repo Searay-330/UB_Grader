@@ -5,12 +5,12 @@ import { FormattedMessage } from 'react-intl';
 // Import Style
 // import styles from './Login.css';
 
-export function Login() {
+export function Login(props) {
   return (
   	<div>
     	<input type="text" />
     	&nbsp;
-    	<button>Login</button>
+    	<button onClick={() => {props.changeFunc("jim bob")}}>Login</button>
     </div>
   );
 }
