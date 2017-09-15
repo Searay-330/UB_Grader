@@ -15,15 +15,18 @@ export class Bs extends Component {
     };
   }
 
-
-
   render() {
     return (
       <div className={styles.container}>
-      <div>
-      <h1>{this.props.text}</h1><button onClick={this.props.getr}>get request</button>
-      </div>
-      <div><h1>{this.props.postText}</h1><input type="text" value={this.state.value} onChange={(event) => {this.setState({inputValue: event.target.value});}}/><button onClick={() => {this.props.postr(this.state.inputValue)}}>post request</button></div>
+        <div>
+          <h1>{this.props.text}</h1>
+          <button onClick={this.props.getr}> get request </button>
+        </div>
+        <div>
+          <h1>{this.props.postText}</h1>
+          <input type="text" value={this.state.value} onChange={(event) => {this.setState({inputValue: event.target.value});}}/>
+          <button onClick={() => {this.props.postr(this.state.inputValue)}}> post request </button>
+        </div>
       </div>
     );
   }
