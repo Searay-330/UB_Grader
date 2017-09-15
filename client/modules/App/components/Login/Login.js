@@ -5,12 +5,14 @@ import { FormattedMessage } from 'react-intl';
 // Import Style
 // import styles from './Login.css';
 
+import { Button } from 'react-bootstrap';
+
 export function Login(props) {
   return (
   	<div>
     	<input type="text" />
     	&nbsp;
-    	<button onClick={() => {props.changeFunc("jim bob")}}>Login</button>
+    	<Button bsStyle="primary" onClick={() => {props.changeFunc("jim bob")}}>Login</Button>
     </div>
   );
 }

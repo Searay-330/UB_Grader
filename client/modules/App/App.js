@@ -14,6 +14,7 @@ import DevTools from './components/DevTools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Login from './components/Login/Login';
+import Home from './components/Home/Home';
 
 
 export class App extends Component {
@@ -28,13 +29,15 @@ export class App extends Component {
 
 
   render() {
-    let login = null
+    let home = null
     if(this.props.user == ""){
-      login = <Login changeFunc={this.props.changeUser} />
+      home = <Login changeFunc={this.props.changeUser} />
+    }else{
+      home = <Home/>
     }
     return (
       <div>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
         {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools /> && false}
         <div>
           <Helmet
@@ -54,7 +57,7 @@ export class App extends Component {
           />
           <Header user={this.props.user}/>
           <div className={styles.container}>
-          {login}
+          {home}
 
            {this.props.children}
          </div>
