@@ -22,7 +22,7 @@ const course_assignments_section_due_dateSchema = new Schema({
 
 });
 
-const course_assignments_problem_Schema = new Schema({
+const course_assignments_problemSchema = new Schema({
 
     problem_name:               { type: String, required: true },
     score:                      { type: Number, required: true },
@@ -60,7 +60,7 @@ const course_assignmentSchema = new Schema({
                                                     options:                { type: [String], required: true }
                                                 }],
                                 },                
-    problems:                   [course_assignments_problem_Schema],             
+    problems:                   [course_assignments_problemSchema],             
     late_penalty:               { type: Number },
     max_over_latest:            { type:Boolean, default: true },
 
