@@ -9,16 +9,17 @@ import { Button,FormControl,FormGroup,ControlLabel,HelpBlock} from 'react-bootst
 
 export function Login(props) {
   return (
-  	<form>
+  	<form onSubmit={event => event.preventDefault()}>
         <FormGroup>
           <ControlLabel>Email of account to login to</ControlLabel>
           <FormControl
+          	id="loginPageEmailInputBox"
             type="text"
-            placeholder="Enter text"
+            placeholder="Enter email"
           />
           <FormControl.Feedback />
           <HelpBlock></HelpBlock>
-    	<Button bsStyle="primary" onClick={() => {props.changeFunc("jim bob")}}>Login</Button>
+    	<Button bsStyle="primary" onClick={() => {props.changeFunc(document.getElementById("loginPageEmailInputBox").value)}}>Login</Button>
         </FormGroup>
       </form>
   );
