@@ -30,10 +30,11 @@ export class App extends Component {
 
   render() {
     let home = null
+    //if user is logged in then we will render the courses page once it is prepared.
     if(this.props.user == ""){
       home = <Login changeFunc={this.props.changeUser} />
     }else{
-      home = <Home/>
+      
     }
     return (
       <div>
