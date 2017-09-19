@@ -6,9 +6,9 @@ router.get('/test', function (req, res) {
 	res.json("this is a get request")
 });
 
-router.post('/ptest', function(req,res){
-	res.json("this is a post request user given: " + req.body.user);
-});
+// router.post('/ptest', function(req,res){
+// 	res.json("this is a post request user given: " + req.body.user);
+// });
 
 
 export default router;

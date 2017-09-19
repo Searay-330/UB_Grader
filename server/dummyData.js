@@ -20,7 +20,8 @@ Course.count().exec((err, count) => {
                         start_date:         new Date('<2017-09-20>'), 
                         due_date:           new Date('<2017-09-30>'), 
                         end_date:           new Date('<2017-10-01>'), 
-                        description:        'Must have your prototype up and running!',                              auto_grader:        true,   
+                        description:        'Must have your prototype up and running!',                              
+                        auto_grader:        true,   
                         late_penalty:       20,
                     };
 
