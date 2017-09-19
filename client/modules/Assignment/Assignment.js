@@ -9,6 +9,7 @@ import { bindActionCreators } from 'redux';
 // import styles from './Assignment.css';
 
 // Import Components
+import Category from './componets/Category/Category';
 
 
 
@@ -26,7 +27,7 @@ export class Assignment extends Component {
   render() {
     return (
      <div>
-     <h1>{this.props.routeParams.course}</h1>
+      <Category name={this.props.categories[0]}/>
      </div>
     );
   }
@@ -35,7 +36,7 @@ export class Assignment extends Component {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    
+    categories: state.assignment.categories,
   };
 }
 

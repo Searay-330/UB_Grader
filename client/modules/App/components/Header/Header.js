@@ -8,8 +8,8 @@ import styles from './Header.css';
 export function Header() {
   return (
     <div className={styles.banner}>
-    <a className={styles.title}>AutoGrader 3.0</a>
-    <a className={[styles.right, styles.title].join(' ')}>Login</a>
+    <span className={styles.title}>AutoGrader 3.0</span>
+    <span className={[styles.right, styles.title].join(' ')}>Login</span>
     </div>
   );
 }
