@@ -61,14 +61,6 @@ Course.count().exec((err, count) => {
     });
 
 
-});
-
-User.count().exec((err, count) => {
-    
-    if (count > 0) {
-          return;
-    }
-
     const section1_id = section1._id;
 
     const section2_id = section2._id;
@@ -161,7 +153,6 @@ User.count().exec((err, count) => {
             console.log(error);
         }
     });
-
 
 });
 
