@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './modules/App/App';
 import Bs from './modules/bs/Bs';
-import Assignment from './modules/Assignment/Assignment';
+import Assignments from './modules/Assignments/Assignments';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== 'production') {
 export default (
   <Route path="/" component={App}>
     <Route path="testing" component={Bs}/>
-    <Route path="courses/:course/assignments" component={Assignment} />
+    <Route path="courses/:course/assignments" component={Assignments}/>
   </Route>
 
 );

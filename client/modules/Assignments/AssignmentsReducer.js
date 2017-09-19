@@ -4,7 +4,7 @@ const initialState = {
 };
 
 
-const AssignmentReducer = (state = initialState, action) => {
+const AssignmentsReducer = (state = initialState, action) => {
   switch (action.type) {
 
     default:
@@ -14,4 +14,4 @@ const AssignmentReducer = (state = initialState, action) => {
 
 
 // Export Reducer
-export default AssignmentReducer;
+export default AssignmentsReducer;

@@ -15,7 +15,7 @@ import { Grid,Row,Col,PanelGroup, Panel, ListGroup, ListGroupItem} from 'react-b
 
 
 
-export class Assignment extends Component {
+export class Assignments extends Component {
   constructor(props) {
     super(props);
     this.state = { isMounted: false };
@@ -44,7 +44,7 @@ export class Assignment extends Component {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    categories: state.assignment.categories,
+    categories: state.assignments.categories,
   };
 }
 
@@ -53,5 +53,5 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Assignment);
+export default connect(mapStateToProps,mapDispatchToProps)(Assignments);
 
