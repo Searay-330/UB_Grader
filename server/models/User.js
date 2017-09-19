@@ -30,7 +30,8 @@ const userSchema = new Schema({
     sys_role:                   { type: String },
     created_at:                 { type: Date, default: Date.now, required: true },
     updated_at:                 { type: Date },
-    courses:                    [user_courseSchema]
+    courses:                    [user_courseSchema],
+    google_id:                  { type: String }
 
 });
 
