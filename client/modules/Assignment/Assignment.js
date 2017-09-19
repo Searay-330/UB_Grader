@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux';
 
 // Import Components
 import Category from './componets/Category/Category';
+// Import Bootstrap
+import { Grid,Row,Col,PanelGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 
 
@@ -26,9 +28,15 @@ export class Assignment extends Component {
 
   render() {
     return (
-     <div>
-      <Category name={this.props.categories[0]}/>
-     </div>
+     <PanelGroup>
+      <Grid>
+        <Row>
+          <Category name={this.props.categories[0]}/>
+          <Category name={this.props.categories[1]}/>
+          <Category name={this.props.categories[2]}/>
+        </Row>
+      </Grid>
+    </PanelGroup>
     );
   }
 }

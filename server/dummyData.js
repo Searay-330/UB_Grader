@@ -3,7 +3,6 @@ import User from './models/User.js';
 import mongoose from 'mongoose';
 
 
-
 export default function () {
 
 Course.count().exec((err, count) => {
@@ -68,10 +67,10 @@ User.count().exec((err, count) => {
     if (count > 0) {
           return;
     }
+    Course.findOne({ 'course_num': 'cse442-f17' }, 'sections',  { lean: true } , function (err, course) {
+    const section1_id = course.sections[0]._id;
 
-    const section1_id = section1._id;
-
-    const section2_id = section2._id;
+    const section2_id = course.sections[1]._id;
     
     
     const user1 = new User({
@@ -81,7 +80,7 @@ User.count().exec((err, count) => {
                             person_number:  '11223344', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course_cse442._id,
+                                        course_id:      course._id,
                                         course_role:    'Student',
                                         section_id:     section1_id
                                     } 
@@ -94,7 +93,7 @@ User.count().exec((err, count) => {
                             person_number:  '12345679', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course_cse442._id,
+                                        course_id:      course._id,
                                         course_role:    'Student',
                                         section_id:     section1_id                              
                                     } 
@@ -107,7 +106,7 @@ User.count().exec((err, count) => {
                             person_number:  '12345677', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course_cse442._id,
+                                        course_id:      course._id,
                                         course_role:    'Student',
                                         section_id:     section1_id                                 
                                     } 
@@ -120,7 +119,7 @@ User.count().exec((err, count) => {
                             person_number:  '12346789', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course_cse442._id,
+                                        course_id:      course._id,
                                         course_role:    'Student',
                                         section_id:     section2_id                                 
                                     } 
@@ -133,7 +132,7 @@ User.count().exec((err, count) => {
                             person_number:  '87654321', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course_cse442._id,
+                                        course_id:      course._id,
                                         course_role:    'Student',
                                         section_id:     section2_id
                                     } 
@@ -146,7 +145,7 @@ User.count().exec((err, count) => {
                             person_number:  '97654321', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course_cse442._id,
+                                        course_id:      course._id,
                                         course_role:    'Student',
                                         section_id:     section2_id                                        
                                     } 
@@ -161,6 +160,9 @@ User.count().exec((err, count) => {
             console.log(error);
         }
     });
+
+    });
+
 
 
 });
