@@ -6,8 +6,10 @@ import path from 'path';
 import User from './models/User'
 import Course from './models/Course'
 import Submission from './models/Submission'
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const keys = require('./config/keys');
 require('./services/passport');
-// import { User, Submission, Course } from './models/Schema.js';
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -60,6 +62,13 @@ app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use('/static', Express.static(path.resolve(__dirname, '../assets')));
+app.use(cookieSession({
+    maxAge: 24*60*60*1000,
+    keys: [keys.cookieKey]
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/api',serverRoutes);
 
 // Render Initial HTML

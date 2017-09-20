@@ -1,20 +1,30 @@
-// const express = require('express');
-// const passport = require('passport');
-// const GoogleStrategy = require('passport-google-oauth20').Strategy;
-// const keys = require('../config/keys')
+/**
+ * Get user that is currently logged in
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function getCurrentUser(req,res) {
+    res.send(req.user);
+}
 
-// passport.use(
-//     new GoogleStrategy({
-//         clientID: keys.googleClientID,
-//         clientSecret: keys.googleClientSecret,
-//         callbackURL: '/api/auth/google/callback'
-//     }, (accessToken) => {
-//         console.log(accessToken);
-//     })
-// );
+/**
+ * Logs out user that is currently logged in back to the homepage
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function logoutUser(req,res) {
+    req.logout();
+    res.redirect('/');
+}
 
-// export function googleLogin(req,res) {
-
-
-
-// }
+/**
+ * Redirects user back to homepage upon successfully being authenticated by Google OAuth
+ * @param req
+ * @param res
+ * @returns void
+ */
+export function loginRedirect(req,res) {
+    res.redirect('/');
+}

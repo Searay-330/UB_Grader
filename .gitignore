@@ -12,3 +12,4 @@ assets/
 *.rar
 test.sublime-project
 test.sublime-workspace
+server/config/*
