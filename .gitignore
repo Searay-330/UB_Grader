@@ -12,4 +12,4 @@ assets/
 *.rar
 test.sublime-project
 test.sublime-workspace
-server/config/*
+server/config/keys.js
