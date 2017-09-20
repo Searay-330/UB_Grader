@@ -19,4 +19,5 @@ router.get('/current_user', 		AuthController.getCurrentUser);
 router.get('/logout',				AuthController.logoutUser);
 
 
+
 export default router;
