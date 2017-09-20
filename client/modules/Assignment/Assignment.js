@@ -8,8 +8,6 @@ import { bindActionCreators } from 'redux';
 // Import Style
 //import styles from './Assignment.css';
 
-// Import Components
-// import Category from './componets/Category/Category';
 import ScoreLine from './components/ScoreLine/ScoreLine';
 // Import Bootstrap
 import {Button} from 'react-bootstrap';
