@@ -6,12 +6,13 @@ import { bindActionCreators } from 'redux';
 // import {method} from './AssignmentActions'
 
 // Import Style
-// import styles from './Assignment.css';
+//import styles from './Assignment.css';
 
 // Import Components
-// Import Category from './componets/Category/Category';
+// import Category from './componets/Category/Category';
+import ScoreLine from './componets/ScoreLine/ScoreLine';
 // Import Bootstrap
-import { Grid,Row,Col,PanelGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 
 
 
@@ -28,10 +29,17 @@ export class Assignment extends Component {
 
   render() {
     return (
-      
+    
+      <center>
       <div>
-        <h2>{this.props.params.assignment}</h2>
+        <h1>{this.props.params.assignment}</h1>
+        <h3>Due: June 9th 1917, 4:20pm</h3>
+        <ScoreLine/>
+        <br/>
+        <Button bsStyle="primary">Submit</Button>
       </div>
+      </center>
+   
    
      /*<PanelGroup>
       <Grid>
