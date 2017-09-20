@@ -27,3 +27,7 @@
 .panel {
 	text-align: center;
 }
+
+.panel_heading{
+	background-color: #005BBB !important;
+}
