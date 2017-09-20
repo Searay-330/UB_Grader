@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 // import styles from './Assignment.css';
 
 // Import Components
-import Category from './componets/Category/Category';
+import Category from './components/Category/Category';
 // Import Bootstrap
 import { Grid,Row,Col,PanelGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
 
