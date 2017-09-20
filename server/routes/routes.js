@@ -1,14 +1,14 @@
 import { Router } from 'express';
 const router = new Router();
+const passport = require('passport');
 
-// test
-router.get('/test', function (req, res) {
-	res.json("this is a get request")
-});
+router.get(
+	'/auth/google',
+	passport.authenticate('google', {
+	scope: ['profile', 'email']
+	})
+);
 
-// router.post('/ptest', function(req,res){
-// 	res.json("this is a post request user given: " + req.body.user);
-// });
-
+router.get('/auth/google/callback', passport.authenticate('google'));
 
 export default router;

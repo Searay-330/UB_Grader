@@ -3,6 +3,10 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
+import User from './models/User'
+import Course from './models/Course'
+import Submission from './models/Submission'
+require('./services/passport');
 // import { User, Submission, Course } from './models/Schema.js';
 
 // Webpack Requirements
