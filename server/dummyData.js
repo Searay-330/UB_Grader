@@ -143,9 +143,35 @@ Course.count().exec((err, count) => {
                                         section_id:     section2_id                                        
                                     } 
                         });
+    
+                            
+    const user7 = new User({
+                            first_name:     'Student', 
+                            last_name:      'One', 
+                            email:          'studentone.442@gmail.com', 
+                            person_number:  '90650321', 
+                            updated_at:      new Date(),
+                            courses: {
+                                        course_id:      course_cse442._id,
+                                        course_role:    'Student',
+                                        section_id:     section2_id                                        
+                                    } 
+                        });
+
+    const user8 = new User({
+                            first_name:     'Teacher', 
+                            last_name:      'One', 
+                            email:          'teacherone.442@gmail.com', 
+                            person_number:  '90600393', 
+                            updated_at:      new Date(),
+                            courses: {
+                                        course_id:      course_cse442._id,
+                                        course_role:    'Teacher',
+                                    } 
+                        });
 
 
-    User.create([user1,user2,user3,user4,user5,user6], (error) => {
+    User.create([user1,user2,user3,user4,user5,user6,user7,user8], (error) => {
         if (!error) {
             // console.log('ready to go....');
         }
