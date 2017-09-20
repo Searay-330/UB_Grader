@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 
 // Import Components
 // import Category from './componets/Category/Category';
-import ScoreLine from './componets/ScoreLine/ScoreLine';
+import ScoreLine from './components/ScoreLine/ScoreLine';
 // Import Bootstrap
 import {Button} from 'react-bootstrap';
 
@@ -33,24 +33,12 @@ export class Assignment extends Component {
       <center>
       <div>
         <h1>{this.props.params.assignment}</h1>
-        <h3>Due: June 9th 1917, 4:20pm</h3>
-        <ScoreLine/>
+        <h3>Due: {this.props.dueDate}</h3>
+        <ScoreLine score={this.props.score} scoreTotal={this.props.scoreTotal}/>
         <br/>
         <Button bsStyle="primary">Submit</Button>
       </div>
       </center>
-   
-   
-     /*<PanelGroup>
-      <Grid>
-        <Row>
-           <Category name={this.props.categories[0]}/>
-           <Category name={this.props.categories[1]}/>
-           <Category name={this.props.categories[2]}/>
-         </Row>
-      </Grid>
-      
-    </PanelGroup>*/
     );
   }
 }
@@ -58,7 +46,9 @@ export class Assignment extends Component {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    categories: state.assignment.categories,
+    dueDate: state.assignment.dueDate,
+    score: state.assignment.score,
+    scoreTotal: state.assignment.scoreTotal,
   };
 }
 

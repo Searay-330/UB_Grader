@@ -1,6 +1,8 @@
 // Initial State
 const initialState = {
-  // categories:["HW","Tests","Quizzes"],
+  dueDate:"June 9th 1917, 4:20pm",
+  score:0,
+  scoreTotal:100,
 };
 
 

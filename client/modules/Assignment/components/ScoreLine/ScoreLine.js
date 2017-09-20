@@ -8,10 +8,10 @@ import styles from './ScoreLine.css';
 import {Button} from 'react-bootstrap';
 
 
-export function ScoreLine(category) {
+export function ScoreLine(props) {
   return (
   	<div>
-  	<h3 className={styles.h3}>Most recent score: 0/100   </h3>
+  	<h3 className={styles.h3}>Most recent score: {props.score}/{props.scoreTotal} </h3>
     <Button bsStyle="primary" bsSize="xsmall">View Feedback</Button>
     </div>
   )
