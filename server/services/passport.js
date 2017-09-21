@@ -30,9 +30,5 @@ passport.use(
                 .then(user => done(null, user));
             }
         });
-        // console.log(profile);
-        // console.log(profile.emails[0].value);	
-        // console.log(profile.name.givenName);
-        // console.log(profile.name.familyName);
     })
 );

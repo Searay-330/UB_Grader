@@ -26,5 +26,5 @@ export function logoutUser(req,res) {
  * @returns void
  */
 export function loginRedirect(req,res) {
-    res.redirect('/');
+    res.redirect('/courses');
 }
