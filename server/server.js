@@ -3,7 +3,7 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
-import { User, Submission, Course } from './models/Schema.js';
+// import { User, Submission, Course } from './models/Schema.js';
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -47,6 +47,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
   }
 
   // feed some dummy data in DB.
+  console.log('Inserting Dummy Data!');
   dummyData();
 });
 
