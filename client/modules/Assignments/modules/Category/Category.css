@@ -28,6 +28,10 @@
 	text-align: center;
 }
 
-.panel_heading{
-	background-color: #005BBB !important;
+.panel_custom div:first-of-type{
+	text-align: center;
+	font-weight: bold;
+	color:white;
+	font-size: 15px;
+ 	background-color: #005BBB;
 }

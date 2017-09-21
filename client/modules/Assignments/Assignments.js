@@ -11,7 +11,7 @@ import { bindActionCreators } from 'redux';
 // Import Components
 import Category from './modules/Category/Category';
 // Import Bootstrap
-import { Grid,Row,Col,PanelGroup, Panel, ListGroup, ListGroupItem} from 'react-bootstrap';
+import { Grid,Row,Col,PanelGroup, ListGroup, ListGroupItem} from 'react-bootstrap';
 
 
 
