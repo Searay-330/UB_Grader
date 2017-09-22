@@ -48,7 +48,6 @@ export function getRequest() {
 // store.dispatch(fetchPosts('reactjs'))
 
 export function postRequest(text) {
-  console.log(text);
   // Thunk middleware knows how to handle functions.
   // It passes the dispatch method as an argument to the function,
   // thus making it able to dispatch actions itself.
