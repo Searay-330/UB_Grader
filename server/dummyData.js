@@ -95,6 +95,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section1_id
                                     } 
@@ -108,6 +109,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section1_id                              
                                     } 
@@ -121,6 +123,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section1_id                                 
                                     } 
@@ -134,6 +137,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id                                 
                                     } 
@@ -147,6 +151,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id
                                     } 
@@ -160,6 +165,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id                                        
                                     } 
@@ -174,6 +180,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id                                        
                                     } 
@@ -187,6 +194,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Teacher',
                                     } 
                         });
