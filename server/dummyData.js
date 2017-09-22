@@ -19,7 +19,21 @@ Course.count().exec((err, count) => {
                         start_date:         new Date('<2017-09-20>'), 
                         due_date:           new Date('<2017-09-30>'), 
                         end_date:           new Date('<2017-10-01>'), 
-                        description:        'Must have your prototype up and running!',                              auto_grader:        true,   
+                        description:        'Must have your prototype up and running!',                              
+                        auto_grader:        true,   
+                        late_penalty:       20,
+                    };
+
+    const assignment2 = {
+                        _id:                new mongoose.Types.ObjectId(),
+                        category:           'Phase 2', 
+                        name:               'Create MVP', 
+                        section_based:      false, 
+                        start_date:         new Date('<2017-09-30>'), 
+                        due_date:           new Date('<2017-10-20>'), 
+                        end_date:           new Date('<2017-10-30>'), 
+                        description:        'Must have your MVP up and running!',                              
+                        auto_grader:        true,   
                         late_penalty:       20,
                     };
 
@@ -46,11 +60,17 @@ Course.count().exec((err, count) => {
                                     display_name:   'CSE 442', 
                                     semester:       'Fall 2017', 
                                     sections:       [ section1, section2 ],
-                                    assignments:    assignment1 
+                                    assignments:    [assignment1,assignment2] 
+                                });
+    
+    const course_cse331 = new Course({
+                                    course_num:     'cse331-f17', 
+                                    display_name:   'CSE 331', 
+                                    semester:       'Fall 2017', 
                                 });
 
 
-    Course.create(course_cse442, (error) => {
+    Course.create([course_cse442, course_cse331], (error) => {
         if (!error) {
             // console.log('ready to go....');
         }
@@ -60,23 +80,16 @@ Course.count().exec((err, count) => {
     });
 
 
-});
+    const section1_id = section1._id;
 
-User.count().exec((err, count) => {
-    
-    if (count > 0) {
-          return;
-    }
-    Course.findOne({ 'course_num': 'cse442-f17' }, 'sections',  { lean: true } , function (err, course) {
-    const section1_id = course.sections[0]._id;
-
-    const section2_id = course.sections[1]._id;
+    const section2_id = section2._id;
     
     
     const user1 = new User({
                             first_name:     'Aamel', 
                             last_name:      'Unia', 
                             email:          'aameluni@buffalo.edu', 
+                            sys_role:       'admin',
                             person_number:  '11223344', 
                             updated_at:      new Date(),
                             courses: {
@@ -150,17 +163,41 @@ User.count().exec((err, count) => {
                                         section_id:     section2_id                                        
                                     } 
                         });
+    
+                            
+    const user7 = new User({
+                            first_name:     'Student', 
+                            last_name:      'One', 
+                            email:          'studentone.442@gmail.com', 
+                            person_number:  '90650321', 
+                            updated_at:      new Date(),
+                            courses: {
+                                        course_id:      course_cse442._id,
+                                        course_role:    'Student',
+                                        section_id:     section2_id                                        
+                                    } 
+                        });
+
+    const user8 = new User({
+                            first_name:     'Teacher', 
+                            last_name:      'One', 
+                            email:          'teacherone.442@gmail.com', 
+                            person_number:  '90600393', 
+                            updated_at:      new Date(),
+                            courses: {
+                                        course_id:      course_cse442._id,
+                                        course_role:    'Teacher',
+                                    } 
+                        });
 
 
-    User.create([user1,user2,user3,user4,user5,user6], (error) => {
+    User.create([user1,user2,user3,user4,user5,user6,user7,user8], (error) => {
         if (!error) {
             // console.log('ready to go....');
         }
         else{
             console.log(error);
         }
-    });
-
     });
 
 
