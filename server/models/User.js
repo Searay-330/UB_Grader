@@ -15,6 +15,7 @@ const user_courseSchema = new Schema({
 
     _id:                        false,
     course_id:                  { type: Schema.Types.ObjectId, ref: 'Courses', required: true },
+    course_num:                 { type: String, required: true, unique: true },    
     course_role:                { type: String, default: 'Student', required: true },
     section_id:                 { type: Schema.Types.ObjectId, ref: 'Courses.sections' },
     assignments:                [user_course_assignmentsSchema]
