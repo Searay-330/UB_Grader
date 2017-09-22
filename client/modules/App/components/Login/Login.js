@@ -3,13 +3,13 @@ import { Link } from 'react-router';
 import { FormattedMessage } from 'react-intl';
 
 // Import Style
-// import styles from './Login.css';
+import styles from './Login.css';
 
 import { Button,FormControl,FormGroup,ControlLabel,HelpBlock} from 'react-bootstrap';
 
-export function Login(props) {
+export function Login() {
   return (
-    	<center><Button bsStyle="primary" onClick={() => {props.changeFunc("richard the shit lorde")}}>Login</Button></center>
+    	<center><Link to="/api/auth/google"><Button bsStyle="primary">Login</Button></Link></center>
   );
 }
 

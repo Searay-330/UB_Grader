@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 //Import Actions
-import {userSwap} from './AppActions'
+import {getUserLoggedIn} from './AppActions'
 
 // Import Style
 import styles from './App.css';
@@ -24,6 +24,8 @@ export class App extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props);
+    this.props.checkUser();
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
@@ -31,8 +33,8 @@ export class App extends Component {
   render() {
     let home = null
     //if user is logged in then we will render the courses page once it is prepared.
-    if(this.props.user == ""){
-      home = <Login changeFunc={this.props.changeUser} />
+    if(this.props.user == "login"){
+      home = <Login />
     }else{
       
     }
@@ -79,7 +81,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {  
   return bindActionCreators({
-    changeUser:userSwap,
+    checkUser:getUserLoggedIn,
   }, dispatch);
 }
 

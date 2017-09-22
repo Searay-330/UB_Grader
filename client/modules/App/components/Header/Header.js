@@ -6,7 +6,6 @@ import { FormattedMessage } from 'react-intl';
 import styles from './Header.css';
 
 export function Header(props) {
-  console.log(props);
   return (
     <div className={styles.banner}>
     <a className={styles.title}>AutoGrader 3.0</a>

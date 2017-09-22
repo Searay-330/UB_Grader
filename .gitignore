@@ -13,3 +13,4 @@ assets/
 test.sublime-project
 test.sublime-workspace
 server/config/keys.js
+package-lock.json
