@@ -5,7 +5,7 @@ import { combineReducers } from 'redux';
 
 // Import Reducers
 import app from './modules/App/AppReducer';
-import bs from './modules/bs/Bsreducer';
+import bs from './modules/bs/BsReducer';
 import assignments from './modules/Assignments/AssignmentsReducer';
 import assignment from './modules/Assignment/AssignmentReducer';
 

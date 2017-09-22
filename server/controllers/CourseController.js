@@ -62,7 +62,7 @@ export function getCourses(req, res) {
  */
 
 export function getAssignments(req, res){
-    Course.findById(req.params.course_id, (err, course) =>{
+    Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
         if (err) res.status(500).send(err);                    
         res.send(course.assignments);
     })
@@ -82,7 +82,7 @@ export function getStudents(req, res){
         if (err) res.status(500).send(err);            
         users.forEach((user) => {
             user.courses.forEach((course) => {
-                if (course.course_id == req.params.course_id && course.course_role == 'Student'){
+                if (course.course_num == req.params.course_num && course.course_role == 'Student'){
                     studentList.push(user);
                 }
             });
@@ -101,7 +101,7 @@ export function getStudents(req, res){
 
 export function getSections(req, res){
     var sectionList = [];
-    Course.findById(req.params.course_id, (err,course) =>{
+    Course.findOne({ 'course_num': req.params.course_num }, (err,course) =>{
         if (err) res.status(500).send(err);                    
         res.send(course.sections);
     })
@@ -121,7 +121,7 @@ export function getSectionStudents(req, res){
         if (err) res.status(500).send(err);            
         users.forEach((user) => {
             user.courses.forEach((course) => {
-                if (course.course_id == req.params.course_id && course.section_id == req.params.section_id && course.course_role == 'Student'){
+                if (course.course_num == req.params.course_num && course.section_id == req.params.section_id && course.course_role == 'Student'){
                     studentList.push(user);
                 }
             });

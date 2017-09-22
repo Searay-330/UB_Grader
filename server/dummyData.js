@@ -93,7 +93,8 @@ Course.count().exec((err, count) => {
                             person_number:  '11223344', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course._id,
+                                        course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section1_id
                                     } 
@@ -106,7 +107,8 @@ Course.count().exec((err, count) => {
                             person_number:  '12345679', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course._id,
+                                        course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section1_id                              
                                     } 
@@ -119,7 +121,8 @@ Course.count().exec((err, count) => {
                             person_number:  '12345677', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course._id,
+                                        course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section1_id                                 
                                     } 
@@ -132,7 +135,8 @@ Course.count().exec((err, count) => {
                             person_number:  '12346789', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course._id,
+                                        course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id                                 
                                     } 
@@ -145,7 +149,8 @@ Course.count().exec((err, count) => {
                             person_number:  '87654321', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course._id,
+                                        course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id
                                     } 
@@ -158,7 +163,8 @@ Course.count().exec((err, count) => {
                             person_number:  '97654321', 
                             updated_at:      new Date(),
                             courses: {
-                                        course_id:      course._id,
+                                        course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id                                        
                                     } 
@@ -173,6 +179,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Student',
                                         section_id:     section2_id                                        
                                     } 
@@ -186,6 +193,7 @@ Course.count().exec((err, count) => {
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
+                                        course_num:     'cse442-f17',                                         
                                         course_role:    'Teacher',
                                     } 
                         });

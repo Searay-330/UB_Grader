@@ -24,16 +24,16 @@ router.get('/logout',				UserController.logoutUser);
 router.get('/courses', 				AuthCheck.isAuthenticated, CourseController.getCourses);
 
 //Returns the assignments of a specific course that user is enrolled in.
-router.get('/courses/:course_id/assignments',	AuthCheck.isAuthenticated, CourseController.getAssignments);
+router.get('/courses/:course_num/assignments',	AuthCheck.isAuthenticated, CourseController.getAssignments);
 
 //Returns the students of a specific course.
-router.get('/courses/:course_id/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getStudents);
+router.get('/courses/:course_num/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getStudents);
 
 //Returns the sections of a specific course.
-router.get('/courses/:course_id/sections', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSections);
+router.get('/courses/:course_num/sections', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSections);
 
 //Returns the students of a specific section of a course.
-router.get('/courses/:course_id/:section_id/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
+router.get('/courses/:course_num/:section_id/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
 
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
