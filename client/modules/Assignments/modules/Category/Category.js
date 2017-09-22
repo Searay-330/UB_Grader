@@ -10,7 +10,7 @@ import { bootstrapUtils } from 'react-bootstrap/lib/utils';
 import { Col, ListGroup, Panel, ListGroupItem} from 'react-bootstrap';
 
 
-// bootstrapUtils.addStyle(Panel, {styles.custom});
+bootstrapUtils.addStyle(Panel, ["default",styles['panel_custom']].join(' '));
 
 export function Category(category) {
   return (
