@@ -208,8 +208,6 @@ Course.count().exec((err, count) => {
         }
     });
 
-
-
 });
 
 }
