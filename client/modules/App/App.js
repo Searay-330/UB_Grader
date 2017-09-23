@@ -24,7 +24,6 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.checkUser();
     this.setState({isMounted: true}); // eslint-disable-line
   }
