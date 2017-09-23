@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import styles from './Course.css';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+// import styles from './Course.css';
 
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 
 export class Course extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            isMounted: false,
-            isActive: true
+            isMounted: false
         };
     }
 
@@ -19,17 +20,10 @@ export class Course extends Component {
 
     render() {
         return (
-            <Modal.Dialog>
-                <Modal.Header bsClass={styles.header}>
-                    <center><Modal.Title>{this.props.displayName}</Modal.Title></center>
-                </Modal.Header>
-                <Modal.Body>
-                    {this.props.semester}
-                </Modal.Body>
-                <Modal.Footer>
-                    <center><Button bsSize="large" bsStyle="primary" href={[this.location, this.props.courseNum].join('/')}>Enter</Button></center>
-                </Modal.Footer>
-            </Modal.Dialog>
+            <Panel header={this.props.displayName}>
+                <div>{this.props.semester}</div>
+                <center><Button bsSize="large" bsStyle="primary" href={[this.props.location, this.props.courseNum, "assignments"].join('/')}>Enter</Button></center>
+            </Panel>
         );
     }
 }
