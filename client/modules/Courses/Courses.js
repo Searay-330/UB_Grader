@@ -9,16 +9,16 @@ export class Courses extends Component {
     
     constructor(props) {
         super(props);
-        // this.state = {
-        //     rendered: false,
-        //     courses: []
-        // };
+        this.state = {
+            rendered: false,
+            courses: []
+        };
     }
 
-    // componentDidMount() {
-    //     this.props.getCourses();
-    //     this.setState = {render: false, courses: prevState.courses};
-    // }
+    componentDidMount() {
+        this.props.getCourses();
+        this.setState = {render: false, courses: prevState.courses};
+    }
 
     render() {
         // if (!this.state.render) {
@@ -41,14 +41,14 @@ export class Courses extends Component {
     }
 }
 
-// function mapStateToProps(state) {
-    
-// }
+function mapStateToProps(state) {
+    courses: state.courses.coursesData
+}
 
-// function mapDispatchToProps(state) {
-//     return bindActionCreators({
-//         getCourses: getCourses
-//     }, dispatch);
-// }
+function mapDispatchToProps(state) {
+    return bindActionCreators({
+        getCourses: getCourses
+    }, dispatch);
+}
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Courses);
+export default connect(mapStateToProps, mapDispatchToProps)(Courses);
