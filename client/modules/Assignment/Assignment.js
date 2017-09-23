@@ -1,14 +1,15 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
+import { connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router';
 
 //Import Actions
 // import {method} from './AssignmentActions'
 
 // Import Style
-//import styles from './Assignment.css';
+import styles from './Assignment.css';
 
-import ScoreLine from './components/ScoreLine/ScoreLine';
+import Feedback from './components/Feedback/Feedback';
 // Import Bootstrap
 import {Button} from 'react-bootstrap';
 
@@ -17,27 +18,65 @@ import {Button} from 'react-bootstrap';
 export class Assignment extends Component {
   constructor(props) {
     super(props);
-    this.state = { isMounted: false };
+    this.state = {  
+      isMounted: false, 
+      feedbackVisible: false, 
+      score: 0
+    };
   }
 
   componentDidMount() {
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
-
   render() {
+    
     return (
     
-      <center>
+   
       <div>
+      <center>
         <h1>{this.props.params.assignment}</h1>
         <h3>Due: {this.props.dueDate}</h3>
-        <ScoreLine score={this.props.score} scoreTotal={this.props.scoreTotal}/>
+        <h3 className={styles.h3}>Most recent score: {this.state.score}/{this.props.scoreTotal} </h3>
+        <Button onClick={() => this.hideShowFeedback()}  bsStyle="primary" bsSize="xsmall">{
+          this.state.feedbackVisible
+            ? 'Hide Feedback'
+            : 'Show Feedback'
+        }</Button>
+
         <br/>
-        <Button bsStyle="primary">Submit</Button>
-      </div>
+        <br/>
+        
+    
+       
+        <input className={styles.input} type="file" />
+        <br/>
+        <Button onClick={() => this.randoScore(this.props.scoreTotal)} bsStyle="primary">Submit</Button>
+        
+        <br/>
+        <br/>
+        
+        {
+          this.state.feedbackVisible
+            ? <Feedback rawFeedback={this.props.feedback}/>
+            : null
+        }
       </center>
+      </div>
+
+     
     );
+  }
+
+  hideShowFeedback() {
+    this.setState({feedbackVisible: !this.state.feedbackVisible});
+  }
+
+  randoScore(maxScore){
+    var score = Math.random() * maxScore;
+    score = Math.floor(score);
+    this.setState({score: score});
   }
 }
 
@@ -47,6 +86,7 @@ function mapStateToProps(state) {
     dueDate: state.assignment.dueDate,
     score: state.assignment.score,
     scoreTotal: state.assignment.scoreTotal,
+    feedback: state.assignment.feedback,
   };
 }
 
