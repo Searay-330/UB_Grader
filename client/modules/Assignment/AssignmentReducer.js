@@ -8,10 +8,8 @@ const initialState = {
 
 const AssignmentReducer = (state = initialState, action) => {
   switch (action.type) {
-
     default:
       return state;
-
     }
 };
 
