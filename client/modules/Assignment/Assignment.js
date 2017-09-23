@@ -21,7 +21,8 @@ export class Assignment extends Component {
     this.state = {  
       isMounted: false, 
       feedbackVisible: false, 
-      score: 0
+      score: 0,
+      submitted: false
     };
   }
 
@@ -56,12 +57,23 @@ export class Assignment extends Component {
         
         <br/>
         <br/>
+
+        {
+         this.state.submitted
+            ?  <p>Your submission has been successfully forwarded to daviddob@buffalo.edu for review.</p>
+            : null
+         }
         
         {
           this.state.feedbackVisible
             ? <Feedback rawFeedback={this.props.feedback}/>
             : null
         }
+
+        
+        
+
+       
       </center>
       </div>
 
@@ -74,6 +86,7 @@ export class Assignment extends Component {
   }
 
   randoScore(maxScore){
+    this.setState({submitted: true});
     var score = Math.random() * maxScore;
     score = Math.floor(score);
     this.setState({score: score});
