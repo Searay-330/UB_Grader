@@ -24,7 +24,6 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     this.props.checkUser();
     this.setState({isMounted: true}); // eslint-disable-line
   }
@@ -33,10 +32,11 @@ export class App extends Component {
   render() {
     let home = null
     //if user is logged in then we will render the courses page once it is prepared.
-    if(this.props.user == "login"){
+    if(this.props.user.first_name == "login"){
+      if(this.props.location.pathname != "/"){
+        this.props.history.push("/");
+      }
       home = <Login />
-    }else{
-      
     }
     return (
       <div>
@@ -58,7 +58,7 @@ export class App extends Component {
               },
             ]}
           />
-          <Header user={this.props.user}/>
+          <Header user={this.props.user.first_name}/>
           <div className={styles.container}>
           {home}
 
