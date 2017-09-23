@@ -9,7 +9,7 @@ export function getUserLoggedIn() {
     dispatch(() => {return {type:"wait"};});
     return callApi("/current_user","get")
       .then(text => {
-        dispatch(userSwap(text.first_name))
+        dispatch(userSwap(text))
       })
   }
 }

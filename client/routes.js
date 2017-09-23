@@ -3,6 +3,8 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './modules/App/App';
 import Bs from './modules/bs/bs';
+import Assignments from './modules/Assignments/Assignments';
+import Assignment from './modules/Assignment/Assignment';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -25,6 +27,8 @@ export default (
   <Route path="/" component={App}>
   	<Route path="/api/auth/google" component={()=>window.location = "/api/auth/google" } />
     <Route path="testing" component={Bs}/>
+    <Route path="courses/:course/assignments" component={Assignments}/>
+    <Route path="courses/:course/assignments/:assignment" component={Assignment}/>
   </Route>
 
 );

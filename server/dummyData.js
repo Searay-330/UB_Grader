@@ -3,7 +3,6 @@ import User from './models/User.js';
 import mongoose from 'mongoose';
 
 
-
 export default function () {
 
 Course.count().exec((err, count) => {

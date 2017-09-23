@@ -1,4 +1,3 @@
-import User from '../models/User'
 /**
  * Get user that is currently logged in
  * @param req
@@ -33,19 +32,5 @@ export function logoutUser(req,res) {
  * @returns void
  */
 export function loginRedirect(req,res) {
-    res.redirect('/courses');
-}
-
-
-/**
- * Returns information about a specific user
- * @param req
- * @param res
- * @returns void
- */
-export function getUser(req,res) {
-    User.findById(req.params.user_id, (err, user) => {
-        if (err) res.status(500).send(err);            
-        res.send(user);        
-    });
+    res.redirect('/');
 }
