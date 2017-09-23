@@ -1,10 +1,9 @@
 import callApi from '../../util/apiCaller';
+
 export function populateCourseData(data){
 	
   return {type:"populate", assignmentsData: data};
 }
-
-
 
 export function getCourseData(course_num) {
   return function (dispatch) {
