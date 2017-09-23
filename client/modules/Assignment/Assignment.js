@@ -13,8 +13,6 @@ import Feedback from './components/Feedback/Feedback';
 // Import Bootstrap
 import {Button} from 'react-bootstrap';
 
-
-
 export class Assignment extends Component {
   constructor(props) {
     super(props);
@@ -33,8 +31,6 @@ export class Assignment extends Component {
   render() {
     
     return (
-    
-   
       <div>
       <center>
         <h1>{this.props.params.assignment}</h1>
@@ -45,39 +41,25 @@ export class Assignment extends Component {
             ? 'Hide Feedback'
             : 'Show Feedback'
         }</Button>
-
         <br/>
         <br/>
-        
-    
-       
         <input className={styles.input} type="file" />
         <br/>
         <Button onClick={() => this.randoScore(this.props.scoreTotal)} bsStyle="primary">Submit</Button>
-        
         <br/>
         <br/>
-
         {
          this.state.submitted
             ?  <p>Your submission has been successfully forwarded to daviddob@buffalo.edu for review.</p>
             : null
-         }
-        
+        }
         {
           this.state.feedbackVisible
             ? <Feedback rawFeedback={this.props.feedback}/>
             : null
         }
-
-        
-        
-
-       
       </center>
       </div>
-
-     
     );
   }
 

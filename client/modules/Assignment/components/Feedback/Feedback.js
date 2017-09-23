@@ -7,7 +7,6 @@ import { Link } from 'react-router';
 // Import Bootstrap
 // import {Button} from 'react-bootstrap';
 
-
 export function Feedback(props) {
   return (
   	<div>
@@ -17,7 +16,5 @@ export function Feedback(props) {
     </div>
   )
 }
-
-
 
 export default Feedback;
