@@ -7,7 +7,7 @@ export class Course extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             isMounted: false,
             isActive: true
         };
@@ -27,7 +27,7 @@ export class Course extends Component {
                     {this.props.semester}
                 </Modal.Body>
                 <Modal.Footer>
-                    <center><Button bsSize="large" bsStyle="primary" onClick={() => console.log("boop bop beep")}>Enter</Button></center>
+                    <center><Button bsSize="large" bsStyle="primary" href={[this.location, this.props.courseNum].join('/')}>Enter</Button></center>
                 </Modal.Footer>
             </Modal.Dialog>
         );
