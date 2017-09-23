@@ -33,7 +33,6 @@ export class App extends Component {
     let home = null
     //if user is logged in then we will render the courses page once it is prepared.
     if(this.props.user.first_name == "login"){
-      console.log(this.props.user);
       if(this.props.location.pathname != "/"){
         this.props.history.push("/");
       }

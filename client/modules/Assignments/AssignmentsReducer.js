@@ -1,12 +1,18 @@
 // Initial State
 const initialState = {
-  categories:["HW","Tests","Quizzes"],
+  assignmentsData:[],
 };
 
 
 const AssignmentsReducer = (state = initialState, action) => {
+
   switch (action.type) {
 
+  	case "populate":
+  		return {
+  			assignmentsData: action.assignmentsData
+
+  		}
     default:
       return state;
   }

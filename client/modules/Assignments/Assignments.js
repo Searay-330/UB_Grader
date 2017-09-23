@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 //Import Actions
-// import {method} from './AssignmentActions'
+import {getCourseData} from './AssignmentsActions'
 
 // Import Style
 // import styles from './Assignment.css';
@@ -18,22 +18,43 @@ import { Grid,Row,Col,PanelGroup, ListGroup, ListGroupItem} from 'react-bootstra
 export class Assignments extends Component {
   constructor(props) {
     super(props);
-    this.state = { isMounted: false };
+    this.state = {render:false ,categories:[]};
   }
 
   componentDidMount() {
-    this.setState({isMounted: true}); // eslint-disable-line
+    this.props.getCourseData(this.props.params.course);
+    this.setState({render: false,categories: []});
+  }
+
+  componentWillReceiveProps(nextProps){
+      this.categories = [];
+      for(var i = 0; i < nextProps.assignments.length; ++i){
+        if(this.categories[nextProps.assignments[i].category] == undefined){
+          this.categories[nextProps.assignments[i].category] = [];
+        }
+        this.categories[nextProps.assignments[i].category].push(nextProps.assignments[i]);
+      }
+      this.setState({render: true, categories:this.categories});
+      // this.forceUpdate();
+
   }
 
 
+
   render() {
+
+    if(!this.state.render){return null;}
+    var cats = []
+    for(var key in this.state.categories){
+  
+      cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]}/>);
+    }
+    // console.log(cats);
     return (
      <PanelGroup>
       <Grid>
         <Row>
-          <Category name={this.props.categories[0]}/>
-          <Category name={this.props.categories[1]}/>
-          <Category name={this.props.categories[2]}/>
+        {cats}
         </Row>
       </Grid>
     </PanelGroup>
@@ -44,12 +65,13 @@ export class Assignments extends Component {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    categories: state.assignments.categories,
+    assignments: state.assignments.assignmentsData,
   };
 }
 
 function mapDispatchToProps(dispatch) {  
   return bindActionCreators({
+    getCourseData:getCourseData,
   }, dispatch);
 }
 

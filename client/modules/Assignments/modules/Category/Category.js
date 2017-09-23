@@ -11,14 +11,15 @@ import { Col, ListGroup, Panel, ListGroupItem} from 'react-bootstrap';
 
 
 bootstrapUtils.addStyle(Panel, ["default",styles['panel_custom']].join(' '));
-
 export function Category(category) {
+  console.log(category);
   return (
   	<Col md={4}>
   		<Panel bsStyle={["default",styles['panel_custom']].join(' ')} header={category.name} eventKey="1">
-  			Some default panel content here.
   			<ListGroup componentClass='div' fill>
-     			<ListGroupItem >Item 1</ListGroupItem>
+          {category.assignments.map(assignment => (
+      <ListGroupItem key={assignment._id} ><Link to={[category.location,assignment.name].join('/')}>{assignment.name}</Link></ListGroupItem>
+    ))}
     		</ListGroup>
     	</Panel>
     </Col>

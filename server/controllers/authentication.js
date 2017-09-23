@@ -5,7 +5,6 @@
  * @returns void
  */
 export function getCurrentUser(req,res) {
-	console.log(req.user);
 	if((req.user === undefined)){
 
 		res.send({first_name:"login"});
