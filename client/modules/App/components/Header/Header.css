@@ -38,3 +38,14 @@
   margin-right: 10px;
   margin-left: 10px;
 }
+
+.inactiveLink {
+   pointer-events: none;
+   cursor: default;
+}
+
+.headerIcon{
+  line-height: 2.2 !important;
+  cursor: pointer;
+
+}

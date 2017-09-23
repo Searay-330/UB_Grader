@@ -25,7 +25,8 @@ if (process.env.NODE_ENV !== 'production') {
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
 export default (
   <Route path="/" component={App}>
-  	<Route path="/api/auth/google" component={()=>window.location = "/api/auth/google" } />
+  	<Route path="/api/auth/google" component={() => window.location = "/api/auth/google" } />
+    <Route path="/api/logout" component={() => window.location = "/api/logout" } />
     <Route path="testing" component={Bs}/>
     <Route path="courses/:course/assignments" component={Assignments}/>
     <Route path="courses/:course/assignments/:assignment" component={Assignment}/>
