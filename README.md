@@ -24,7 +24,7 @@ git clone https://github.com/Theknickerbocker/UB_Grader.git
 ```
 ```
 cd UB_Grader
-git checkout
+git checkout dev
 ```
 ```
 npm install
