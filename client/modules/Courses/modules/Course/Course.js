@@ -10,7 +10,7 @@ export class Course extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isMounted: false
+            isMounted: false,
         };
     }
 
@@ -31,8 +31,6 @@ export class Course extends Component {
 
 function mapStateToProps(state) {
     return {
-        courseNum: state.course.courseNum,
-        displayName: state.course.displayName,
         semester: state.course.semester,
     };
 }
