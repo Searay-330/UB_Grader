@@ -34,9 +34,13 @@ export class App extends Component {
     //if user is logged in then we will render the courses page once it is prepared.
     if(this.props.user.first_name == "login"){
       if(this.props.location.pathname != "/"){
-        this.props.history.push("/");
+        this.context.router.push("/");
       }
       home = <Login />
+    }else{
+      if(this.props.location.pathname == "/"){
+        this.context.router.push("/courses");
+      }
     }
     return (
       <div>
@@ -70,6 +74,11 @@ export class App extends Component {
     );
   }
 }
+
+
+App.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
