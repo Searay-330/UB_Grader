@@ -25,13 +25,10 @@ export class Courses extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        var coursesData = [];
-        for (var i = 0; i < nextProps.courses.length; i++) {
-            coursesData.push(nextProps.courses[i]);
-        }
+        this.courses = nextProps.courses;
         this.setState({
             render: true,
-            courses: coursesData,
+            courses: this.courses,
         });
     }
 
@@ -40,12 +37,12 @@ export class Courses extends Component {
             return null;
         }
         var courses = [];
-        for (var course in this.state.courses) {
+        for (var i = 0; i < this.state.courses.length; i++) {
+            var course = this.state.courses[i];
             courses.push(
-        <Course courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']} location={this.props.location.pathname}/>
+                <Course key={course['id']} courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']} location={this.props.location.pathname}/>
             );
         }
-
         return (
             <PanelGroup>
                 <Grid>

@@ -1,6 +1,4 @@
 const defaultState = {
-    courseNum: 'cse442-f17',
-    displayName: 'CSE 442',
     semester: 'Fall 2017'
 };
 
