@@ -9,7 +9,7 @@ import {Glyphicon} from 'react-bootstrap';
 
 export function Header(props) {
 	var pageinfo = null;
-	if(props.user == "login"){
+	if(props.user == ""){
 		pageinfo = <span className={[styles.right, styles.title].join(' ')}>{props.user}</span>;
 	}else{
 		pageinfo = <span className={[styles.right, styles.title].join(' ')}>Welcome, {props.user}<Link to='/api/logout'><Glyphicon className={[styles.right, styles.headerIcon, styles.title].join(' ')} glyph="log-out" /></Link></span>;
