@@ -5,11 +5,19 @@ import { FormattedMessage } from 'react-intl';
 // Import Style
 import styles from './Header.css';
 
-export function Header() {
+import {Glyphicon} from 'react-bootstrap'; 
+
+export function Header(props) {
+	var pageinfo = null;
+	if(props.user == ""){
+		pageinfo = <span className={[styles.right, styles.title].join(' ')}>{props.user}</span>;
+	}else{
+		pageinfo = <span className={[styles.right, styles.title].join(' ')}>Welcome, {props.user}<Link to='/api/logout'><Glyphicon className={[styles.right, styles.headerIcon, styles.title].join(' ')} glyph="log-out" /></Link></span>;
+	}
   return (
     <div className={styles.banner}>
-    <a className={styles.title}>AutoGrader 3.0</a>
-    <a className={[styles.right, styles.title].join(' ')}>Login</a>
+    <span className={[styles.title].join(' ')}>AutoGrader 3.0</span>
+	{pageinfo}
     </div>
   );
 }

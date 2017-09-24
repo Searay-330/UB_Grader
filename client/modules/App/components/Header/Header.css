@@ -8,7 +8,6 @@
 }
 
 .header {
-  background: #eee url('../../header-bk.png') center;
   background-size: cover;
   border-bottom: 1px solid #ccc;
 
@@ -38,4 +37,15 @@
   font-weight: bold;
   margin-right: 10px;
   margin-left: 10px;
+}
+
+.inactiveLink {
+   pointer-events: none;
+   cursor: default;
+}
+
+.headerIcon{
+  line-height: 2.2 !important;
+  cursor: pointer;
+
 }
