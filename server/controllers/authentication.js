@@ -7,7 +7,7 @@
 export function getCurrentUser(req,res) {
 	if((req.user === undefined)){
 
-		res.send({first_name:"login"});
+		res.send({first_name:""});
 	}else{
 
     res.send(req.user);

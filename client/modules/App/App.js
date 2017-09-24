@@ -28,19 +28,21 @@ export class App extends Component {
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.user.first_name != "" && nextProps.location.pathname == "/"){
+      this.context.router.push("/courses");
+    }
+  }
+
 
   render() {
     let home = null
     //if user is logged in then we will render the courses page once it is prepared.
-    if(this.props.user.first_name == "login"){
+    if(this.props.user.first_name == ""){
       if(this.props.location.pathname != "/"){
         this.context.router.push("/");
       }
       home = <Login />
-    }else{
-      if(this.props.location.pathname == "/"){
-        this.context.router.push("/courses");
-      }
     }
     return (
       <div>
