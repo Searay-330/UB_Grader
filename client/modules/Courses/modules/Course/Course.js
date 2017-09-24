@@ -22,7 +22,7 @@ export class Course extends Component {
         const title = <h1>{this.props.displayName}</h1>;
         return (
             <Panel header={title} bsStyle={["default",styles['panel_custom']].join(' ')} eventKey='1'>
-            <ListGroup>Semester: {this.props.semester}</ListGroup>
+                <ListGroup>Semester: {this.props.semester}</ListGroup>
                 <center><Button bsSize="large" bsStyle="primary" href={[this.props.location, this.props.courseNum, "assignments"].join('/')}>Enter</Button></center>
             </Panel>
         );
