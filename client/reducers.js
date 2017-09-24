@@ -6,6 +6,8 @@ import { combineReducers } from 'redux';
 // Import Reducers
 import app from './modules/App/AppReducer';
 import bs from './modules/bs/BsReducer';
+import courses from './modules/Courses/CoursesReducer';
+import course from './modules/Courses/modules/Course/CourseReducer';
 import assignments from './modules/Assignments/AssignmentsReducer';
 import assignment from './modules/Assignment/AssignmentReducer';
 
@@ -13,6 +15,8 @@ import assignment from './modules/Assignment/AssignmentReducer';
 export default combineReducers({
   app,
   bs,
+  courses,
+  course,
   assignments,
   assignment,
 });
