@@ -31,7 +31,7 @@ npm install
 mkdir server/config
 touch server/config/keys.js
 ```
-Make sure you you have your own Google OAuth 2.0 API keys. Inside of keys.js you need to put your googleClientID and googleClientSecret  keys. The cookieKey is completely arbritrary and can be any random string. Also be sure to create a OAuth 2.0 Client ID and in which http://localhost:8000 is added to your authorized Javascript origins and that http://localhost:8000/api/auth/google/callback is added to your authorize redirect URIs.
+Make sure you you have your own Google OAuth 2.0 API keys. Inside of keys.js you need to put your googleClientID and googleClientSecret  keys. The cookieKey is completely arbritrary and can be any random string. 
 
 Example:
 ```
@@ -41,6 +41,10 @@ googleClientSecret: 'secret key',
 cookieKey: 'randomstring'
 }
 ```
+Also be sure to create a OAuth 2.0 Client ID and in which http://localhost:8000 is added to your authorized Javascript origins and that http://localhost:8000/api/auth/google/callback is added to your authorize redirect URIs.
+
+Then you can run the following commands in your terminal:
+
 ```
 npm install 
 sudo service mongod start
