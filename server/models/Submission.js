@@ -18,7 +18,7 @@ const submissionSchema = new Schema({
         course_id:                  { type: Schema.Types.ObjectId, ref: 'Courses', required: true },
         assignment_id:              { type: Schema.Types.ObjectId, ref: 'Courses.assignments', required: true },            
         version:                    { type: Number, required: true },
-        file_name:                  { type: String, required: true },
+        file_names:                  [{ type: String, required: true }],
         grader:                     { type: String, required: true },
         form_data:                  { type: String, required: true },
         scores:                     [submssions_scoreSchema],
