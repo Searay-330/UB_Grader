@@ -2,6 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { blueA400, blueA700, white, black, darkBlack, fullBlack, grey200, grey500, grey600, grey700 } from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
+
 //Import Actions
 import {getUserLoggedIn} from './AppActions'
 
@@ -16,6 +21,25 @@ import Footer from './components/Footer/Footer';
 import Login from './components/Login/Login';
 import Home from './components/Home/Home';
 
+
+const muiTheme = getMuiTheme({
+  palette: {
+    primary1Color: blueA700,
+    primary2Color: blueA400,
+    primary3Color: grey500,
+    accent1Color: black,
+    accent2Color: grey600,
+    accent3Color: black,
+    textColor: grey200,
+    alternateTextColor: white,
+    canvasColor: grey700,
+    borderColor: black,
+    disabledColor: fade(darkBlack, 0.3),
+    pickerHeaderColor: blueA700,
+    clockCircleColor: fade(darkBlack, 0.07),
+    shadowColor: darkBlack,
+  },
+});
 
 export class App extends Component {
   constructor(props) {
@@ -45,8 +69,9 @@ export class App extends Component {
       home = <Login />
     }
     return (
+      <MuiThemeProvider muiTheme={muiTheme}>
       <div>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+        {/* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> */}
         {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools /> && false}
         <div>
           <Helmet
@@ -73,6 +98,7 @@ export class App extends Component {
           <Footer />
         </div>
       </div>
+      </MuiThemeProvider>
     );
   }
 }

@@ -8,16 +8,13 @@ import { Router, browserHistory } from 'react-router';
 // Import Routes
 import routes from './routes';
 
-// Base stylesheet
-require('./main.css');
-
 export default function App(props) {
   return (
-    <Provider store={props.store}>
+      <Provider store={props.store}>
         <Router history={browserHistory}>
           {routes}
         </Router>
-    </Provider>
+      </Provider>
   );
 }
 
