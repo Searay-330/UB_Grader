@@ -17,9 +17,9 @@ const store = configureStore(window.__INITIAL_STATE__);
 const mountApp = document.getElementById('root');
 
 render(
-      <AppContainer>
-        <App store={store} />
-      </AppContainer>
+  <AppContainer>
+    <App store={store} />
+  </AppContainer>
   ,
   mountApp
 );
@@ -32,9 +32,9 @@ if (module.hot) {
     const NextApp = require('./App').default; // eslint-disable-line global-require
     render(
 
-          <AppContainer>
-            <App store={store} />
-          </AppContainer>,
+      <AppContainer>
+        <App store={store} />
+      </AppContainer>,
       mountApp
     );
   });

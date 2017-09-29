@@ -5,24 +5,30 @@ import { Link } from 'react-router';
 // Import Style
 import styles from './Category.css';
 
-// Import Bootstrap
-import { bootstrapUtils } from 'react-bootstrap/lib/utils';
-import { Col, ListGroup, Panel, ListGroupItem} from 'react-bootstrap';
+import GridTile from 'material-ui/GridList';
+import RaisedButton from 'material-ui/RaisedButton';
+import { List, ListItem } from 'material-ui/List';
+import { Card, CardHeader, CardMedia } from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
 
-
-bootstrapUtils.addStyle(Panel, ["default",styles['panel_custom']].join(' '));
 export function Category(category) {
   console.log(category);
   return (
-  	<Col md={4}>
-  		<Panel bsStyle={["default",styles['panel_custom']].join(' ')} header={category.name} eventKey="1">
-  			<ListGroup componentClass='div' fill>
-          {category.assignments.map(assignment => (
-      <ListGroupItem key={assignment._id} ><Link to={[category.location,assignment.name].join('/')}>{assignment.name}</Link></ListGroupItem>
-    ))}
-    		</ListGroup>
-    	</Panel>
-    </Col>
+    <GridTile>
+      <Card className={styles.list}>
+        <CardHeader title={category.name} />
+        <Divider />
+        <CardMedia>
+          <List className={styles.list}>
+            {category.assignments.map(assignment => (
+              <ListItem key={assignment._id} >
+                <RaisedButton fullWidth={true} secondary={true} label={assignment.name} href={[category.location, assignment.name].join('/')} />
+              </ListItem>
+            ))}
+          </List>
+        </CardMedia>
+      </Card>
+    </GridTile>
   );
 }
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import RaisedButton from 'material-ui/RaisedButton';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import blueA700 from 'material-ui/styles/colors';
 
 export class Course extends Component {
@@ -26,7 +26,7 @@ export class Course extends Component {
                 <CardTitle>{title}</CardTitle>
                 <CardText>Semester: {this.props.semester}</CardText>
                 <CardActions>
-                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={[this.props.location, this.props.courseNum, "assignments"].join('/')}/>
+                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={[this.props.location, this.props.courseNum, "assignments"].join('/')} />
                 </CardActions>
             </Card>
         );
