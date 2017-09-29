@@ -6,17 +6,18 @@
   height: 50px;
   width: 100%;
   overflow:hidden;
+  background-color: #2962FF !important;
 }
 
 
 .footer p{
   text-align: center;
   font-size: 14px;
-  color: #000000;
+  color: white;
 }
 
 .footer a{
-  color: #000000;
+  color: white;
   text-decoration: none;
   font-weight: 700;
 }

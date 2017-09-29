@@ -21,9 +21,9 @@ export function Category(category) {
         <CardMedia>
           <List className={styles.list}>
             {category.assignments.map(assignment => (
-              <ListItem key={assignment._id} >
-                <RaisedButton fullWidth={true} secondary={true} label={assignment.name} href={[category.location, assignment.name].join('/')} />
-              </ListItem>
+              <ListItem key={assignment._id} 
+                        primaryText={assignment.name}
+                        onClick={() => {document.location.href = [category.location, assignment.name].join('/');}} />
             ))}
           </List>
         </CardMedia>

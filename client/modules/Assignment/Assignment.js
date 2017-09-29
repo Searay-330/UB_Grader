@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 
@@ -11,67 +11,94 @@ import styles from './Assignment.css';
 
 import Feedback from './components/Feedback/Feedback';
 // Import Bootstrap
-import {Button} from 'react-bootstrap';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import TextField from 'material-ui/TextField';
 
 export class Assignment extends Component {
   constructor(props) {
     super(props);
-    this.state = {  
-      isMounted: false, 
-      feedbackVisible: false, 
+    this.state = {
+      isMounted: false,
+      feedbackVisible: false,
       score: 0,
       submitted: false
     };
   }
 
   componentDidMount() {
-    this.setState({isMounted: true}); // eslint-disable-line
+    this.setState({ isMounted: true }); // eslint-disable-line
   }
 
   render() {
-    
+
     return (
-      <div>
-      <center>
-        <h1>{this.props.params.assignment}</h1>
-        <h3>Due: {this.props.dueDate}</h3>
-        <h3 className={styles.h3}>Most recent score: {this.state.score}/{this.props.scoreTotal} </h3>
-        <Button onClick={() => this.hideShowFeedback()}  bsStyle="primary" bsSize="xsmall">{
-          this.state.feedbackVisible
-            ? 'Hide Feedback'
-            : 'Show Feedback'
-        }</Button>
-        <br/>
-        <br/>
-        <input className={styles.input} type="file" />
-        <br/>
-        <Button onClick={() => this.randoScore(this.props.scoreTotal)} bsStyle="primary">Submit</Button>
-        <br/>
-        <br/>
-        {
-         this.state.submitted
-            ?  <p>Your submission has been successfully forwarded to daviddob@buffalo.edu for review.</p>
-            : null
-        }
-        {
-          this.state.feedbackVisible
-            ? <Feedback rawFeedback={this.props.feedback}/>
-            : null
-        }
-      </center>
-      </div>
+
+      <Card>
+        <CardTitle
+          title={this.props.params.assignment}
+        />
+        <CardMedia>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableRowColumn>Due: </TableRowColumn>
+                <TableRowColumn>{this.props.dueDate}</TableRowColumn>
+              </TableRow>
+              <TableRow>
+                <TableRowColumn>Most recent score: </TableRowColumn>
+                <TableRowColumn>{this.state.score}/{this.props.scoreTotal}</TableRowColumn>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </CardMedia>
+        <CardText>
+          {
+            this.state.submitted
+              ? <p>Your submission has been successfully forwarded to daviddob@buffalo.edu for review.</p>
+              : null
+          }
+          {
+            this.state.feedbackVisible
+              ? <Feedback rawFeedback={this.props.feedback} />
+              : null
+          }
+        </CardText>
+        <CardActions>
+        <RaisedButton
+            containerElement='label'
+            label='Choose File'>
+            <input type="file" style={{ display: 'none' }}/>
+          </RaisedButton>
+          <RaisedButton label="Submit" primary={true} onClick={() => this.randoScore(this.props.scoreTotal)} />
+          <RaisedButton onClick={() => this.hideShowFeedback()} primary={true}
+            label={this.state.feedbackVisible
+              ? 'Hide Feedback'
+              : 'Show Feedback'}
+          />
+        </CardActions>
+      </Card>
+
     );
   }
 
   hideShowFeedback() {
-    this.setState({feedbackVisible: !this.state.feedbackVisible});
+    this.setState({ feedbackVisible: !this.state.feedbackVisible });
   }
 
-  randoScore(maxScore){
-    this.setState({submitted: true});
+  randoScore(maxScore) {
+    this.setState({ submitted: true });
     var score = Math.random() * maxScore;
     score = Math.floor(score);
-    this.setState({score: score});
+    this.setState({ score: score });
   }
 }
 
@@ -85,10 +112,10 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
   }, dispatch);
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Assignment);
+export default connect(mapStateToProps, mapDispatchToProps)(Assignment);
 

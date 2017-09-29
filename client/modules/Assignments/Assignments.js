@@ -16,8 +16,12 @@ import Subheader from 'material-ui/Subheader';
 
 const styles = {
   root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
   },
   gridList: {
+    overflowY: 'auto',
   },
 };
 
