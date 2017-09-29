@@ -1,5 +1,6 @@
 // Initial State
 const initialState = {
+  assignmentData:[],
   dueDate:"June 9th 1917, 4:20pm",
   //score:0,
   scoreTotal:100,
@@ -8,6 +9,10 @@ const initialState = {
 
 const AssignmentReducer = (state = initialState, action) => {
   switch (action.type) {
+  	case "populate":
+  		return {
+  			assignmentData: action.assignmentData
+  		}
     default:
       return state;
     }
