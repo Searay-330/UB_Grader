@@ -35,17 +35,22 @@ export class Assignment extends Component {
       <center>
         <h1>{this.props.params.assignment}</h1>
         <h3>Due: {this.props.dueDate}</h3>
-        <h3 className={styles.h3}>Most recent score: {this.state.score}/{this.props.scoreTotal} </h3>
-        <Button onClick={() => this.hideShowFeedback()}  bsStyle="primary" bsSize="xsmall">{
-          this.state.feedbackVisible
-            ? 'Hide Feedback'
-            : 'Show Feedback'
-        }</Button>
+        var maxScore = this.props.scoreTotal
+        <h3 className={styles.h3}>
+          Most recent score: {this.state.score}/{maxScore} 
+        </h3>
+        <Button onClick={() => this.hideShowFeedback()}  
+                bsStyle="primary" 
+                bsSize="xsmall">
+          {this.state.feedbackVisible ? 'Hide Feedback' : 'Show Feedback'}
+        </Button>
         <br/>
         <br/>
         <input className={styles.input} type="file" />
         <br/>
-        <Button onClick={() => this.randoScore(this.props.scoreTotal)} bsStyle="primary">Submit</Button>
+        <Button onClick={() => this.randoScore(maxScore)} bsStyle="primary">
+          Submit
+        </Button>
         <br/>
         <br/>
         {
