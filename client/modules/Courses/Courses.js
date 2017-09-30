@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { PanelGroup, Grid, Row } from 'react-bootstrap';
 
 import Course from './modules/Course/Course';
 import {getCourses} from './CoursesActions';
+import { PanelGroup, Grid, Row } from 'react-bootstrap';
 
 export class Courses extends Component {
 

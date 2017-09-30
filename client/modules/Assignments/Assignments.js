@@ -10,9 +10,8 @@ import {getCourseData} from './AssignmentsActions'
 
 // Import Components
 import Category from './modules/Category/Category';
-// Import Bootstrap
+// Import Material UI Components
 import {GridList} from 'material-ui/GridList';
-import Subheader from 'material-ui/Subheader';
 
 const styles = {
   root: {
@@ -64,9 +63,7 @@ export class Assignments extends Component {
         cols={3}
         style={styles.gridList}
       >
-        <Subheader>Current Courses</Subheader>
           {cats}
-        <Subheader>Past Courses</Subheader>
       </GridList>
     </div>
     );

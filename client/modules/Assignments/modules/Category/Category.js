@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import styles from './Category.css';
 
 import GridTile from 'material-ui/GridList';
-import CardTitle from 'material-ui/Card';
+import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -16,9 +16,10 @@ import Divider from 'material-ui/Divider';
 export function Category(category) {
   console.log(category);
   return (
-    <Paper>
-      <GridTile>
-        <CardTitle className={styles.header} title={category.name} />
+
+        <Card>
+        <CardTitle className={styles.header} titleColor='white' title={category.name} />
+        <CardMedia>
         <Menu>
           {category.assignments.map(assignment => (
             <MenuItem key={assignment._id}
@@ -26,8 +27,9 @@ export function Category(category) {
               onClick={() => { document.location.href = [category.location, assignment.name].join('/'); }} />
           ))}
         </Menu>
-      </GridTile>
-    </Paper>
+        </CardMedia>
+        </Card>
+
   );
 }
 

@@ -10,7 +10,8 @@ import { Link } from 'react-router';
 import styles from './Assignment.css';
 
 import Feedback from './components/Feedback/Feedback';
-// Import Bootstrap
+
+// Import Material UI Components
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
