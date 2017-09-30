@@ -3,61 +3,55 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 //Import Actions
-import {getCourseData} from './AssignmentsActions'
-
-// Import Style
-// import styles from './Assignment.css';
+import { getCourseData } from './AssignmentsActions'
 
 // Import Components
 import Category from './modules/Category/Category';
 // Import Bootstrap
-import { Grid,Row,Col,PanelGroup, ListGroup, ListGroupItem} from 'react-bootstrap';
+import { GridList } from 'material-ui/GridList';
+import Subheader from 'material-ui/Subheader';
 
 export class Assignments extends Component {
   constructor(props) {
     super(props);
-    this.state = {render:false ,categories:[]};
+    this.state = { render: false, categories: [] };
   }
 
   componentDidMount() {
     this.props.getCourseData(this.props.params.course);
-    this.setState({render: false,categories: []});
+    this.setState({ render: false, categories: [] });
   }
 
-  componentWillReceiveProps(nextProps){
-      this.categories = [];
-      for(var i = 0; i < nextProps.assignments.length; ++i){
-        if(this.categories[nextProps.assignments[i].category] == undefined){
-          this.categories[nextProps.assignments[i].category] = [];
-        }
-        this.categories[nextProps.assignments[i].category].push(nextProps.assignments[i]);
+  componentWillReceiveProps(nextProps) {
+    this.categories = [];
+    for (var i = 0; i < nextProps.assignments.length; ++i) {
+      if (this.categories[nextProps.assignments[i].category] == undefined) {
+        this.categories[nextProps.assignments[i].category] = [];
       }
-      this.setState({render: true, categories:this.categories});
-      // this.forceUpdate();
+      this.categories[nextProps.assignments[i].category].push(nextProps.assignments[i]);
+    }
+    this.setState({ render: true, categories: this.categories });
+    // this.forceUpdate();
 
   }
 
   render() {
 
-    if(!this.state.render){return null;}
+    if (!this.state.render) { return null; }
     var cats = []
     var i = 0;
-    for(var key in this.state.categories){
-      if(i%3 == 0){
-      cats.push(<Row><Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]}/></Row>);
-
-      }else{
-
-      cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]}/>);
-      }
+    for (var key in this.state.categories) {
+      cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
     }
     // console.log(cats);
     return (
-     <PanelGroup>
-      <Grid>
-        {cats}
-      </Grid>
-    </PanelGroup>
+      <div>
+        <GridList
+          cols={3}
+        >
+          {cats}
+        </GridList>
+      </div>
     );
   }
 }
@@ -69,11 +63,11 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    getCourseData:getCourseData,
+    getCourseData: getCourseData,
   }, dispatch);
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(Assignments);
+export default connect(mapStateToProps, mapDispatchToProps)(Assignments);
 

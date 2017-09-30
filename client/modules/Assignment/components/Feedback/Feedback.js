@@ -4,9 +4,6 @@ import { Link } from 'react-router';
 // Import Style
 //import styles from './Feedback.css';
 
-// Import Bootstrap
-// import {Button} from 'react-bootstrap';
-
 export function Feedback(props) {
   return (
   	<div>
