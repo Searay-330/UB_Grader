@@ -9,6 +9,7 @@ import {getAssignmentData} from './AssignmentActions'
 import styles from './Assignment.css';
 
 import Feedback from './components/Feedback/Feedback';
+// Import Material UI Components
 import {
   Card, 
   CardActions, 
@@ -53,12 +54,12 @@ export class Assignment extends Component {
         />
         <CardMedia>
           <Table>
-            <TableBody>
-              <TableRow>
+            <TableBody displayRowCheckbox={false}>
+              <TableRow selectable={false}>
                 <TableRowColumn>Due: </TableRowColumn>
                 <TableRowColumn>{this.props.dueDate}</TableRowColumn>
               </TableRow>
-              <TableRow>
+              <TableRow selectable={false}>
                 <TableRowColumn>Most recent score: </TableRowColumn>
                 <TableRowColumn>{this.state.score}/{maxScore}</TableRowColumn>
               </TableRow>
@@ -79,8 +80,9 @@ export class Assignment extends Component {
         </CardText>
         <CardActions>
         <RaisedButton
-            containerElement='label'
-            label='Choose File'>
+            primary={true}
+            label='Choose File'
+            containerElement='label'>
             <input type="file" style={{ display: 'none' }}/>
           </RaisedButton>
           <RaisedButton label="Submit" primary={true} onClick={() => this.randoScore(maxScore)} />
