@@ -25,7 +25,7 @@ export function getCourses(req, res) {
                         semester:       allCourses[i].semester
                     });
                 }
-                res.send(courses);  
+                res.status(200).send(courses);  
             });            
         }
     }
@@ -47,7 +47,7 @@ export function getCourses(req, res) {
                     }
                 });
             });
-            res.send(courselist);
+            res.status(200).send(courselist);
         });
 
     }
@@ -64,7 +64,7 @@ export function getCourses(req, res) {
 export function getAssignments(req, res){
     Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
         if (err) res.status(500).send(err);                    
-        res.send(course.assignments);
+        res.status(200).send(course.assignments);
     })
 }
 
@@ -87,7 +87,7 @@ export function getStudents(req, res){
                 }
             });
         });
-        res.send(studentList);
+        res.status(200).send(studentList);
     });
 }
 
@@ -103,7 +103,7 @@ export function getSections(req, res){
     var sectionList = [];
     Course.findOne({ 'course_num': req.params.course_num }, (err,course) =>{
         if (err) res.status(500).send(err);                    
-        res.send(course.sections);
+        res.status(200).send(course.sections);
     })
 }
 
@@ -126,6 +126,49 @@ export function getSectionStudents(req, res){
                 }
             });
         });
-        res.send(studentList);
+        res.status(200).send(studentList);
     });
+}
+
+
+export function createCourse(req, res){
+    // var sys_role = AuthCheck.getAccessLevel(req, res);
+    // if (sys_role === 'admin'){
+    var course = new Course(req.body);        
+    course.save((err, courseobj) => {
+        if (err) res.status(500).send(err);
+        res.status(200).send(courseobj);
+    });
+    // }
+}
+
+export function updateCourse(req, res){
+    // var sys_role = AuthCheck.getAccessLevel(req, res);
+    // if (sys_role === 'admin'){
+    Course.findOne({ 'course_num': req.params.course_num }, (err,courseobj) =>{
+        if (err) res.status(500).send(err); 
+        // for (var key in req.body){
+        //     courseobj.key = req.body[key];
+        //     console.log(courseobj.key);
+        //     console.log(req.body.key);
+        //     console.log(req.body[key]);
+        //     console.log(courseobj[key]);
+        //     console.log('-----------');
+        // }
+        if (req.body.display_name){
+            courseobj.display_name = req.body.display_name;
+        }
+        if (req.body.semester){
+            courseobj.semester = req.body.semester;
+        }                   
+        if (req.body.sections){
+            courseobj.sections = req.body.sections;
+        }
+        courseobj.save((err, updatedcourseobj) => {
+            if (err) res.status(500).send(err);
+            res.status(200).send(updatedcourseobj);
+        });
+    })
+
+    //}
 }

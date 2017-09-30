@@ -38,4 +38,12 @@ router.get('/courses/:course_num/:section_id/students', AuthCheck.isAuthenticate
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
 
+//Create a new course
+router.post('/courses/create', CourseController.createCourse);
+// router.post('/courses/create', AuthCheck.isAuthenticated, CourseController.createCourse);
+
+//Update a course's information
+router.post('/courses/:course_num/update', CourseController.updateCourse);
+// router.post('/courses/:course_num/update', AuthCheck.isAuthenticated, CourseController.updateCourse);
+
 export default router;
