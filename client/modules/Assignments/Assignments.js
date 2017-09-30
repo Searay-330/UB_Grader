@@ -59,9 +59,9 @@ export class Assignments extends Component {
     }
     // console.log(cats);
     return (
-      <div style={styles.root}>
+      <div>
       <GridList
-        cellHeight={300}
+        cols={3}
         style={styles.gridList}
       >
         <Subheader>Current Courses</Subheader>

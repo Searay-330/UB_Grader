@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { blueA400, blueA700, white, black, darkBlack, fullBlack, grey200, grey500, grey600, grey700 } from 'material-ui/styles/colors';
+import { blueA400, white, whitesmoke, black, darkBlack, fullBlack, grey200, grey500, grey600, grey700 } from 'material-ui/styles/colors';
 import { fade } from 'material-ui/utils/colorManipulator';
 
 //Import Actions
@@ -24,7 +24,7 @@ import Home from './components/Home/Home';
 
 const muiTheme = getMuiTheme({
   palette: {
-    primary1Color: blueA700,
+    primary1Color: '#005bbb',
     primary2Color: blueA400,
     primary3Color: grey500,
     accent1Color: blueA400,
@@ -32,10 +32,10 @@ const muiTheme = getMuiTheme({
     accent3Color: black,
     textColor: black,
     alternateTextColor: white,
-    canvasColor: grey500,
+    canvasColor: whitesmoke,
     borderColor: black,
     disabledColor: fade(darkBlack, 0.3),
-    pickerHeaderColor: blueA700,
+    pickerHeaderColor: '#005bbb',
     clockCircleColor: fade(darkBlack, 0.07),
     shadowColor: darkBlack,
   },

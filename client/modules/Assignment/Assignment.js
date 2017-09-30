@@ -48,12 +48,12 @@ export class Assignment extends Component {
         />
         <CardMedia>
           <Table>
-            <TableBody>
-              <TableRow>
+            <TableBody displayRowCheckbox={false}>
+              <TableRow selectable={false}>
                 <TableRowColumn>Due: </TableRowColumn>
                 <TableRowColumn>{this.props.dueDate}</TableRowColumn>
               </TableRow>
-              <TableRow>
+              <TableRow selectable={false}>
                 <TableRowColumn>Most recent score: </TableRowColumn>
                 <TableRowColumn>{this.state.score}/{this.props.scoreTotal}</TableRowColumn>
               </TableRow>
@@ -74,12 +74,13 @@ export class Assignment extends Component {
         </CardText>
         <CardActions>
         <RaisedButton
-            containerElement='label'
-            label='Choose File'>
+            primary={true}
+            label='Choose File'
+            containerElement='label'>
             <input type="file" style={{ display: 'none' }}/>
           </RaisedButton>
-          <RaisedButton label="Submit" primary={true} onClick={() => this.randoScore(this.props.scoreTotal)} />
-          <RaisedButton onClick={() => this.hideShowFeedback()} primary={true}
+          <RaisedButton primary={true} label="Submit" onClick={() => this.randoScore(this.props.scoreTotal)} />
+          <RaisedButton primary={true} onClick={() => this.hideShowFeedback()}
             label={this.state.feedbackVisible
               ? 'Hide Feedback'
               : 'Show Feedback'}

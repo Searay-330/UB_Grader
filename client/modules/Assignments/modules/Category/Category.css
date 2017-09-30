@@ -24,7 +24,7 @@
 	border-top: 1px !important;
 }
 
-.panel {
+.tile {
 	text-align: center;
 }
 
@@ -34,10 +34,9 @@
 	
 }
 
-.panel_custom div:first-of-type{
-	text-align: center;
+.header{
 	font-weight: bold;
-	color:white;
+	color:white !important;
 	font-size: 15px;
- 	background-color: #005BBB;
+ 	background-color: #005BBB !important;
 }
