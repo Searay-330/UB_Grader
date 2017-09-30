@@ -11,7 +11,19 @@ import {getCourseData} from './AssignmentsActions'
 // Import Components
 import Category from './modules/Category/Category';
 // Import Bootstrap
-import { Grid,Row,Col,PanelGroup, ListGroup, ListGroupItem} from 'react-bootstrap';
+import {GridList} from 'material-ui/GridList';
+import Subheader from 'material-ui/Subheader';
+
+const styles = {
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  gridList: {
+    overflowY: 'auto',
+  },
+};
 
 export class Assignments extends Component {
   constructor(props) {
@@ -43,21 +55,20 @@ export class Assignments extends Component {
     var cats = []
     var i = 0;
     for(var key in this.state.categories){
-      if(i%3 == 0){
-      cats.push(<Row><Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]}/></Row>);
-
-      }else{
-
       cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]}/>);
-      }
     }
     // console.log(cats);
     return (
-     <PanelGroup>
-      <Grid>
-        {cats}
-      </Grid>
-    </PanelGroup>
+      <div style={styles.root}>
+      <GridList
+        cellHeight={300}
+        style={styles.gridList}
+      >
+        <Subheader>Current Courses</Subheader>
+          {cats}
+        <Subheader>Past Courses</Subheader>
+      </GridList>
+    </div>
     );
   }
 }

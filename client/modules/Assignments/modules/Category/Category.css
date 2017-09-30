@@ -28,6 +28,12 @@
 	text-align: center;
 }
 
+.list {
+	width: 400px !important;
+	margin: 0px !important;
+	
+}
+
 .panel_custom div:first-of-type{
 	text-align: center;
 	font-weight: bold;

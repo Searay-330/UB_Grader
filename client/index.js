@@ -6,6 +6,11 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App from './App';
 import { configureStore } from './store';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { blueA400, blueA700, white, black, darkBlack, fullBlack, grey200, grey500, grey600, grey700 } from 'material-ui/styles/colors';
+import { fade } from 'material-ui/utils/colorManipulator';
+import styles from './main.css';
 
 // Initialize store
 const store = configureStore(window.__INITIAL_STATE__);
@@ -14,7 +19,8 @@ const mountApp = document.getElementById('root');
 render(
   <AppContainer>
     <App store={store} />
-  </AppContainer>,
+  </AppContainer>
+  ,
   mountApp
 );
 
@@ -25,8 +31,9 @@ if (module.hot) {
     // use <App /> here rather than require() a <NextApp />.
     const NextApp = require('./App').default; // eslint-disable-line global-require
     render(
+
       <AppContainer>
-        <NextApp store={store} />
+        <App store={store} />
       </AppContainer>,
       mountApp
     );

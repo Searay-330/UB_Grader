@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import styles from './Course.css';
 
-import { Button, Panel, ListGroup } from 'react-bootstrap';
+import RaisedButton from 'material-ui/RaisedButton';
+import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import blueA700 from 'material-ui/styles/colors';
 
 export class Course extends Component {
 
@@ -21,10 +22,13 @@ export class Course extends Component {
     render() {
         const title = <h1>{this.props.displayName}</h1>;
         return (
-            <Panel header={title} bsStyle={["default",styles['panel_custom']].join(' ')} eventKey='1'>
-                <ListGroup>Semester: {this.props.semester}</ListGroup>
-                <center><Button bsSize="large" bsStyle="primary" href={[this.props.location, this.props.courseNum, "assignments"].join('/')}>Enter</Button></center>
-            </Panel>
+            <Card>
+                <CardTitle>{title}</CardTitle>
+                <CardText>Semester: {this.props.semester}</CardText>
+                <CardActions>
+                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={[this.props.location, this.props.courseNum, "assignments"].join('/')} />
+                </CardActions>
+            </Card>
         );
     }
 }
