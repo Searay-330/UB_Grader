@@ -4,14 +4,19 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 
 //Import Actions
-// import {method} from './AssignmentActions'
-
+import {getAssignmentData} from './AssignmentActions'
 // Import Style
 import styles from './Assignment.css';
 
 import Feedback from './components/Feedback/Feedback';
-// Import Bootstrap
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import {
+  Card, 
+  CardActions, 
+  CardHeader, 
+  CardMedia, 
+  CardTitle, 
+  CardText 
+} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
   Table,
@@ -39,9 +44,10 @@ export class Assignment extends Component {
   }
 
   render() {
-
+    var maxScore = this.props.scoreTotal;
     return (
       <Card>
+       
         <CardTitle
           title={this.props.params.assignment}
         />
@@ -54,7 +60,7 @@ export class Assignment extends Component {
               </TableRow>
               <TableRow>
                 <TableRowColumn>Most recent score: </TableRowColumn>
-                <TableRowColumn>{this.state.score}/{this.props.scoreTotal}</TableRowColumn>
+                <TableRowColumn>{this.state.score}/{maxScore}</TableRowColumn>
               </TableRow>
             </TableBody>
           </Table>
@@ -77,11 +83,11 @@ export class Assignment extends Component {
             label='Choose File'>
             <input type="file" style={{ display: 'none' }}/>
           </RaisedButton>
-          <RaisedButton label="Submit" primary={true} onClick={() => this.randoScore(this.props.scoreTotal)} />
+          <RaisedButton label="Submit" primary={true} onClick={() => this.randoScore(maxScore)} />
           <RaisedButton onClick={() => this.hideShowFeedback()} primary={true}
-            label={this.state.feedbackVisible
-              ? 'Hide Feedback'
-              : 'Show Feedback'}
+            label={
+              this.state.feedbackVisible ? 'Hide Feedback' : 'Show Feedback'
+            }
           />
         </CardActions>
       </Card>
@@ -107,11 +113,13 @@ function mapStateToProps(state) {
     score: state.assignment.score,
     scoreTotal: state.assignment.scoreTotal,
     feedback: state.assignment.feedback,
+    assignmentData: state.assignment.assignmentData,
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {  
   return bindActionCreators({
+    getAssignmentData:getAssignmentData,
   }, dispatch);
 }
 
