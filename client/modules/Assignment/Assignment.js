@@ -36,13 +36,23 @@ export class Assignment extends Component {
       isMounted: false,
       feedbackVisible: false,
       score: 0,
-      submitted: false
+      submitted: false,
+      assignmentData: [],
     };
   }
 
   componentDidMount() {
     this.setState({ isMounted: true }); // eslint-disable-line
   }
+
+  componentWillReceiveProps(nextProps) {
+      this.assignmentData = nextProps.assignmentData;
+      this.setState({
+          render: true,
+          courses: this.assignmentData,
+      });
+  }
+
 
   render() {
     var maxScore = this.props.scoreTotal;
@@ -79,7 +89,7 @@ export class Assignment extends Component {
           }
         </CardText>
         <CardActions>
-        <RaisedButton
+          <RaisedButton
             primary={true}
             label='Choose File'
             containerElement='label'>
@@ -121,7 +131,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {  
   return bindActionCreators({
-    getAssignmentData:getAssignmentData,
+    getAssignmentData: getAssignmentData,
   }, dispatch);
 }
 
