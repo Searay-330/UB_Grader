@@ -5,9 +5,6 @@ import { bindActionCreators } from 'redux';
 //Import Actions
 import { getCourseData } from './AssignmentsActions'
 
-// Import Style
-import styles from './Assignments.css';
-
 // Import Components
 import Category from './modules/Category/Category';
 // Import Bootstrap
@@ -51,7 +48,6 @@ export class Assignments extends Component {
       <div>
         <GridList
           cols={3}
-          style={styles.gridList}
         >
           {cats}
         </GridList>
