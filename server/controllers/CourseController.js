@@ -231,7 +231,6 @@ export function addCourseToUser(req,res){
                         userobj.courses.forEach((course) => {
                             if (course.course_num == course_info.course_num){
                                 alreadyEnrolled = true;
-                                break;
                             }
                         });
                         if (alreadyEnrolled){
