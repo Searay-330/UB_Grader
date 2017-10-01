@@ -8,6 +8,7 @@ import styles from './CreateAssignment.css';
 
 import GridTile from 'material-ui/GridList';
 import {Card, CardText, CardHeader, CardActions, CardTitle} from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -42,13 +43,30 @@ export class CreateAssignment extends Component {
     <CardActions>
     </CardActions>
     <CardText expandable={true}>
-      <DatePicker style={{display: 'inline-block'}} hintText="Start Date" autoOk={true}/>
-      <TimePicker style={{display: 'inline-block'}} hintText="Start Time" autoOk={true}/>
+    <TextField hintText="Display Name" className={styles.dividerUnder} floatingLabelText="Display Name"/>
+      <Divider />
+      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
+      <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time" autoOk={true}/>
       <br />
-      <DatePicker hintText="Due Date" />
+      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" />
+      <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Due Time" hintText="Due Time" autoOk={true}/>
       <br />
-      <DatePicker hintText="End Date" />
+      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" />
+      <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" autoOk={true}/>
       <br />
+    </CardText>
+  </Card>
+ <br/>
+  <Card>
+    <CardHeader
+      title="Section Settings"
+      actAsExpander={true}
+      showExpandableButton={true}
+    />
+    <CardActions>
+    </CardActions>
+    <CardText expandable={true}>
+    sample data here
     </CardText>
   </Card>
       </div>
