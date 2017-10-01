@@ -208,7 +208,7 @@ export function updateCourse(req, res){
  * Adds specified user to specified course
  * @param req : User's request
  * @param res : The response back to the caller.
- * Sends back a JSON object of the affected user.
+ * Sends back a JSON object.
  */
 export function addCourseToUser(req,res){
     User.findOne({'email': req.params.student_email}, (err, userobj) => {
@@ -246,7 +246,7 @@ export function addCourseToUser(req,res){
  * Adds specified user to specific section in course
  * @param req : User's request
  * @param res : The response back to the caller.
- * Sends back a JSON object of the affected user.
+ * Sends back a JSON object.
  */
 export function addUserToSection(req,res){
     User.findOne({'email': req.params.student_email}, (err, userobj) => {
@@ -284,6 +284,13 @@ export function addUserToSection(req,res){
         } 
     });
 }
+
+/**
+ * Removes a specified user from specified course
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object.
+ */
 
 export function removeCourseFromUser(req,res){
     User.findOne({'email': req.params.student_email}, (err, userobj) => {
