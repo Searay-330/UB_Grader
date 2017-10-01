@@ -42,8 +42,7 @@ export class Assignments extends Component {
     var childComp = this.props.children;
     if (!this.state.render && this.state.child) { return(<div>{childComp}</div>); }
     if(!this.state.render && !this.state.child) {return null;}
-    var cats = []
-    var i = 0;
+    var cats = [];
     for (var key in this.state.categories) {
       cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
     }
@@ -62,6 +61,7 @@ export class Assignments extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
+  console.log(state);
   return {
     assignments: state.assignments.assignmentsData,
   };
