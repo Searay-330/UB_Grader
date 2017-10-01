@@ -309,8 +309,8 @@ export function removeUserFromSection(req, res){
             else {
                 userobj.courses.forEach((course) => {
                     if (course.section_name == req.params.section_name){
-                        delete course[section_name];
-                        delete course[section_id];
+                        course.section_name = undefined;
+                        course.section_id = undefined;
                         inSection = true;
                         userobj.save((err, updateduserobj) => {
                             if (err) res.status(500).send(err);                
