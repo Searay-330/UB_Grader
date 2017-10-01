@@ -33,7 +33,7 @@ router.get('/courses/:course_num/students', AuthCheck.isAuthenticated, AuthCheck
 router.get('/courses/:course_num/sections', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSections);
 
 //Returns the students of a specific section of a course.
-router.get('/courses/:course_num/:section_id/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
+router.get('/courses/:course_num/:section_name/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
 
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
@@ -45,5 +45,13 @@ router.post('/courses/create', CourseController.createCourse);
 //Update a course's information
 router.post('/courses/:course_num/update', CourseController.updateCourse);
 // router.post('/courses/:course_num/update', AuthCheck.isAuthenticated, CourseController.updateCourse);
+
+//Enrolls a specified user in a specified course
+router.post('/courses/:course_num/enroll/:student_email', CourseController.addCourseToUser);
+// router.post('/courses/:course_num/enroll/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addCoursetoUser);
+
+//Adds specific user to specified section in a course.
+router.post('/courses/:course_num/:section_name/enroll/:student_email', CourseController.addUserToSection);
+// router.post('/courses/:course_num/:section_name/enroll/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addUserToSection);
 
 export default router;

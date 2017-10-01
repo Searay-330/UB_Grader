@@ -110,7 +110,7 @@ export function getSections(req, res){
 
 /**
  * Gets all the students of a specific section of a course.
- * @param req : User's request (should contain course_id and section_id as a parameter)
+ * @param req : User's request (should contain course_id and section_name as a parameter)
  * @param res : The response back to the caller.
  * Sends a list of the students back as the response (a list of json objects)
  */
@@ -121,7 +121,7 @@ export function getSectionStudents(req, res){
         if (err) res.status(500).send(err);            
         users.forEach((user) => {
             user.courses.forEach((course) => {
-                if (course.course_num == req.params.course_num && course.section_id == req.params.section_id && course.course_role == 'Student'){
+                if (course.course_num == req.params.course_num && course.section_name == req.params.section_name && course.course_role == 'Student'){
                     studentList.push(user);
                 }
             });
@@ -130,6 +130,12 @@ export function getSectionStudents(req, res){
     });
 }
 
+/**
+ * Creates a new course.
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object of the created course.
+ */
 
 export function createCourse(req, res){
     // var sys_role = AuthCheck.getAccessLevel(req, res);
@@ -142,6 +148,13 @@ export function createCourse(req, res){
     // }
 }
 
+
+/**
+ * Updates an existing course.
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object of the updated course.
+ */
 export function updateCourse(req, res){
     // var sys_role = AuthCheck.getAccessLevel(req, res);
     // if (sys_role === 'admin'){
@@ -171,4 +184,58 @@ export function updateCourse(req, res){
     })
 
     //}
+}
+
+/**
+ * Adds specified user to specified course
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object of the affected user.
+ */
+export function addCourseToUser(req,res){
+    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+        if (err) res.status(500).send(err);                    
+        Course.findOne({'course_num': req.params.course_num}, (err, courseobj) => {
+            if (err) res.status(500).send(err);            
+            var course_info = {
+                                course_id:    courseobj.id,
+                                course_num:   courseobj.course_num,
+                                course_role:  'student',
+                              }
+            userobj.courses.addToSet(course_info);
+            userobj.save((err, updateduserobj) => {
+                if (err) res.status(500).send(err);                
+                res.status(200).send(updateduserobj);
+            });
+        });
+    });
+}
+
+/**
+ * Adds specified user to specific section in course
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object of the affected user.
+ */
+export function addUserToSection(req,res){
+    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+        if (err) res.status(500).send(err);                    
+        Course.findOne({'course_num': req.params.course_num}, (err, courseobj) => {
+            if (err) res.status(500).send(err);            
+            courseobj.sections.forEach((section) => {
+                if (section.name == req.params.section_name){
+                    userobj.courses.forEach((course) => {
+                        if (course.course_num == req.params.course_num){
+                            course.section_id = section.id;
+                            course.section_name = section.name;
+                            userobj.save((err, updateduserobj) => {
+                                if (err) res.status(500).send(err);                
+                                res.status(200).send(updateduserobj);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    });
 }

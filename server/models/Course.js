@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const course_sectionSchema = new Schema({
 
-    name:                       { type: String, required: true },
+    name:                       { type: String, required: true, unique: true },
     start_date:                 { type: Date },
     due_date:                   { type: Date },
     end_date:                   { type: Date },
