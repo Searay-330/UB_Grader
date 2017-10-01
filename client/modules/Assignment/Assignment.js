@@ -2,17 +2,22 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
-
+import moment from './moment.min.js';
 //Import Actions
-// import {method} from './AssignmentActions'
-
+import {getAssignmentData} from './AssignmentActions'
 // Import Style
 import styles from './Assignment.css';
 
 import Feedback from './components/Feedback/Feedback';
-
 // Import Material UI Components
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
+import {
+  Card, 
+  CardActions, 
+  CardHeader, 
+  CardMedia, 
+  CardTitle, 
+  CardText 
+} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
   Table,
@@ -31,7 +36,8 @@ export class Assignment extends Component {
       isMounted: false,
       feedbackVisible: false,
       score: 0,
-      submitted: false
+      submitted: false,
+      assignmentData: [],
     };
   }
 
@@ -40,23 +46,29 @@ export class Assignment extends Component {
   }
 
   render() {
-
+    var maxScore = this.props.maxScore;
+    var assignmentData = this.props.assignmentData[this.props.params.assignment];
+    console.log(assignmentData);
+    var due_date = moment(assignmentData.due_date).format('LLL');
+    var end_date = moment(assignmentData.end_date).format('LLL');
+    var asst_desc = assignmentData.description;
     return (
-
       <Card>
-        <CardTitle
-          title={this.props.params.assignment}
-        />
+        <CardTitle title={this.props.params.assignment} subtitle={asst_desc}/>
         <CardMedia>
           <Table>
             <TableBody displayRowCheckbox={false}>
               <TableRow selectable={false}>
-                <TableRowColumn>Due: </TableRowColumn>
-                <TableRowColumn>{this.props.dueDate}</TableRowColumn>
+                <TableRowColumn>Due date: </TableRowColumn>
+                <TableRowColumn>{due_date}</TableRowColumn>
+              </TableRow>
+              <TableRow selectable={false}>
+                <TableRowColumn>Last day to hand in: </TableRowColumn>
+                <TableRowColumn>{end_date}</TableRowColumn>
               </TableRow>
               <TableRow selectable={false}>
                 <TableRowColumn>Most recent score: </TableRowColumn>
-                <TableRowColumn>{this.state.score}/{this.props.scoreTotal}</TableRowColumn>
+                <TableRowColumn>{this.state.score}/{maxScore}</TableRowColumn>
               </TableRow>
             </TableBody>
           </Table>
@@ -74,21 +86,20 @@ export class Assignment extends Component {
           }
         </CardText>
         <CardActions>
-        <RaisedButton
+          <RaisedButton
             primary={true}
             label='Choose File'
             containerElement='label'>
             <input type="file" style={{ display: 'none' }}/>
           </RaisedButton>
-          <RaisedButton primary={true} label="Submit" onClick={() => this.randoScore(this.props.scoreTotal)} />
-          <RaisedButton primary={true} onClick={() => this.hideShowFeedback()}
-            label={this.state.feedbackVisible
-              ? 'Hide Feedback'
-              : 'Show Feedback'}
+          <RaisedButton label="Submit" primary={true} onClick={() => this.randoScore(maxScore)} />
+          <RaisedButton onClick={() => this.hideShowFeedback()} primary={true}
+            label={
+              this.state.feedbackVisible ? 'Hide Feedback' : 'Show Feedback'
+            }
           />
         </CardActions>
       </Card>
-
     );
   }
 
@@ -107,10 +118,10 @@ export class Assignment extends Component {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    dueDate: state.assignment.dueDate,
     score: state.assignment.score,
-    scoreTotal: state.assignment.scoreTotal,
+    maxScore: state.assignment.maxScore,
     feedback: state.assignment.feedback,
+    assignmentData: state.assignments.assignmentsMap,
   };
 }
 
