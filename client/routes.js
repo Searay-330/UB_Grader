@@ -6,6 +6,7 @@ import Bs from './modules/bs/bs';
 import Courses from './modules/Courses/Courses'
 import Assignments from './modules/Assignments/Assignments';
 import Assignment from './modules/Assignment/Assignment';
+import CreateAssignment from './modules/Assignments/components/CreateAssignment/CreateAssignment';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -30,6 +31,7 @@ export default (
     <Route path="/api/logout" component={() => window.location = "/api/logout" } />
     <Route path="testing" component={Bs}/>
     <Route path="/courses" component={Courses}/>
+    <Route path="/courses/:course/assignments/create" component={CreateAssignment}/>
     <Route path="/courses/:course/assignments" component={Assignments}>
       <Route path="/courses/:course/assignments/:assignment" component={Assignment}/>
     </Route>
