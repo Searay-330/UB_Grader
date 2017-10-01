@@ -8,7 +8,6 @@ public/*
 dist
 coverage/
 .nyc_output/
-assets/
 *.rar
 test.sublime-project
 test.sublime-workspace
