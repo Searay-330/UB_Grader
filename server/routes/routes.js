@@ -56,5 +56,7 @@ router.post('/courses/:course_num/:section_name/enroll/:student_email', CourseCo
 
 //Removes a user from specified course
 router.post('/courses/:course_num/drop/:student_email', CourseController.removeCourseFromUser);
+// router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
+
 
 export default router;
