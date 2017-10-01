@@ -272,7 +272,7 @@ export function addUserToSection(req,res){
                                     isInSection = true;
                                     userobj.save((err, updateduserobj) => {
                                         if (err) res.status(500).send(err);                
-                                        else res.status(200).send(updateduserobj);
+                                        else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+section.name});
                                     });
                                 }
                             });
@@ -300,7 +300,7 @@ export function removeCourseFromUser(req,res){
                         userobj.courses.splice(index,1);
                         userobj.save((err, updateduserobj) => {
                             if (err) return res.status(500).send(err);                
-                            res.status(200).send(updateduserobj);
+                            else res.status(200).send({Status: 200, Message: 'Successfully removed '+userobj.email+' from '+course.display_name});
                         });            
                     }
                 });
