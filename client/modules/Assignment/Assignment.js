@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
-
+import moment from './moment.min.js';
 //Import Actions
 import {getAssignmentData} from './AssignmentActions'
 // Import Style
@@ -45,27 +45,26 @@ export class Assignment extends Component {
     this.setState({ isMounted: true }); // eslint-disable-line
   }
 
-  componentWillReceiveProps(nextProps) {
-      this.assignmentData = nextProps.assignmentData;
-      this.setState({
-          render: true,
-          courses: this.assignmentData,
-      });
-  }
-
   render() {
-    var maxScore = this.props.scoreTotal;
+    var maxScore = this.props.maxScore;
+    var assignmentData = this.props.assignmentData[this.props.params.assignment];
+    console.log(assignmentData);
+    var due_date = moment(assignmentData.due_date).format('LLL');
+    var end_date = moment(assignmentData.end_date).format('LLL');
+    var asst_desc = assignmentData.description;
     return (
       <Card>
-        <CardTitle
-          title={this.props.params.assignment}
-        />
+        <CardTitle title={this.props.params.assignment} subtitle={asst_desc}/>
         <CardMedia>
           <Table>
             <TableBody displayRowCheckbox={false}>
               <TableRow selectable={false}>
-                <TableRowColumn>Due: </TableRowColumn>
-                <TableRowColumn>{this.props.dueDate}</TableRowColumn>
+                <TableRowColumn>Due date: </TableRowColumn>
+                <TableRowColumn>{due_date}</TableRowColumn>
+              </TableRow>
+              <TableRow selectable={false}>
+                <TableRowColumn>Last day to hand in: </TableRowColumn>
+                <TableRowColumn>{end_date}</TableRowColumn>
               </TableRow>
               <TableRow selectable={false}>
                 <TableRowColumn>Most recent score: </TableRowColumn>
@@ -119,17 +118,15 @@ export class Assignment extends Component {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    dueDate: state.assignment.dueDate,
     score: state.assignment.score,
-    scoreTotal: state.assignment.scoreTotal,
+    maxScore: state.assignment.maxScore,
     feedback: state.assignment.feedback,
-    assignmentData: state.assignment.assignmentData,
+    assignmentData: state.assignments.assignmentsMap,
   };
 }
 
-function mapDispatchToProps(dispatch) {  
+function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    getAssignmentData: getAssignmentData,
   }, dispatch);
 }
 
