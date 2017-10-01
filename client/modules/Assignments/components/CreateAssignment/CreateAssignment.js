@@ -36,7 +36,7 @@ export class CreateAssignment extends Component {
       <div>
        <Card>
     <CardHeader
-      title="Baisc Settings"
+      title="Basic Settings"
       actAsExpander={true}
       showExpandableButton={true}
     />
