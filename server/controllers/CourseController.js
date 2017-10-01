@@ -217,6 +217,7 @@ export function addCourseToUser(req,res){
         }
         else{                   
             Course.findOne({'course_num': req.params.course_num}, (err, courseobj) => {
+                var alreadyEnrolled = false;
                 if (err) {
                     res.status(500).send(err);
                 }
@@ -227,11 +228,22 @@ export function addCourseToUser(req,res){
                                             course_num:   courseobj.course_num,
                                             course_role:  req.body.course_role
                                         }
-                        userobj.courses.addToSet(course_info);
-                        userobj.save((err, updateduserobj) => {
-                            if (err) res.status(500).send(err);                
-                            else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+courseobj.display_name});
+                        userobj.courses.forEach((course) => {
+                            if (course.course_num == course_info.course_num){
+                                alreadyEnrolled = true;
+                                break;
+                            }
                         });
+                        if (alreadyEnrolled){
+                            res.status(500).send({Status: 500, Message: 'User is already enrolled in course!'});  
+                        } 
+                        else {
+                            userobj.courses.addToSet(course_info);
+                            userobj.save((err, updateduserobj) => {
+                                if (err) res.status(500).send(err);                
+                                else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+courseobj.display_name});
+                            });
+                        }
                     }
                     else{
                         res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course'});                              
@@ -307,7 +319,7 @@ export function removeCourseFromUser(req,res){
                         userobj.courses.splice(index,1);
                         userobj.save((err, updateduserobj) => {
                             if (err) return res.status(500).send(err);                
-                            else res.status(200).send({Status: 200, Message: 'Successfully removed '+userobj.email+' from '+course.display_name});
+                            else res.status(200).send({Status: 200, Message: 'Successfully removed '+userobj.email+' from '+course.course_num});
                         });            
                     }
                 });
