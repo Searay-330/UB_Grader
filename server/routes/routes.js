@@ -52,6 +52,9 @@ router.post('/courses/:course_num/enroll/:student_email', AuthCheck.isAuthentica
 //Adds specific user to specified section in a course.
 router.post('/courses/:course_num/:section_name/enroll/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addUserToSection);
 
+//Removes a specific user from a specified section in a course.
+router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeUserFromSection);
+
 //Removes a user from specified course
 router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 

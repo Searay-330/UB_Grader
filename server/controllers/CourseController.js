@@ -296,6 +296,34 @@ export function addUserToSection(req,res){
     });
 }
 
+export function removeUserFromSection(req, res){
+    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+        var inSection = false;
+        if (err) {
+            res.status(500).send(err);    
+        }
+        else{                
+            if (!userobj) {
+                res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});  
+            }
+            else {
+                userobj.courses.forEach((course) => {
+                    if (course.section_name == req.params.section_name){
+                        delete course[section_name];
+                        delete course[section_id];
+                        inSection = true;
+                        userobj.save((err, updateduserobj) => {
+                            if (err) res.status(500).send(err);                
+                            else res.status(200).send({Status: 200, Message: 'Successfully removed '+userobj.email+' from '+req.params.section_name});
+                        });
+                    }
+                });
+                if (!inSection) res.status(500).send({Status: 500, Message: 'Sorry, unable to remove user from that section'});
+            } 
+        } 
+    });
+}
+
 /**
  * Removes a specified user from specified course
  * @param req : User's request
