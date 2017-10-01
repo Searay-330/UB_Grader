@@ -9,7 +9,7 @@ const initialState = {
 
 const AssignmentReducer = (state = initialState, action) => {
   switch (action.type) {
-  	case "populate":
+  	case "populateAsst":
   		return {
   			assignmentData: action.assignmentData
   		}

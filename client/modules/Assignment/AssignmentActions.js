@@ -2,7 +2,7 @@ import callApi from '../../util/apiCaller';
 
 export function populateAssignmentData(data){
 	
-  return {type:"populate", assignmentData: data};
+  return {type:"populateAsst", assignmentData: data};
 }
 
 export function getAssignmentData(course_num, asst_name) {

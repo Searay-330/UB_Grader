@@ -53,12 +53,10 @@ export class Assignment extends Component {
       });
   }
 
-
   render() {
     var maxScore = this.props.scoreTotal;
     return (
       <Card>
-       
         <CardTitle
           title={this.props.params.assignment}
         />
