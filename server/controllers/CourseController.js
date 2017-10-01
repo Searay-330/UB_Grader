@@ -358,3 +358,9 @@ export function removeCourseFromUser(req,res){
         if(!isEnrolled) res.status(500).send({Status: 500, Message: 'Sorry, unable to remove user from course'});                                      
     });
 }
+
+export function importRoster(req, res){
+    console.log(req.body.file);
+    console.log(req.file);
+    console.log('hle');
+}

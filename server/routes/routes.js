@@ -58,5 +58,8 @@ router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.
 //Removes a user from specified course
 router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
+//Import a roster for a course
+router.post('/courses/:course_num/importRoster', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+
 
 export default router;
