@@ -14,7 +14,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 
 export function Category(category) {
-  console.log(category);
+  var locationToGo = (category.location.charAt(category.location.length - 1) == "/") ? category.location.substring(0, category.location.length - 1) : category.location;
   return (
 
         <Card>
@@ -24,7 +24,7 @@ export function Category(category) {
           {category.assignments.map(assignment => (
             <MenuItem key={assignment._id}
               primaryText={assignment.name}
-              onClick={() => { document.location.href = [category.location, assignment.name].join('/'); }} />
+              onClick={() => { document.location.href = [locationToGo, assignment.name].join('/'); }} />
           ))}
         </Menu>
         </CardMedia>

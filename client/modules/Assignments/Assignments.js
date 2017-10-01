@@ -30,14 +30,18 @@ export class Assignments extends Component {
       }
       this.categories[nextProps.assignments[i].category].push(nextProps.assignments[i]);
     }
-    this.setState({ render: true, categories: this.categories });
+    this.setState({ render: true, child: false, categories: this.categories });
+    if(this.props.params.assignment != undefined){
+      this.setState({ render: false, child: true, categories: this.categories });
+    }
     // this.forceUpdate();
 
   }
 
   render() {
-
-    if (!this.state.render) { return null; }
+    var childComp = this.props.children;
+    if (!this.state.render && this.state.child) { return(<div>{childComp}</div>); }
+    if(!this.state.render && !this.state.child) {return null;}
     var cats = []
     var i = 0;
     for (var key in this.state.categories) {

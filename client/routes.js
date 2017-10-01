@@ -30,8 +30,9 @@ export default (
     <Route path="/api/logout" component={() => window.location = "/api/logout" } />
     <Route path="testing" component={Bs}/>
     <Route path="/courses" component={Courses}/>
-    <Route path="/courses/:course/assignments" component={Assignments}/>
-    <Route path="/courses/:course/assignments/:assignment" component={Assignment}/>
+    <Route path="/courses/:course/assignments" component={Assignments}>
+      <Route path="/courses/:course/assignments/:assignment" component={Assignment}/>
+    </Route>
   </Route>
 
 );
