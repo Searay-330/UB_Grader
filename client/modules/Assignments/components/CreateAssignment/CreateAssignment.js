@@ -4,16 +4,18 @@ import { bindActionCreators } from 'redux';
 
 
 // Import Style
-// import styles from './Create.css';
+import styles from './CreateAssignment.css';
 
 import GridTile from 'material-ui/GridList';
-import {Card, CardMedia, CardTitle} from 'material-ui/Card';
+import {Card, CardText, CardHeader, CardActions, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import DatePicker from 'material-ui/DatePicker';
+import FlatButton from 'material-ui/FlatButton';
+import TimePicker from 'material-ui/TimePicker';
 
 export class CreateAssignment extends Component {
   constructor(props) {
@@ -31,7 +33,24 @@ export class CreateAssignment extends Component {
   render() {
     return (
       <div>
-       <h1> test </h1>
+       <Card>
+    <CardHeader
+      title="Baisc Settings"
+      actAsExpander={true}
+      showExpandableButton={true}
+    />
+    <CardActions>
+    </CardActions>
+    <CardText expandable={true}>
+      <DatePicker style={{display: 'inline-block'}} hintText="Start Date" autoOk={true}/>
+      <TimePicker style={{display: 'inline-block'}} hintText="Start Time" autoOk={true}/>
+      <br />
+      <DatePicker hintText="Due Date" />
+      <br />
+      <DatePicker hintText="End Date" />
+      <br />
+    </CardText>
+  </Card>
       </div>
     );
   }
