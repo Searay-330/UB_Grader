@@ -255,20 +255,23 @@ export function removeCourseFromUser(req,res){
     User.findOne({'email': req.params.student_email}, (err, userobj) => {
         if (err) return res.status(500).send(err);
         if (userobj) {
+            console.log(userobj);
+            var isEnrolled = false;
             userobj.courses.forEach((course) => {
                 if (course.course_num == req.params.course_num){
+                    isEnrolled = true;
                     var index = userobj.courses.indexOf(course);
                     userobj.courses.splice(index,1);
                     userobj.save((err, updateduserobj) => {
                         if (err) return res.status(500).send(err);                
-                        return res.status(200).send(updateduserobj);
+                        res.status(200).send(updateduserobj);
                     });            
                 }
             });
+            if(!isEnrolled) res.status(500).send({Status: 500, Message: 'Sorry, unable to remove user from course'});                              
         }
         else{
             return res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});   
         }                       
-        res.status(500).send({Status: 500, Message: 'Sorry, unable to remove user from course'});                  
     });
 }
