@@ -420,17 +420,42 @@ function addStudentFromCSV (data){
 
 }
 
-// function removeStudentsBasedOnCSV (updated_student_list){
-//     pass
-// }
+function removeStudentsBasedOnCSV (updated_student_list, course_num){
+
+    return new Promise((resolve, reject) => {
+
+        User.find({}, (err,result) => {
+            result.forEach((user) => {
+                user.courses.forEach((course) => {
+                    if (course.course_num == course_num){
+                        var indexInUpdated = updated_student_list.indexOf(user.email);
+                        if (indexInUpdated == -1){
+                            var index = user.courses.indexOf(course);
+                            user.courses.splice(index,1);
+                            user.save((err, updateduserobj) => {
+                                if (err) reject(new Error(err));               
+                            }); 
+                        } 
+                    }
+                });
+            });
+            resolve();
+        });
+});
+
+}
 
 export function importRoster(req, res){
 
     var roster = req.files[0].path;
     var error = false;
+    var students = [];
+    var course = null;
     fs.createReadStream(roster)
     .pipe(csv())
     .on('data', (data) => {
+        students.push(data[0]);
+        course = data[3];
         addStudentFromCSV(data)
         .then((userobj) => {
         })
@@ -439,8 +464,19 @@ export function importRoster(req, res){
         });
     })
     .on('end', (data) => {
-        if (error) res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
-        else res.status(200).send({Status: 200, Message: 'Successfully added students to course!'});
+        if (error) {
+            res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
+        }
+        else {
+            res.status(200).send({Status: 200, Message: 'Successfully added students to course!'});
+            removeStudentsBasedOnCSV(students, course)
+            .then(() => {
+                console.log('successful');
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        }
     });
 
 }
