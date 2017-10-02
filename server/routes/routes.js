@@ -5,7 +5,20 @@ import * as AuthCheck from '../util/authentication'
 const router = new Router();
 const passport = require('passport');
 const multer = require('multer');
-const upload = multer({ dest: './uploads'});
+const fs = require('fs-extra');
+const storage = multer.diskStorage({ 
+	destination: (req, file, cb) => {
+		const course = req.params.course_num;
+		const path = `./uploads/${course}`;
+		fs.mkdirsSync(path);
+		cb(null, path);
+	},
+	filename: (req, file, cb) => {
+		const file_name = req.user.email+'-'+file.originalname;
+		cb(null ,file_name);
+	}
+});
+const upload = multer({ storage: storage });
 
 //Google OAuth login route
 router.get('/auth/google', passport.authenticate('google', {
