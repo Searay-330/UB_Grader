@@ -468,15 +468,17 @@ export function importRoster(req, res){
             res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
         }
         else {
-            res.status(200).send({Status: 200, Message: 'Successfully added students to course!'});
             if (req.body.complete){
                 removeStudentsBasedOnCSV(students, course)
                 .then(() => {
-                    console.log('successful');
+                    res.status(200).send({Status: 200, Message: "Successfully updated the course's student list"});                    
                 })
                 .catch((err) => {
-                    console.log(err);
+                    res.status(500).send({Status: 500, Message: "Sorry, unable to update the course's student list"});                    
                 });
+            }
+            else{
+                res.status(200).send({Status: 200, Message: "Successfully added students to the course"});                                    
             }
         }
     });
