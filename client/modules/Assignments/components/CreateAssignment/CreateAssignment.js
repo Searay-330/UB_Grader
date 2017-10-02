@@ -43,17 +43,20 @@ export class CreateAssignment extends Component {
     <CardActions>
     </CardActions>
     <CardText expandable={true}>
-    <TextField hintText="Display Name" className={styles.dividerUnder} floatingLabelText="Display Name"/>
+    <TextField hintText="Display Name" className={styles.dividerUnder} floatingLabelText="Assignment Name"/>
       <Divider />
       <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
       <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time" autoOk={true}/>
       <br />
-      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" />
+      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" autoOk={true}/>
       <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Due Time" hintText="Due Time" autoOk={true}/>
       <br />
-      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" />
+      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
       <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" autoOk={true}/>
       <br />
+      <br />
+      <br />
+      <RaisedButton label='Submit' primary={true} />
     </CardText>
   </Card>
  <br/>
