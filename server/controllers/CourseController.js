@@ -469,13 +469,15 @@ export function importRoster(req, res){
         }
         else {
             res.status(200).send({Status: 200, Message: 'Successfully added students to course!'});
-            removeStudentsBasedOnCSV(students, course)
-            .then(() => {
-                console.log('successful');
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+            if (req.body.complete){
+                removeStudentsBasedOnCSV(students, course)
+                .then(() => {
+                    console.log('successful');
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+            }
         }
     });
 
