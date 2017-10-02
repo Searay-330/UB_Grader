@@ -95,7 +95,7 @@ export function getStudents(req, res){
         else {          
             users.forEach((user) => {
                 user.courses.forEach((course) => {
-                    if (course.course_num == req.params.course_num && course.course_role == 'Student'){
+                    if (course.course_num == req.params.course_num && course.course_role == 'student'){
                         studentList.push(user);
                     }
                 });
@@ -369,11 +369,11 @@ function addStudentFromCSV (data){
                 reject(new Error(err));            
             }
             else{
-                Course.findOne({'course_num': data[3]}, (err, courseojb) => {
+                Course.findOne({'course_num': data[3]}, (err, courseobj) => {
                     var alreadyEnrolled = false;
                     var user_email = data[0];
                     var course_num = data[3];
-                    var course_id = courseojb.id
+                    var course_id = courseobj.id
                     if (!userobj){
                         const new_user = new User({
                                                     first_name: data[2],

@@ -12,7 +12,7 @@ export function isInstructor(req, res, next){
     var courses = req.user.courses;
     for (var i = 0; i < courses.length; i++){
         if (courses[i].course_num == req.params.course_num){
-            if (courses[i].course_role == 'Teacher'){
+            if (courses[i].course_role == 'instructor'){
                 return next();
             }
         }

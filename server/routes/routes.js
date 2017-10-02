@@ -75,8 +75,8 @@ router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.
 router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
-router.post('/courses/:course_num/importRoster', upload.any(), CourseController.importRoster);
-// router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+//router.post('/courses/:course_num/importRoster', upload.any(), CourseController.importRoster);
+router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
 
 
 
