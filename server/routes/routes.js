@@ -14,7 +14,8 @@ const storage = multer.diskStorage({
 		cb(null, path);
 	},
 	filename: (req, file, cb) => {
-		const file_name = req.user.email+'-'+file.originalname;
+		// const file_name = req.user.email+'-'+file.originalname;
+		const file_name = 'aamelunia'+'-'+file.originalname;		
 		cb(null ,file_name);
 	}
 });
@@ -74,9 +75,9 @@ router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.
 router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
-router.post('/courses/:course_num/importRoster', upload.any(), (req, res, next) => {
-	console.log(req.files);
-});
+router.post('/courses/:course_num/importRoster', upload.any(), CourseController.importRoster);
+// router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+
 
 
 

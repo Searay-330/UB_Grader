@@ -28,7 +28,7 @@ const userSchema = new Schema({
     first_name:                 { type: String, required: true },
     last_name:                  { type: String, required: true },
     email:                      { type: String, required: true, unique: true },
-    person_number:              { type: String, unique: true },
+    person_number:              { type: String },
     sys_role:                   { type: String },
     created_at:                 { type: Date, default: Date.now, required: true },
     updated_at:                 { type: Date },

@@ -56,6 +56,7 @@ Course.count().exec((err, count) => {
                     };
 
     const course_cse442 = new Course({
+                                    _id:                new mongoose.Types.ObjectId(),
                                     course_num:     'cse442-f17', 
                                     display_name:   'CSE 442', 
                                     semester:       'Fall 2017', 
@@ -64,6 +65,7 @@ Course.count().exec((err, count) => {
                                 });
     
     const course_cse331 = new Course({
+                                    _id:                new mongoose.Types.ObjectId(),        
                                     course_num:     'cse331-f17', 
                                     display_name:   'CSE 331', 
                                     semester:       'Fall 2017', 

@@ -1,6 +1,8 @@
 import User from '../models/User'
 import Course from '../models/Course'
 import * as AuthCheck from '../util/authentication'
+const fs = require('fs');
+const csv = require('fast-csv');
 
 /**
  * Gets the courses for user depending on access level.
@@ -359,6 +361,86 @@ export function removeCourseFromUser(req,res){
     });
 }
 
+function addStudentFromCSV (data){
+    return new Promise((resolve, reject) => {
+
+        User.findOne({'email': data[0]}, (err, userobj) => {
+            if (err) {
+                reject(new Error(err));            
+            }
+            else{
+                Course.findOne({'course_num': data[3]}, (err, courseojb) => {
+                    var alreadyEnrolled = false;
+                    var user_email = data[0];
+                    var course_num = data[3];
+                    var course_id = courseojb.id
+                    if (!userobj){
+                        const new_user = new User({
+                                                    first_name: data[2],
+                                                    last_name:  data[1],
+                                                    email:      user_email,
+                                                    updated_at: new Date(),
+                                                    courses:     {
+                                                                    course_id:      course_id,
+                                                                    course_num:     course_num,
+                                                                    course_role:    'student'
+                                                                }
+                                                });
+                        User.create(new_user, (err) => {
+                            if (err) reject(new Error(err));
+                            else resolve(new_user);
+
+                        });                
+                    }
+                    else{
+                        var new_course = {
+                            course_id:      course_id,
+                            course_num:     course_num,
+                            course_role:    'student'
+                        }
+
+                        userobj.courses.forEach((course) => {
+                            if (course.course_num == new_course.course_num){
+                                alreadyEnrolled = true;
+                            }
+                        });
+
+                        if (!alreadyEnrolled) {
+                            userobj.courses.addToSet(new_course);
+                            userobj.save((err, updateduserobj) => {
+                                if (err) reject(new Error(err));
+                                else resolve(updateduserobj);
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+}
+
+// function removeStudentsBasedOnCSV (updated_student_list){
+//     pass
+// }
+
 export function importRoster(req, res){
+
+    var roster = req.files[0].path;
+    var error = false;
+    fs.createReadStream(roster)
+    .pipe(csv())
+    .on('data', (data) => {
+        addStudentFromCSV(data)
+        .then((userobj) => {
+        })
+        .catch((err) => {
+            error = true;
+        });
+    })
+    .on('end', (data) => {
+        if (error) res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
+        else res.status(200).send({Status: 200, Message: 'Successfully added students to course!'});
+    });
 
 }
