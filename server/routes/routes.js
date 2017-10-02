@@ -4,6 +4,8 @@ import * as CourseController from '../controllers/CourseController'
 import * as AuthCheck from '../util/authentication'
 const router = new Router();
 const passport = require('passport');
+const multer = require('multer');
+const upload = multer({ dest: './uploads'});
 
 //Google OAuth login route
 router.get('/auth/google', passport.authenticate('google', {
@@ -59,7 +61,10 @@ router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.
 router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
-router.post('/courses/:course_num/importRoster', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+router.post('/courses/:course_num/importRoster', upload.any(), (req, res, next) => {
+	console.log(req.files);
+});
+
 
 
 export default router;

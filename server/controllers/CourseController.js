@@ -360,7 +360,5 @@ export function removeCourseFromUser(req,res){
 }
 
 export function importRoster(req, res){
-    console.log(req.body.file);
-    console.log(req.file);
-    console.log('hle');
+
 }
