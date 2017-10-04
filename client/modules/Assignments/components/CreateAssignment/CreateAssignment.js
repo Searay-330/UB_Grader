@@ -27,8 +27,18 @@ import TimePicker from 'material-ui/TimePicker';
 export class CreateAssignment extends Component {
   constructor(props) {
     super(props);
-    this.state = {  };
+    this.state = {
+      displayName: '',
+      startDate: '',
+      dueDate: '',
+      endDate: '',
+      startTime: '',
+      dueTime: '',
+      endTime: '',
+
+    };
   }
+
 
   componentDidMount() {
   }
@@ -36,9 +46,20 @@ export class CreateAssignment extends Component {
   componentWillReceiveProps(nextProps) {
 
   }
+   handleChange = (event) => {
+    this.setState({
+      displayName: document.getElementById("displayName").value,
+      startDate: '',
+      dueDate: '',
+      endDate: '',
+      startTime: '',
+      dueTime: '',
+      endTime: '',
+    });
+ 
+  };
 
   render() {
-    console.log(this.props.assignmentData);
     return (
       <div>
        <Card>
@@ -50,33 +71,20 @@ export class CreateAssignment extends Component {
     <CardActions>
     </CardActions>
     <CardText expandable={true}>
-    <TextField hintText="Display Name" className={styles.dividerUnder} floatingLabelText="Assignment Name"/>
+    <TextField id="displayName" hintText="Display Name" value={this.state.displayName} onChange={this.handleChange} className={styles.dividerUnder} floatingLabelText="Assignment Name"/>
       <Divider />
-      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
-      <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time" autoOk={true}/>
+      <DatePicker id="startDate" style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
+      <TimePicker id="startTime" className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time" autoOk={true}/>
       <br />
-      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" autoOk={true}/>
-      <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Due Time" hintText="Due Time" autoOk={true}/>
+      <DatePicker id="dueDate" style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" autoOk={true}/>
+      <TimePicker id="dueTime" className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Due Time" hintText="Due Time" autoOk={true}/>
       <br />
-      <DatePicker style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
-      <TimePicker className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" autoOk={true}/>
+      <DatePicker id="endDate" style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
+      <TimePicker id="endTime" className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" autoOk={true}/>
       <br />
       <br />
       <br />
-      <RaisedButton label='Submit' primary={true} />
-    </CardText>
-  </Card>
- <br/>
-  <Card>
-    <CardHeader
-      title="Section Settings"
-      actAsExpander={true}
-      showExpandableButton={true}
-    />
-    <CardActions>
-    </CardActions>
-    <CardText expandable={true}>
-    sample data here
+      <RaisedButton label='Create Assignment' primary={true} />
     </CardText>
   </Card>
       </div>
@@ -86,7 +94,6 @@ export class CreateAssignment extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
-  console.log(state);
   return {
     assignmentData: state.assignments.assignmentsData,
   };
