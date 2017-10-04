@@ -49,12 +49,12 @@ export class CreateAssignment extends Component {
    handleChange = (event) => {
     this.setState({
       displayName: document.getElementById("displayName").value,
-      startDate: '',
-      dueDate: '',
-      endDate: '',
-      startTime: '',
-      dueTime: '',
-      endTime: '',
+      startDate: document.getElementById("startDate").value,
+      dueDate: document.getElementById("dueDate").value,
+      endDate: document.getElementById("endDate").value,
+      startTime: document.getElementById("startTime").value,
+      dueTime: document.getElementById("dueTime").value,
+      endTime: document.getElementById("endTime").value,
     });
  
   };
@@ -71,16 +71,16 @@ export class CreateAssignment extends Component {
     <CardActions>
     </CardActions>
     <CardText expandable={true}>
-    <TextField id="displayName" hintText="Display Name" value={this.state.displayName} onChange={this.handleChange} className={styles.dividerUnder} floatingLabelText="Assignment Name"/>
+    <TextField id="displayName" value={this.state.displayName} onChange={this.handleChange} className={styles.dividerUnder} hintText="Display Name" floatingLabelText="Assignment Name"/>
       <Divider />
-      <DatePicker id="startDate" style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
-      <TimePicker id="startTime" className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time" autoOk={true}/>
+      <DatePicker id="startDate" value={this.state.startDate} onChange={this.handleChange} style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
+      <TimePicker id="startTime" value={this.state.startTime} onChange={this.handleChange} className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time" autoOk={true}/>
       <br />
-      <DatePicker id="dueDate" style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" autoOk={true}/>
-      <TimePicker id="dueTime" className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Due Time" hintText="Due Time" autoOk={true}/>
+      <DatePicker id="dueDate" value={this.state.dueDate} onChange={this.handleChange} style={{display: 'inline-block'}} floatingLabelText= "Due Date" hintText="Due Date" autoOk={true}/>
+      <TimePicker id="dueTime" value={this.state.dueTime} onChange={this.handleChange} className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Due Time" hintText="Due Time" autoOk={true}/>
       <br />
-      <DatePicker id="endDate" style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
-      <TimePicker id="endTime" className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" autoOk={true}/>
+      <DatePicker id="endDate" value={this.state.endDate} onChange={this.handleChange} style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
+      <TimePicker id="endTime" value={this.state.endTime} onChange={this.handleChange} className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" autoOk={true}/>
       <br />
       <br />
       <br />
