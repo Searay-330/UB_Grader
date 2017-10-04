@@ -12,33 +12,26 @@ const csv = require('fast-csv');
  */
 export function getCourses(req, res) {
 
-    var sys_role = AuthCheck.getAccessLevel(req, res);
-    if (sys_role) {
-
-        if (sys_role === 'admin') {
-
-            Course.find({}, (err, allCourses) => {
-                if (err){
-                    res.status(500).send(err);
+    if (req.user.sys_role === 'admin') {
+        Course.find({}, (err, allCourses) => {
+            if (err){
+                res.status(500).send(err);
+            }
+            else {  
+                var courses = [];                
+                for (var i=0; i<allCourses.length; i++) {
+                    courses.push({
+                        id:             allCourses[i].id,
+                        course_num:     allCourses[i].course_num,
+                        display_name:   allCourses[i].display_name,
+                        semester:       allCourses[i].semester
+                    });
                 }
-                else {  
-                    var courses = [];                
-                    for (var i=0; i<allCourses.length; i++) {
-                        courses.push({
-                            id:             allCourses[i].id,
-                            course_num:     allCourses[i].course_num,
-                            display_name:   allCourses[i].display_name,
-                            semester:       allCourses[i].semester
-                        });
-                    }
-                    res.status(200).send(courses); 
-                }            
-            });            
-        }
+                res.status(200).send(courses); 
+            }            
+        });            
     }
-
-    else{
-
+    else {
         var courselist = [];
 
         Course.find({}, (err, courses) => {
@@ -66,22 +59,39 @@ export function getCourses(req, res) {
 
 /**
  * Gets all the assignments of a specific course.
- * @param req : User's request (should contain course_id as a parameter)
+ * @param req : User's request (should contain course_num as a parameter)
  * @param res : The response back to the caller.
  * Sends a list of the assignments back as the response (a list of json objects)
  */
 
 export function getAssignments(req, res){
-    Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
-        if (err) res.status(500).send(err);                    
-        else res.status(200).send(course.assignments);
-    });
+    if (req.user.sys_role == 'admin') {
+        Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
+            if (err) res.status(500).send(err);                    
+            else res.status(200).send(course.assignments);
+        });
+    }
+    else {
+        var inCourse = false;
+        req.user.courses.forEach((course) => {
+            if (course.course_num == req.params.course_num){
+                inCourse = true;                
+                Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
+                    if (err) res.status(500).send(err);                    
+                    else res.status(200).send(course.assignments);
+                });
+            }
+        });
+        if (!inCourse){
+            res.redirect('/');
+        }
+    }
 }
 
 
 /**
  * Gets all the students of a specific course.
- * @param req : User's request (should contain course_id as a parameter)
+ * @param req : User's request (should contain course_num as a parameter)
  * @param res : The response back to the caller.
  * Sends a list of the students back as the response (a list of json objects)
  */
@@ -108,7 +118,7 @@ export function getStudents(req, res){
 
 /**
  * Gets all the sections of a specific course.
- * @param req : User's request (should contain course_id as a parameter)
+ * @param req : User's request (should contain course_num as a parameter)
  * @param res : The response back to the caller.
  * Sends a list of the sections back as the response (a list of json objects)
  */
@@ -124,7 +134,7 @@ export function getSections(req, res){
 
 /**
  * Gets all the students of a specific section of a course.
- * @param req : User's request (should contain course_id and section_name as a parameter)
+ * @param req : User's request (should contain course_num and section_name as a parameter)
  * @param res : The response back to the caller.
  * Sends a list of the students back as the response (a list of json objects)
  */
@@ -156,14 +166,11 @@ export function getSectionStudents(req, res){
  */
 
 export function createCourse(req, res){
-    // var sys_role = AuthCheck.getAccessLevel(req, res);
-    // if (sys_role === 'admin'){
     var course = new Course(req.body);        
     course.save((err, courseobj) => {
         if (err) res.status(500).send(err);
         else res.status(200).send(courseobj);
     });
-    // }
 }
 
 
@@ -174,18 +181,11 @@ export function createCourse(req, res){
  * Sends back a JSON object of the updated course.
  */
 export function updateCourse(req, res){
-    // var sys_role = AuthCheck.getAccessLevel(req, res);
-    // if (sys_role === 'admin'){
+
     Course.findOne({ 'course_num': req.params.course_num }, (err,courseobj) =>{
-        if (err) res.status(500).send(err); 
-        // for (var key in req.body){
-        //     courseobj.key = req.body[key];
-        //     console.log(courseobj.key);
-        //     console.log(req.body.key);
-        //     console.log(req.body[key]);
-        //     console.log(courseobj[key]);
-        //     console.log('-----------');
-        // }
+        if (err){
+            res.status(500).send(err);
+        }  
         else {
             if (req.body.display_name){
                 courseobj.display_name = req.body.display_name;
@@ -203,9 +203,9 @@ export function updateCourse(req, res){
         }
     });
 
-    //}
 }
 
+//NEED TO DETERMINE WHAT SHOULD BE SENT BACK
 /**
  * Adds specified user to specified course
  * @param req : User's request
@@ -213,6 +213,7 @@ export function updateCourse(req, res){
  * Sends back a JSON object.
  */
 export function addCourseToUser(req,res){
+
     User.findOne({'email': req.params.student_email}, (err, userobj) => {
         if (err) {
             res.status(500).send(err); 
@@ -255,6 +256,8 @@ export function addCourseToUser(req,res){
     });
 }
 
+
+//NEED TO DETERMINE WHAT SHOULD BE SENT BACK
 /**
  * Adds specified user to specific section in course
  * @param req : User's request
@@ -298,6 +301,14 @@ export function addUserToSection(req,res){
     });
 }
 
+//NEED TO DETERMINE WHAT SHOULD BE SENT BACK
+/**
+ * Removes specified user to specific section in course
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object.
+ */
+
 export function removeUserFromSection(req, res){
     User.findOne({'email': req.params.student_email}, (err, userobj) => {
         var inSection = false;
@@ -326,6 +337,7 @@ export function removeUserFromSection(req, res){
     });
 }
 
+//NEED TO DETERMINE WHAT SHOULD BE SENT BACK
 /**
  * Removes a specified user from specified course
  * @param req : User's request
@@ -361,6 +373,11 @@ export function removeCourseFromUser(req,res){
     });
 }
 
+/**
+ * Helper function for adding a student to a course per row in CSV file
+ * @param data : A row from the inputted CSV roster file
+ * Returns a promise.
+ */
 function addStudentFromCSV (data){
     return new Promise((resolve, reject) => {
 
@@ -420,6 +437,12 @@ function addStudentFromCSV (data){
 
 }
 
+/**
+ * Helper function for removing all students registered for course that are not included in the CSV roster file/ 
+ * @param updated_student_list : An array of all the students that are in the CSV roster file
+ * @param course_num : The official course_num for which the CSV roster has been submitted.
+ * Returns a promise.
+ */
 function removeStudentsBasedOnCSV (updated_student_list, course_num){
 
     return new Promise((resolve, reject) => {
@@ -444,6 +467,17 @@ function removeStudentsBasedOnCSV (updated_student_list, course_num){
 });
 
 }
+
+
+//STILL HAVE TO CHECK FOR MALFORMED CSV FILES (ROSTER THAT DOESNT HAVE PROPER FORMAT)
+//STILL NEED TO DETERMINE WHAT TO RETURN
+
+/**
+ * Function for parsing the CSV roster file to add users to specifed course
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Returns a JSON object..
+ */
 
 export function importRoster(req, res){
 

@@ -14,8 +14,8 @@ const storage = multer.diskStorage({
 		cb(null, path);
 	},
 	filename: (req, file, cb) => {
-		// const file_name = req.user.email+'-'+file.originalname;
-		const file_name = 'aamelunia'+'-'+file.originalname;		
+		const file_name = req.user.email+'-'+file.originalname;
+		// const file_name = 'aamelunia'+'-'+file.originalname;		
 		cb(null ,file_name);
 	}
 });
@@ -31,16 +31,16 @@ router.get('/auth/google', passport.authenticate('google', {
 router.get('/auth/google/callback', passport.authenticate('google'), UserController.loginRedirect);
 
 //Sends back the user that is currently logged in.
-router.get('/current_user', 		UserController.getCurrentUser);
+router.get('/current_user', UserController.getCurrentUser);
 
 //Logs out user
-router.get('/logout',				UserController.logoutUser);
+router.get('/logout', UserController.logoutUser);
 
 //Returns the courses for the user depending on access level.
-router.get('/courses', 				AuthCheck.isAuthenticated, CourseController.getCourses);
+router.get('/courses', AuthCheck.isAuthenticated, CourseController.getCourses);
 
 //Returns the assignments of a specific course that user is enrolled in.
-router.get('/courses/:course_num/assignments',	AuthCheck.isAuthenticated, CourseController.getAssignments);
+router.get('/courses/:course_num/assignments', AuthCheck.isAuthenticated, CourseController.getAssignments);
 
 //Returns the students of a specific course.
 router.get('/courses/:course_num/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getStudents);
@@ -55,12 +55,10 @@ router.get('/courses/:course_num/:section_name/students', AuthCheck.isAuthentica
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
 
 //Create a new course
-router.post('/courses/create', CourseController.createCourse);
-// router.post('/courses/create', AuthCheck.isAuthenticated, CourseController.createCourse);
+router.post('/courses/create', AuthCheck.isAuthenticated, AuthCheck.isAdmin, CourseController.createCourse);
 
 //Update a course's information
-router.post('/courses/:course_num/update', CourseController.updateCourse);
-// router.post('/courses/:course_num/update', AuthCheck.isAuthenticated, CourseController.updateCourse);
+router.post('/courses/:course_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.updateCourse);
 
 //Enrolls a specified user in a specified course
 router.post('/courses/:course_num/enroll/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addCourseToUser);
@@ -75,7 +73,6 @@ router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.
 router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
-//router.post('/courses/:course_num/importRoster', upload.any(), CourseController.importRoster);
 router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
 
 
