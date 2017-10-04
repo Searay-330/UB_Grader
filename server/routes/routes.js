@@ -61,16 +61,16 @@ router.post('/courses/create', AuthCheck.isAuthenticated, AuthCheck.isAdmin, Cou
 router.post('/courses/:course_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.updateCourse);
 
 //Enrolls a specified user in a specified course
-router.post('/courses/:course_num/enroll/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addCourseToUser);
+router.post('/courses/:course_num/enroll', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addCourseToUser);
 
 //Adds specific user to specified section in a course.
-router.post('/courses/:course_num/:section_name/enroll/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addUserToSection);
+router.post('/courses/:course_num/:section_name/enroll', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.addUserToSection);
 
 //Removes a specific user from a specified section in a course.
-router.post('/courses/:course_num/:section_name/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeUserFromSection);
+router.post('/courses/:course_num/:section_name/drop', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeUserFromSection);
 
 //Removes a user from specified course
-router.post('/courses/:course_num/drop/:student_email', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
+router.post('/courses/:course_num/drop', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
 router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);

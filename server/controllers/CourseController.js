@@ -214,7 +214,7 @@ export function updateCourse(req, res){
  */
 export function addCourseToUser(req,res){
 
-    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+    User.findOne({'email': req.body.student_email}, (err, userobj) => {
         if (err) {
             res.status(500).send(err); 
         }
@@ -225,7 +225,7 @@ export function addCourseToUser(req,res){
                     res.status(500).send(err);
                 }
                 else{
-                    if (courseobj) {            
+                    if (courseobj && userobj) {            
                         var course_info = {
                                             course_id:    courseobj.id,
                                             course_num:   courseobj.course_num,
@@ -237,7 +237,7 @@ export function addCourseToUser(req,res){
                             }
                         });
                         if (alreadyEnrolled){
-                            res.status(500).send({Status: 500, Message: 'User is already enrolled in course!'});  
+                            res.status(200).send({Status: 200, Message: 'User is already enrolled in course!'});  
                         } 
                         else {
                             userobj.courses.addToSet(course_info);
@@ -248,7 +248,7 @@ export function addCourseToUser(req,res){
                         }
                     }
                     else{
-                        res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course'});                              
+                        res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course and/or user'});                              
                     }
                 }
             });
@@ -265,7 +265,7 @@ export function addCourseToUser(req,res){
  * Sends back a JSON object.
  */
 export function addUserToSection(req,res){
-    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+    User.findOne({'email': req.body.student_email}, (err, userobj) => {
         if (err) {
             res.status(500).send(err);    
         }
@@ -294,7 +294,7 @@ export function addUserToSection(req,res){
                             });
                         }
                     });
-                    if (!isInSection) res.status(500).send({Status: 500, Message: 'Sorry, unable to add user to that section'});  
+                    if (!isInSection) res.status(406).send({Status: 406, Message: 'Sorry, cannot user to that section'});  
                 }
             });
         } 
@@ -310,7 +310,7 @@ export function addUserToSection(req,res){
  */
 
 export function removeUserFromSection(req, res){
-    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+    User.findOne({'email': req.body.student_email}, (err, userobj) => {
         var inSection = false;
         if (err) {
             res.status(500).send(err);    
@@ -321,7 +321,7 @@ export function removeUserFromSection(req, res){
             }
             else {
                 userobj.courses.forEach((course) => {
-                    if (course.section_name == req.params.section_name){
+                    if (course.course_num == req.params.course_num && course.section_name == req.params.section_name){
                         course.section_name = undefined;
                         course.section_id = undefined;
                         inSection = true;
@@ -331,7 +331,7 @@ export function removeUserFromSection(req, res){
                         });
                     }
                 });
-                if (!inSection) res.status(500).send({Status: 500, Message: 'Sorry, unable to remove user from that section'});
+                if (!inSection) res.status(406).send({Status: 406, Message: 'Sorry, user is not enrolled in that course and/or section'});
             } 
         } 
     });
@@ -346,7 +346,7 @@ export function removeUserFromSection(req, res){
  */
 
 export function removeCourseFromUser(req,res){
-    User.findOne({'email': req.params.student_email}, (err, userobj) => {
+    User.findOne({'email': req.body.student_email}, (err, userobj) => {
         var isEnrolled = false;        
         if (err) {
             res.status(500).send(err);
@@ -369,7 +369,7 @@ export function removeCourseFromUser(req,res){
                 return res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});   
             }
         }
-        if(!isEnrolled) res.status(500).send({Status: 500, Message: 'Sorry, unable to remove user from course'});                                      
+        if(!isEnrolled) res.status(406).send({Status: 406, Message: 'Sorry, unable to remove user from course'});                                      
     });
 }
 
