@@ -6,6 +6,10 @@ import { bindActionCreators } from 'redux';
 // Import Style
 import styles from './CreateAssignment.css';
 
+//Import Actions
+import { getCategories } from './CreateAssignmentActions'
+
+
 import GridTile from 'material-ui/GridList';
 import {Card, CardText, CardHeader, CardActions, CardTitle} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
@@ -17,6 +21,8 @@ import Divider from 'material-ui/Divider';
 import DatePicker from 'material-ui/DatePicker';
 import FlatButton from 'material-ui/FlatButton';
 import TimePicker from 'material-ui/TimePicker';
+
+
 
 export class CreateAssignment extends Component {
   constructor(props) {
@@ -32,6 +38,7 @@ export class CreateAssignment extends Component {
   }
 
   render() {
+    console.log(this.props.assignmentData);
     return (
       <div>
        <Card>
@@ -81,7 +88,7 @@ export class CreateAssignment extends Component {
 function mapStateToProps(state) {
   console.log(state);
   return {
-
+    assignmentData: state.assignments.assignmentsData,
   };
 }
 
