@@ -28,6 +28,7 @@ export function createAssignment(req, res){
             var assignment = {
                 category: req.body.category,
                 name: req.body.name,
+                assignment_num: req.body.assignment_num,
                 section_based: req.body.section_based,
                 auto_grader: req.body.auto_grader,
                 start_date: start_date,
