@@ -1,10 +1,11 @@
-export function isAuthenticated(req,res,next){
+export function isAuthenticated(req, res, next){
     if (req.user) return next();
     res.redirect('/');
 }
 
-export function getAccessLevel(req,res){
-    return req.user.sys_role;
+export function isAdmin(req, res, next){
+    if (req.user.sys_role == 'admin') return next();
+    res.redirect('/');
 }
 
 export function isInstructor(req, res, next){
