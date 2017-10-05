@@ -38,6 +38,8 @@ export class CreateAssignment extends Component {
       endTime: {},
       category: '',
       name: '',
+      p_name: '',
+      max_score: '',
     };
   }
 
@@ -67,6 +69,13 @@ export class CreateAssignment extends Component {
       st.displayName = document.getElementById("displayName").value;
       st.name = document.getElementById("name").value;
       st.category = (typeof event == "string") ? event : st.category;
+      this.setState(st);
+  };
+
+  problemChange = (event) => {
+      var st = getEditableState(this.state);
+      st.p_name = document.getElementById("p_name").value;
+      st.max_score = document.getElementById("max_score").value;
       this.setState(st);
   };
 
@@ -108,7 +117,21 @@ export class CreateAssignment extends Component {
       showExpandableButton={true}
     />
     <CardText expandable={true}>
-
+      <RaisedButton
+          primary={true}
+          label='Make File'
+          containerElement='label'>
+          <input id="make" type="file" style={{ display: 'none' }}/>
+        </RaisedButton>
+        <br/>
+        <br/>
+        <br/>
+      <RaisedButton
+          primary={true}
+          label='Tar Ball'
+          containerElement='label'>
+          <input id="tar" type="file" style={{ display: 'none' }}/>
+        </RaisedButton>
     </CardText>
   </Card>
 
@@ -120,7 +143,9 @@ export class CreateAssignment extends Component {
       showExpandableButton={true}
     />
     <CardText expandable={true}>
-
+      <TextField id="p_name" value={this.state.p_name} onChange={this.problemChange}  hintText="Problem Name" floatingLabelText="Problem Name"/>
+      <br />
+      <TextField id="max_score" value={this.state.max_score} onChange={this.problemChange}  hintText="Max Score" floatingLabelText="Max Score"/>
     </CardText>
   </Card>
 
@@ -128,7 +153,7 @@ export class CreateAssignment extends Component {
     <br />
 
 
-      <RaisedButton label='Create Assignment' onClick={()=>{console.log(this.state)}} primary={true} />
+      <RaisedButton label='Create Assignment' onClick={()=>{console.log(this.state); console.log(document.getElementById("tar").files); console.log(document.getElementById("make").files);}} primary={true} />
       </div>
     );
   }
@@ -159,6 +184,8 @@ function getEditableState(state){
       endTime: state.endTime,
       category: state.category,
       name: state.name,
+      p_name: state.p_name,
+      max_score: state.max_score,
     });
 }
 
