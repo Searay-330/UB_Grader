@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as UserController from '../controllers/UserController'
+import * as AssignmentController from '../controllers/AssignmentController'
 import * as CourseController from '../controllers/CourseController'
 import * as AuthCheck from '../util/authentication'
 const router = new Router();
@@ -74,6 +75,9 @@ router.post('/courses/:course_num/drop', AuthCheck.isAuthenticated, AuthCheck.is
 
 //Import a roster for a course
 router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+
+//Create an assignment for a course
+router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.createAssignment);
 
 
 
