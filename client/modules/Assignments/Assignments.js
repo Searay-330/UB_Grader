@@ -42,7 +42,7 @@ export class Assignments extends Component {
     for (var key in this.state.categories) {
       cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
     }
-    // console.log(cats);
+    console.log(cats);
     return (
       <div>
         <GridList

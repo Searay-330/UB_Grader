@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import styles from './CreateAssignment.css';
 
 //Import Actions
-import { getCategories } from './CreateAssignmentActions'
+import { getCategories, submitForm } from './CreateAssignmentActions'
 
 
 import GridTile from 'material-ui/GridList';
@@ -29,17 +29,17 @@ export class CreateAssignment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      displayName: '',
+      name: 'realname',
+      displayName: 'test',
       startDate: {},
       dueDate: {},
       endDate: {},
       startTime: {},
       dueTime: {},
       endTime: {},
-      category: '',
-      name: '',
-      p_name: '',
-      max_score: '',
+      category: 'Shit',
+      p_name: 'fuck',
+      max_score: '50',
     };
   }
 
@@ -153,7 +153,7 @@ export class CreateAssignment extends Component {
     <br />
 
 
-      <RaisedButton label='Create Assignment' onClick={()=>{console.log(this.state); console.log(document.getElementById("tar").files); console.log(document.getElementById("make").files);}} primary={true} />
+      <RaisedButton label='Create Assignment' onClick={() => {this.props.submitForm(this.state, this.props.params.course)}} primary={true} />
       </div>
     );
   }
@@ -168,7 +168,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-
+    submitForm: submitForm,
   }, dispatch);
 }
 

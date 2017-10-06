@@ -25,3 +25,28 @@ export default function callApi(endpoint, method = 'get', body) {
     error => error
   );
 }
+
+export function add(){
+  return 5;
+}
+
+
+export function callApiWithFiles(endpoint, body) {
+  return fetch(`${API_URL}/${endpoint}`, {
+    credentials: 'include',
+    method:"post",
+    body: body,
+  })
+  .then(response => response.json().then(json => ({ json, response })))
+  .then(({ json, response }) => {
+    if (!response.ok) {
+      return Promise.reject(json);
+    }
+
+    return json;
+  })
+  .then(
+    response => response,
+    error => error
+  );
+}

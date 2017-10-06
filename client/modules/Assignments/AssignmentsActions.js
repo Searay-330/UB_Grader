@@ -1,6 +1,8 @@
 import callApi from '../../util/apiCaller';
 
 export function populateCourseData(data){
+
+  console.log("data :" + data);
 	
   return {type:"populate", assignmentsData: data, assignmentsMap: mapping(data)};
 }
