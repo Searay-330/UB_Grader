@@ -88,7 +88,7 @@ export class App extends Component {
               },
             ]}
           />
-          <Header user={this.props.user.first_name}/>
+          <Header/>
           <div className={styles.container}>
           {home}
 

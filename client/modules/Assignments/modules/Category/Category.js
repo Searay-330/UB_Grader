@@ -16,7 +16,6 @@ import Divider from 'material-ui/Divider';
 export function Category(category) {
   var locationToGo = (category.location.charAt(category.location.length - 1) == "/") ? category.location.substring(0, category.location.length - 1) : category.location;
   return (
-
         <Card>
         <CardTitle className={styles.header} titleColor='white' title={category.name} />
         <CardMedia>

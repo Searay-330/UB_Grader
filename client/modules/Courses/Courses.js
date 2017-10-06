@@ -40,7 +40,7 @@ export class Courses extends Component {
         for (var i = 0; i < this.state.courses.length; i++) {
             var course = this.state.courses[i];
             courses.push(
-                <Course key={course['id']} courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']} location={this.props.location.pathname}/>
+                <Course key={course['id']} courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']} />
             );
         }
         return (
@@ -51,7 +51,7 @@ export class Courses extends Component {
                     </Row>
                 </Grid>
             </PanelGroup>
-        )
+        );
     }
 }
 

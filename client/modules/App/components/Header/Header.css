@@ -29,14 +29,15 @@
   border-bottom: 1px solid black;
 }
 
-.title{
-  height: 100%;
-  color: white;
-  line-height: var(--banner-height);
-  font-size: 20px;
-  font-weight: bold;
-  margin-right: 10px;
-  margin-left: 10px;
+.button{
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.toolbar_group {
+  color: #005bbb !important;
+  background: #005bbb !important;
 }
 
 .inactiveLink {

@@ -6,42 +6,18 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import blueA700 from 'material-ui/styles/colors';
 
-export class Course extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            isMounted: false,
-        };
-    }
-
-    componentDidMount() {
-        this.setState({ isMounted: true });
-    }
-
-    render() {
-        const title = <h1>{this.props.displayName}</h1>;
-        return (
-            <Card>
-                <CardTitle>{title}</CardTitle>
-                <CardText>Semester: {this.props.semester}</CardText>
-                <CardActions>
-                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={[this.props.location, this.props.courseNum, "assignments"].join('/')} />
-                </CardActions>
-            </Card>
-        );
-    }
+export function Course(props) {
+    console.log(this);
+    var title = <h1>{props.displayName}</h1>;
+    return (
+        <Card>
+            <CardTitle>{title}</CardTitle>
+            <CardText>Semester: {props.semester}</CardText>
+            <CardActions>
+                <RaisedButton label='Enter' primary={true} fullWidth={true} href={this.location.pathname + [props.courseNum, "assignments"].join('/')} />
+            </CardActions>
+        </Card>
+    );
 }
 
-function mapStateToProps(state) {
-    return {
-        semester: state.course.semester,
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-    }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Course);
+export default Course;

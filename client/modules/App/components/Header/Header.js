@@ -1,25 +1,58 @@
-import React, { PropTypes } from 'react';
-import { Link } from 'react-router';
-import { FormattedMessage } from 'react-intl';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import styles from './Header.css'
 
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 
+import ToolbarGroup from 'material-ui/Toolbar';
 
+export class Header extends Component {
 
-export function Header(props) {
-  var appBar = <AppBar showMenuIconButton={false} title="Autograder 3.0" />;
-  if (props.user != "") {
-    var icon = <FlatButton label={props.user} labelPosition="before" icon={<ActionExitToApp />} href="/api/logout" />
-    appBar = <AppBar showMenuIconButton={false} title="Autograder 3.0" iconElementRight={icon} />;
+  constructor(props) {
+    super(props);
   }
-  return (
-    <div>
+
+  componentDidMount() {
+  }
+
+  render() {
+    var icon = [];
+
+    if (this.props.in_course) {
+      icon.push(<FlatButton key='0' className={styles.button} label="Gradebook" />);
+    }
+    if (this.props.user.first_name != "") {
+      icon.push(<FlatButton key='1' className={styles.button} label={this.props.user.first_name} labelPosition="before" icon={<ActionExitToApp color='white'/>} href="/api/logout" />);
+    }
+    icon = (
+      <ToolbarGroup className={styles.toolbar_group}>
+        {icon}
+      </ToolbarGroup>
+    )
+    var appBar = <AppBar showMenuIconButton={false} title="Autograder 3.0" iconElementRight={icon} />;
+    return (
+      <div>
         {appBar}
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
+function mapStateToProps(state) {
+  return {
+      in_course: (typeof state.assignments.assignmentsData != 'undefined'),
+      courses: state.courses.coursesData,
+      user: state.app.user,
+  }
+}
 
-export default Header;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+  }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
