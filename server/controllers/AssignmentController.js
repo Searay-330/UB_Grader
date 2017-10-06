@@ -43,3 +43,38 @@ export function createAssignment(req, res){
         }
     });
 }
+
+
+/**
+ * Updates an existing assignment.
+ * @param req : User's request
+ * @param res : The response back to the caller.
+ * Sends back a JSON object of the updated course.
+ */
+export function updateAssignment(req, res){
+    
+        Course.findOne({ 'course_num': req.params.course_num }, (err,courseobj) =>{
+            if (err){
+                res.status(500).send(err);
+            }  
+            else {
+                var isAssignment = false;
+                courseobj.assignments.forEach((assignment) => {
+                    if(assignment.assignment_num == req.params.assignment_num){
+                        for (var key in req.body) {
+                            if (req.body.hasOwnProperty(key)) {
+                              var item = req.body[key];
+                              assignment.set(key, req.body[key]);
+                            }
+                        }
+                        courseobj.save((err, updatedcourseobj) => {
+                            if (err) res.status(500).send(err);
+                            else res.status(200).send(updatedcourseobj);
+                        });
+                    }
+                });
+                
+            }
+        });
+    
+    }

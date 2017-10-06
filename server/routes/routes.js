@@ -79,6 +79,8 @@ router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthe
 //Create an assignment for a course
 router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.createAssignment);
 
+//Updates an assignment for a course
+router.post('/courses/:course_num/assignments/:assignment_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.updateAssignment);
 
 
 
