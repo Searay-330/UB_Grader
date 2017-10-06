@@ -6,13 +6,8 @@ import User from '../models/User'
  * @returns void
  */
 export function getCurrentUser(req,res) {
-	if((req.user === undefined)){
-
-		res.send({first_name:""});
-	}else{
-
-    res.send(req.user);
-	}
+	if(req.user === undefined) res.send({first_name:""});
+	else res.send(req.user);
 }
 
 /**

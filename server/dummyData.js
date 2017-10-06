@@ -15,6 +15,7 @@ Course.count().exec((err, count) => {
                         _id:                new mongoose.Types.ObjectId(),
                         category:           'Phase 1', 
                         name:               'Create Prototype', 
+                        assignment_num:     'createprototype',
                         section_based:      false, 
                         start_date:         new Date('<2017-09-20>'), 
                         due_date:           new Date('<2017-09-30>'), 
@@ -28,6 +29,7 @@ Course.count().exec((err, count) => {
                         _id:                new mongoose.Types.ObjectId(),
                         category:           'Phase 2', 
                         name:               'Create MVP', 
+                        assignment_num:     'createmvp',
                         section_based:      false, 
                         start_date:         new Date('<2017-09-30>'), 
                         due_date:           new Date('<2017-10-20>'), 
@@ -56,6 +58,7 @@ Course.count().exec((err, count) => {
                     };
 
     const course_cse442 = new Course({
+                                    _id:                new mongoose.Types.ObjectId(),
                                     course_num:     'cse442-f17', 
                                     display_name:   'CSE 442', 
                                     semester:       'Fall 2017', 
@@ -64,6 +67,7 @@ Course.count().exec((err, count) => {
                                 });
     
     const course_cse331 = new Course({
+                                    _id:                new mongoose.Types.ObjectId(),        
                                     course_num:     'cse331-f17', 
                                     display_name:   'CSE 331', 
                                     semester:       'Fall 2017', 
@@ -95,22 +99,21 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section1_id
+                                        course_role:    'student',
                                     } 
                         });
 
     const user2 = new User({
                             first_name:     'Adhish', 
                             last_name:      'Chugh', 
+                            sys_role:       'admin',                            
                             email:          'adhishch@buffalo.edu', 
                             person_number:  '12345679', 
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section1_id                              
+                                        course_role:    'student',                                        
                                     } 
                          });
 
@@ -123,8 +126,9 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section1_id                                 
+                                        course_role:    'student',
+                                        section_id:     section1_id,
+                                        section_name:   'Backend'
                                     } 
                         });
 
@@ -137,8 +141,9 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section2_id                                 
+                                        course_role:    'student',
+                                        section_id:     section2_id,
+                                        section_name:   'Frontend'                                        
                                     } 
                         });
 
@@ -151,8 +156,9 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section2_id
+                                        course_role:    'student',
+                                        section_id:     section2_id,
+                                        section_name:   'Frontend'                                        
                                     } 
                         });
     
@@ -165,8 +171,9 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section2_id                                        
+                                        course_role:    'student',
+                                        section_id:     section2_id,
+                                        section_name:   'Frontend'                                        
                                     } 
                         });
     
@@ -180,8 +187,9 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Student',
-                                        section_id:     section2_id                                        
+                                        course_role:    'student',
+                                        section_id:     section2_id,
+                                        section_name:   'Frontend'                                        
                                     } 
                         });
 
@@ -194,7 +202,7 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'Teacher',
+                                        course_role:    'instructor',
                                     } 
                         });
 
