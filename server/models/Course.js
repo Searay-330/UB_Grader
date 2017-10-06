@@ -29,10 +29,18 @@ const course_assignments_problemSchema = new Schema({
 
 });
 
+const user_submission_schema = new Schema({
+    
+        email:              { type: String, required: true },
+        submissions:        { type: Number, required: true },
+    
+});
+
 const course_assignmentSchema = new Schema({
 
     category:                   { type: String, required: true },
     name:                       { type: String, required: true },
+    user_submissions:           [user_submission_schema],    
     assignment_num:             { type: String, required: true, unique: true},
     section_based:              { type: Boolean, required: true, default: true },
     section_due_dates:          [course_assignments_section_due_dateSchema], 
