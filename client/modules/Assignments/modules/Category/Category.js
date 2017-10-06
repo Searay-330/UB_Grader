@@ -5,24 +5,31 @@ import { Link } from 'react-router';
 // Import Style
 import styles from './Category.css';
 
-// Import Bootstrap
-import { bootstrapUtils } from 'react-bootstrap/lib/utils';
-import { Col, ListGroup, Panel, ListGroupItem} from 'react-bootstrap';
+import GridTile from 'material-ui/GridList';
+import {Card, CardMedia, CardTitle} from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
+import Menu from 'material-ui/Menu';
+import MenuItem from 'material-ui/MenuItem';
+import Paper from 'material-ui/Paper';
+import Divider from 'material-ui/Divider';
 
-
-bootstrapUtils.addStyle(Panel, ["default",styles['panel_custom']].join(' '));
 export function Category(category) {
-  console.log(category);
+  var locationToGo = (category.location.charAt(category.location.length - 1) == "/") ? category.location.substring(0, category.location.length - 1) : category.location;
   return (
-  	<Col md={4}>
-  		<Panel bsStyle={["default",styles['panel_custom']].join(' ')} header={category.name} eventKey="1">
-  			<ListGroup componentClass='div' fill>
+
+        <Card>
+        <CardTitle className={styles.header} titleColor='white' title={category.name} />
+        <CardMedia>
+        <Menu>
           {category.assignments.map(assignment => (
-      <ListGroupItem key={assignment._id} ><Link to={[category.location,assignment.name].join('/')}>{assignment.name}</Link></ListGroupItem>
-    ))}
-    		</ListGroup>
-    	</Panel>
-    </Col>
+            <MenuItem key={assignment._id}
+              primaryText={assignment.name}
+              onClick={() => { document.location.href = [locationToGo, assignment.name].join('/'); }} />
+          ))}
+        </Menu>
+        </CardMedia>
+        </Card>
+
   );
 }
 

@@ -1,0 +1,3 @@
+all:
+	tar -xf autograde.tar
+	python3 Autolab.py 10 14

@@ -24,14 +24,18 @@
 	border-top: 1px !important;
 }
 
-.panel {
+.tile {
 	text-align: center;
 }
 
-.panel_custom div:first-of-type{
-	text-align: center;
+.list {
+	width: 400px !important;
+	margin: 0px !important;
+	
+}
+
+.header{
 	font-weight: bold;
-	color:white;
 	font-size: 15px;
- 	background-color: #005BBB;
+ 	background-color: #005BBB !important;
 }

@@ -5,11 +5,11 @@ import { FormattedMessage } from 'react-intl';
 // Import Style
 import styles from './Login.css';
 
-import { Button,FormControl,FormGroup,ControlLabel,HelpBlock} from 'react-bootstrap';
+import RaisedButton from 'material-ui/RaisedButton';
 
 export function Login() {
   return (
-    	<center><Link to="/api/auth/google"><Button bsStyle="primary">Login</Button></Link></center>
+    <center><RaisedButton label='Login' primary={true} href="/api/auth/google"/></center>
   );
 }
 
