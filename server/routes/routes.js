@@ -6,6 +6,7 @@ import * as AuthCheck from '../util/authentication'
 const router = new Router();
 const passport = require('passport');
 const multer = require('multer');
+const path = require('path');
 const fs = require('fs-extra');
 const storage = multer.diskStorage({ 
 	destination: (req, file, cb) => {
@@ -20,7 +21,28 @@ const storage = multer.diskStorage({
 		cb(null ,file_name);
 	}
 });
+
+const tangoStorage = multer.diskStorage({
+	destination: (req, file, cb) => {
+		const course = req.params.course_num;
+		const assignment = req.body.assignment_num;
+		const path = `./uploads/${course}/${assignment}/Tango`
+		fs.mkdirsSync(path);
+		cb(null, path);
+	},
+	filename: (req, file, cb) => {
+		if (path.extname(file.originalname)	== '.tar'){
+			cb(null, "autograde.tar");
+		}	
+		else {
+			cb(null, "autograde-Makefile");
+		}
+	}
+});
+
+
 const upload = multer({ storage: storage });
+const tangoUpload = multer({storage: tangoStorage});
 
 //Google OAuth login route
 router.get('/auth/google', passport.authenticate('google', {
@@ -77,11 +99,11 @@ router.post('/courses/:course_num/drop', AuthCheck.isAuthenticated, AuthCheck.is
 router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
 
 //Create an assignment for a course
-router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.createAssignment);
+router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, tangoUpload.any(), AssignmentController.createAssignment);
 
 //Updates an assignment for a course
 router.post('/courses/:course_num/assignments/:assignment_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.updateAssignment);
 
-
+router.post('/courses/:course_num/assignments/:assignment_num/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.deleteAssignment);
 
 export default router;
