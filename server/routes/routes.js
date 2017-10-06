@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as UserController from '../controllers/UserController'
 import * as AssignmentController from '../controllers/AssignmentController'
 import * as CourseController from '../controllers/CourseController'
+import * as SubmissionController from '../controllers/SubmissionController'
 import * as AuthCheck from '../util/authentication'
 const router = new Router();
 const passport = require('passport');
@@ -40,9 +41,24 @@ const tangoStorage = multer.diskStorage({
 	}
 });
 
+const submissionsStorage = multer.diskStorage({ 
+	destination: (req, file, cb) => {
+		const assingment = req.params.assignment_num;
+        const course = req.params.course_num;
+		const path = `./uploads/${course}/${assingment}/submissions`;
+		fs.mkdirsSync(path);
+		cb(null, path);
+	},
+	filename: (req, file, cb) => {
+		const file_name = 'temp'+'-'+file.originalname;		
+		cb(null ,file_name);
+	}
+});
+
 
 const upload = multer({ storage: storage });
 const tangoUpload = multer({storage: tangoStorage});
+const submissionsUpload = multer({ storage: submissionsStorage });
 
 //Google OAuth login route
 router.get('/auth/google', passport.authenticate('google', {
@@ -73,6 +89,9 @@ router.get('/courses/:course_num/sections', AuthCheck.isAuthenticated, AuthCheck
 
 //Returns the students of a specific section of a course.
 router.get('/courses/:course_num/:section_name/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
+
+//Returns all the submission of a specific user and assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getUserSubmissions);
 
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
