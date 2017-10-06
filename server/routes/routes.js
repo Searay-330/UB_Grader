@@ -93,6 +93,12 @@ router.get('/courses/:course_num/:section_name/students', AuthCheck.isAuthentica
 //Returns all the submission of a specific user and assignment
 router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getUserSubmissions);
 
+//Returns all the submissions of all users in a specific assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getAllSubmissions);
+
+//Returns latest submission of a specific user in a specific assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getLatestSubmission);
+
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
 
@@ -124,5 +130,11 @@ router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated
 router.post('/courses/:course_num/assignments/:assignment_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.updateAssignment);
 
 router.post('/courses/:course_num/assignments/:assignment_num/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.deleteAssignment);
+
+//Create a new Submission
+router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/create', submissionsUpload.any(), SubmissionController.createSubmission);
+
+//Update a Submission
+router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/update', SubmissionController.updateSubmission);
 
 export default router;

@@ -203,9 +203,12 @@ export function updateSubmission(req, res, next) {
                                             }
                                         }
                                         console.log(submissionObj);
-                                        course.save((err, updatedcourseobj) => {
+                                        course.save((err, courseObj) => {
                                             if (err) res.status(500).send(err);
-                                            else res.status(200).send(submissionObj);
+                                            submissionObj.save((err, updatedsubmissionObj) => {
+                                                if (err) res.status(500).send(err);
+                                                else res.status(200).send(updatedsubmissionObj);
+                                            });
                                         });
                                     });
                                 }
