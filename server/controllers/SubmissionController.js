@@ -189,20 +189,20 @@ export function updateSubmission(req, res, next) {
                         if(assignment.assignment_num == req.params.assignment_num){
                             assignment.user_submissions.forEach((sub) => {
                                 if(sub.email == req.params.email){
-                                    var latest_version = sub.submissions;
+                                    var latest_version = req.params.version;
                                     Submission.findOne({
                                         version: latest_version, 
                                         user_id: user.id, 
                                         assignment_num: req.params.assignment_num,
                                         course_num: req.params.course_num
                                     }, (err, submissionObj) => {
+                                        console.log(req.body);
                                         for (var key in req.body) {
                                             if (req.body.hasOwnProperty(key)) {
                                               var item = req.body[key];
-                                              submissionObj.set(key, req.body[key]);
+                                              submissionObj.set(key, item);
                                             }
                                         }
-                                        console.log(submissionObj);
                                         course.save((err, courseObj) => {
                                             if (err) res.status(500).send(err);
                                             submissionObj.save((err, updatedsubmissionObj) => {
