@@ -132,7 +132,7 @@ router.post('/courses/:course_num/assignments/:assignment_num/update', AuthCheck
 router.post('/courses/:course_num/assignments/:assignment_num/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.deleteAssignment);
 
 //Creates a new Submission
-router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/create', AuthCheck.isAuthenticated, submissionsUpload.any(), SubmissionController.createSubmission);
+router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/create', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, submissionsUpload.any(), SubmissionController.createSubmission);
 
 //Updates a Submission
 router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/:version/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.updateSubmission);

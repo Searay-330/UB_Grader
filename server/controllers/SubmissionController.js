@@ -113,58 +113,64 @@ export function getAllSubmissions(req, res, next) {
 export function createSubmission(req, res, next) {
     var user_email = req.params.email;
     var submissionFound = false;
-    User.findOne({"email": user_email}, (err, user) =>{
-        if (err){
-            res.status(500).send(err);   
-        } else {
-            Course.findOne({'course_num': req.params.course_num }, (err,course) =>{
-                if (err){
-                    res.status(500).send(err);   
-                } else {
-                    course.assignments.forEach((assignment) => {
-                        if(assignment.assignment_num == req.params.assignment_num){
-                            assignment.user_submissions.forEach((sub) => {
-                                if(sub.email == user_email){
-                                 submissionFound = true;   
-                                }
-                            });
-                            if(!submissionFound){
-                                assignment.user_submissions.push({
-                                email: user_email,
-                                submissions: 0
+    if (req.files[0].length != 1){
+        res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
+    }
+    else{
+        User.findOne({"email": user_email}, (err, user) =>{
+            if (err){
+                res.status(500).send(err);   
+            } else {
+                Course.findOne({'course_num': req.params.course_num }, (err,course) =>{
+                    if (err){
+                        res.status(500).send(err);   
+                    } else {
+                        course.assignments.forEach((assignment) => {
+                            if(assignment.assignment_num == req.params.assignment_num){
+                                assignment.user_submissions.forEach((sub) => {
+                                    if(sub.email == user_email){
+                                    submissionFound = true;   
+                                    }
                                 });
-                            }
-                            assignment.user_submissions.forEach((sub) => {
-                                if(sub.email == req.params.email){
-                                    var version = sub.submissions;
-                                    version += 1;
-                                    sub.submissions = version;
-                                    var file_name = user_email+"_"+version+"_"+"handin.c";
-                                    req.files[0].filename = file_name;
-                                    var submission = new Submission();
-                                    submission.user_id = user.id;
-                                    submission.course_num = req.params.course_num;
-                                    submission.assignment_num = req.params.assignment_num;
-                                    submission.file_name = file_name;
-                                    submission.version = version;
-                                    submission.feedback = "Placeholder";
-                                    submission.form_data = "Placeholder";
-                                    submission.grader = "Placeholder";
-                                    course.save((err, courseObj) => {
-                                        if (err) res.status(500).send(err);
-                                        submission.save((err, submissionObj) => {
-                                            if (err) res.status(500).send(err);
-                                            else res.status(200).send(submissionObj);
-                                        });
+                                if(!submissionFound){
+                                    assignment.user_submissions.push({
+                                    email: user_email,
+                                    submissions: 0
                                     });
                                 }
-                            })
-                        }
-                    })   
-                }
-            });   
-        }
-    });
+                                assignment.user_submissions.forEach((sub) => {
+                                    if(sub.email == req.params.email){
+                                        var version = sub.submissions;
+                                        version += 1;
+                                        sub.submissions = version;
+                                        var file_name = user_email+"_"+version+"_"+"handin.c";
+                                        req.files[0].filename = file_name;
+                                        var submission = new Submission();
+                                        submission.user_id = user.id;
+                                        submission.course_num = req.params.course_num;
+                                        submission.assignment_num = req.params.assignment_num;
+                                        submission.file_name = file_name;
+                                        submission.version = version;
+                                        submission.feedback = "Placeholder";
+                                        submission.form_data = "Placeholder";
+                                        submission.grader = "Placeholder";
+                                        course.save((err, courseObj) => {
+                                            if (err) res.status(500).send(err);
+                                            submission.save((err, submissionObj) => {
+                                                if (err) res.status(500).send(err);
+                                                else res.status(200).send(submissionObj);
+                                            });
+                                        });
+                                    }
+                                })
+                            }
+                        })   
+                    }
+                });   
+            }
+        });
+    }
+
  }
 
 /**

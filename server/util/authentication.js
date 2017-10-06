@@ -18,7 +18,7 @@ export function isInstructor(req, res, next){
             }
         }
     }
-    res.redirect('/');    
+    res.status(403).send({status: 403, message: 'Sorry, you are not authorized to view this page'}); 
 }
 
 export function isInstructorOrUser(req, res, next){
@@ -32,5 +32,5 @@ export function isInstructorOrUser(req, res, next){
             }
         }
     }
-    res.redirect('/');    
+    res.status(403).send({status: 403, message: 'Sorry, you are not authorized to view this page'});     
 }
