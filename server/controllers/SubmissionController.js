@@ -114,7 +114,6 @@ export function createSubmission(req, res, next) {
     var user_email = req.params.email;
     var submissionFound = false;
     User.findOne({"email": user_email}, (err, user) =>{
-        console.log(user);
         if (err){
             res.status(500).send(err);   
         } else {
@@ -135,7 +134,6 @@ export function createSubmission(req, res, next) {
                                 submissions: 0
                                 });
                             }
-                            console.log(assignment.user_submissions);
                             assignment.user_submissions.forEach((sub) => {
                                 if(sub.email == req.params.email){
                                     var version = sub.submissions;
@@ -196,7 +194,6 @@ export function updateSubmission(req, res, next) {
                                         assignment_num: req.params.assignment_num,
                                         course_num: req.params.course_num
                                     }, (err, submissionObj) => {
-                                        console.log(req.body);
                                         for (var key in req.body) {
                                             if (req.body.hasOwnProperty(key)) {
                                               var item = req.body[key];

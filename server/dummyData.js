@@ -123,7 +123,8 @@ Course.count().exec((err, count) => {
 
     const user3 = new User({
                             first_name:     'Dhruv', 
-                            last_name:      'Kumar', 
+                            last_name:      'Kumar',
+                            sys_role:       'admin', 
                             email:          'dkumar2@buffalo.edu', 
                             person_number:  '12345677', 
                             updated_at:      new Date(),
