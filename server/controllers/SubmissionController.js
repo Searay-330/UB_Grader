@@ -3,6 +3,8 @@ import Course from '../models/Course'
 import Submission from '../models/Submission'
 import * as AuthCheck from '../util/authentication'
 
+const request = require('request');
+
 /**
  * Gets all the user submissions of a specific assignment.
  * @param req : User's request (should contain course_num, assignment_num, email as a parameter)
@@ -102,17 +104,18 @@ export function createSubmission(req, res, next) {
                     } else {
                         course.assignments.forEach((assignment) => {
                             if(assignment.assignment_num == req.params.assignment_num){
-                                assignment.user_submissions.forEach((sub) => {
-                                    if(sub.email == user_email){
-                                    submissionFound = true;   
-                                    }
-                                });
-                                if(!submissionFound){
-                                    assignment.user_submissions.push({
-                                    email: user_email,
-                                    submissions: 0
-                                    });
-                                }
+                                // assignment.user_submissions.forEach((sub) => {
+                                //     if(sub.email == user_email){
+                                //     submissionFound = true;   
+                                //     }
+                                // });
+                                // if(!submissionFound){
+                                //     assignment.user_submissions.push({
+                                //     email: user_email,
+                                //     submissions: 0
+                                //     });
+                                // }
+                                // console.log(user.email);
                                 assignment.user_submissions.forEach((sub) => {
                                     if(sub.email == user_email){
                                         var submission = new Submission();
