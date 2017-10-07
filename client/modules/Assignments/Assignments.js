@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 //Import Actions
 import { getCourseData } from './AssignmentsActions'
 import {redirectReset} from './components/CreateAssignment/CreateAssignmentActions';
+import RaisedButton from 'material-ui/FlatButton';
 
 // Import Components
 import Category from './modules/Category/Category';
@@ -44,11 +45,15 @@ export class Assignments extends Component {
       cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
     }
     if(this.props.redirected){
-      this.props.resetRedir();
       this.props.getCourseData(this.props.params.course);
+      this.props.resetRedir();
     }
     return (
       <div>
+        <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.charAt(window.location.length - 1) != "/") ? window.location + "/create" : window.location.subStr(-1) + "create"}} />
+        <br />
+        <br />
+        <br />
         <GridList
           cols={3}
         >
