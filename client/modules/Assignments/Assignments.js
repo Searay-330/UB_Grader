@@ -50,7 +50,7 @@ export class Assignments extends Component {
     }
     return (
       <div>
-        <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.charAt(window.location.length - 1) != "/") ? window.location + "/create" : window.location.subStr(-1) + "create"}} />
+        <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create"}} />
         <br />
         <br />
         <br />
