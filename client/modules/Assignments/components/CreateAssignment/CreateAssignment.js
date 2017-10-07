@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {Alert} from '../../../../components/Alert/Alert';
 
 
 // Import Style
@@ -8,6 +9,7 @@ import styles from './CreateAssignment.css';
 
 //Import Actions
 import { getCategories, submitForm } from './CreateAssignmentActions'
+
 
 
 import GridTile from 'material-ui/GridList';
@@ -29,17 +31,17 @@ export class CreateAssignment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'realname',
-      displayName: 'test',
+      name: '',
+      displayName: '',
       startDate: {},
       dueDate: {},
       endDate: {},
       startTime: {},
       dueTime: {},
       endTime: {},
-      category: 'cat',
-      p_name: 'problem',
-      max_score: '50',
+      category: '',
+      p_name: '',
+      max_score: '',
     };
   }
 
@@ -82,6 +84,7 @@ export class CreateAssignment extends Component {
   render() {
     return (
       <div>
+      <Alert />
        <Card initiallyExpanded={true}>
     <CardHeader
       title="Basic Settings"
