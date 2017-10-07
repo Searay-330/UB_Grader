@@ -8,6 +8,7 @@ import Assignments from './modules/Assignments/Assignments';
 import Assignment from './modules/Assignment/Assignment';
 import CreateAssignment from './modules/Assignments/components/CreateAssignment/CreateAssignment';
 import CreateCourse from './modules/Courses/components/CreateCourse/CreateCourse';
+import AddUser from './modules/Courses/components/AddUser/AddUser';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -31,6 +32,7 @@ export default (
   	<Route path="/api/auth/google" component={() => window.location = "/api/auth/google" } />
     <Route path="/api/logout" component={() => window.location = "/api/logout" } />
     <Route path="testing" component={Bs}/>
+    <Route path ="/courses/:course/adduser" component={AddUser}/>
     <Route path ="/courses/create" component={CreateCourse}/>
     <Route path="/courses" component={Courses}/>
     <Route path="/courses/:course/assignments" component={Assignments}>
