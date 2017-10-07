@@ -27,7 +27,7 @@ export function createAssignment(req, res){
                 due_date = req.body.due_date;
             }
             if (req.body.problems) {
-                problems = req.body.problems;
+                problems = JSON.parse(req.body.problems);
             }
             var assignment = {
                 category: req.body.category,
@@ -43,7 +43,7 @@ export function createAssignment(req, res){
             courseobj.assignments.push(assignment);
             courseobj.save((err, updatedcourseobj) => {
                 if (err) res.status(500).send(err);
-                else res.status(200).send(courseobj);
+                else res.status(200).send(assignment);
             });
         }
     });
