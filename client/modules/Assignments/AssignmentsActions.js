@@ -11,6 +11,8 @@ function mapping(data){
   	}
   	return map;
 }
+
+
 export function getCourseData(course_num) {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});

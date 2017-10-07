@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 //Import Actions
 import { getCourseData } from './AssignmentsActions'
+import {redirectReset} from './components/CreateAssignment/CreateAssignmentActions';
 
 // Import Components
 import Category from './modules/Category/Category';
@@ -42,7 +43,10 @@ export class Assignments extends Component {
     for (var key in this.state.categories) {
       cats.push(<Category key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
     }
-    console.log(cats);
+    if(this.props.redirected){
+      this.props.resetRedir();
+      this.props.getCourseData(this.props.params.course);
+    }
     return (
       <div>
         <GridList
@@ -59,12 +63,14 @@ export class Assignments extends Component {
 function mapStateToProps(state) {
   return {
     assignments: state.assignments.assignmentsData,
+    redirected: state.create.redirect,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getCourseData: getCourseData,
+    resetRedir: redirectReset,
   }, dispatch);
 }
 
