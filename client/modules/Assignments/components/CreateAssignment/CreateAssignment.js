@@ -47,6 +47,15 @@ export class CreateAssignment extends Component {
 
 
   componentDidMount() {
+    if(!this.props.user["sys_role"]){
+      for(var i = 0; i < this.props.user.courses.length; i++){
+        if(this.props.user.courses[i].course_num == this.props.params.course){
+          if(this.props.user.courses[i].course_role != "instructor"){
+            window.location = "/courses/"+this.props.params.course+"/assignments";
+          }
+        }
+      }
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -176,6 +185,7 @@ function mapStateToProps(state) {
     assignmentsData: state.assignments.assignmentsData,
     errorObject: state.create.errorObject,
     redirect: state.create.redirect,
+    user: state.app.user,
   };
 }
 
