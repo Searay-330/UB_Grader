@@ -3,6 +3,7 @@ import * as UserController from '../controllers/UserController'
 import * as AssignmentController from '../controllers/AssignmentController'
 import * as CourseController from '../controllers/CourseController'
 import * as SubmissionController from '../controllers/SubmissionController'
+import * as TangoController from '../controllers/TangoController'
 import * as AuthCheck from '../util/authentication'
 import submissionsUpload from '../util/multer_submission_config'
 const router = new Router();
@@ -141,5 +142,9 @@ router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email
 
 //Deletes a Submission
 // router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/:version/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.deleteSubmission);
+
+router.get('/openTango', TangoController.openTango);
+
+router.post('/uploadTango', TangoController.uploadTango);
 
 export default router;
