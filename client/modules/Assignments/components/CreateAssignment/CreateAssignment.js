@@ -37,8 +37,8 @@ export class CreateAssignment extends Component {
       startTime: {},
       dueTime: {},
       endTime: {},
-      category: 'Shit',
-      p_name: 'fuck',
+      category: 'cat',
+      p_name: 'problem',
       max_score: '50',
     };
   }

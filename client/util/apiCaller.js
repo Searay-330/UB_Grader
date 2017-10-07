@@ -26,10 +26,6 @@ export default function callApi(endpoint, method = 'get', body) {
   );
 }
 
-export function add(){
-  return 5;
-}
-
 
 export function callApiWithFiles(endpoint, body) {
   return fetch(`${API_URL}/${endpoint}`, {
