@@ -4,6 +4,7 @@ import * as AssignmentController from '../controllers/AssignmentController'
 import * as CourseController from '../controllers/CourseController'
 import * as SubmissionController from '../controllers/SubmissionController'
 import * as AuthCheck from '../util/authentication'
+import submissionsUpload from '../util/multer_submission_config'
 const router = new Router();
 const passport = require('passport');
 const multer = require('multer');
@@ -41,24 +42,25 @@ const tangoStorage = multer.diskStorage({
 	}
 });
 
-const submissionsStorage = multer.diskStorage({ 
-	destination: (req, file, cb) => {
-		const assingment = req.params.assignment_num;
-        const course = req.params.course_num;
-		const path = `./uploads/${course}/${assingment}/submissions`;
-		fs.mkdirsSync(path);
-		cb(null, path);
-	},
-	filename: (req, file, cb) => {
-		const file_name = 'temp'+'-'+file.originalname;		
-		cb(null ,file_name);
-	}
-});
+// const submissionsStorage = multer.diskStorage({ 
+// 	destination: (req, file, cb) => {
+// 		const assingment = req.params.assignment_num;
+//         const course = req.params.course_num;
+// 		const path = `./uploads/${course}/${assingment}/submissions`;
+// 		fs.mkdirsSync(path);
+// 		cb(null, path);
+// 	},
+// 	filename: (req, file, cb) => {
+// 		const file_name = 'temp'+'-'+file.originalname;		
+// 		cb(null ,file_name);
+// 	}
+// });
 
 
 const upload = multer({ storage: storage });
 const tangoUpload = multer({storage: tangoStorage});
-const submissionsUpload = multer({ storage: submissionsStorage });
+// const submissionsUpload = multer({ storage: submissionsStorage });
+
 
 //Google OAuth login route
 router.get('/auth/google', passport.authenticate('google', {
