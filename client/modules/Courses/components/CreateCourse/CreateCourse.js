@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import styles from './CreateCourse.css';
 
 //Import Actions
-
+import { submitForm } from './CreateCourseActions'
 
 import GridTile from 'material-ui/GridList';
 import {Card, CardText, CardHeader, CardActions, CardTitle} from 'material-ui/Card';
@@ -24,7 +24,12 @@ import TimePicker from 'material-ui/TimePicker';
 export class CreateCourse extends Component {
   constructor(props) {
     super(props);
-    this.state = {  };
+    this.state = {
+      course_num: '',
+      display_name: '',
+      semester: '',
+      student_email: '',
+    };
   }
 
   componentDidMount() {
@@ -33,6 +38,15 @@ export class CreateCourse extends Component {
   componentWillReceiveProps(nextProps) {
 
   }
+
+  fieldChange = (event) => {
+      var st = getEditableState(this.state);
+      st.display_name = document.getElementById("display_name").value;
+      st.course_num = document.getElementById("course_num").value;
+      st.semester = document.getElementById("semester").value;
+      st.student_email = document.getElementById("student_email").value;
+      this.setState(st);
+  };
 
   render() {
     return (
@@ -44,25 +58,43 @@ export class CreateCourse extends Component {
             //showExpandableButton={true}
           />
           <CardText expandable={false}>
-            <TextField 
-              hintText="Course Name" 
+           <TextField 
+              id="display_name"
+              value={this.state.display_name} 
+              onChange={this.fieldChange}
+              hintText="Display Name" 
               className={styles.dividerUnder} 
-              floatingLabelText="Course Name"
+              floatingLabelText="Display Name"
             />
             <br/>
             <TextField 
-              hintText="Semester (example: fa17)" 
+              id="course_num"
+              value={this.state.course_num} 
+              onChange={this.fieldChange}
+              hintText="Course Num (ex: cse331-f17)" 
               className={styles.dividerUnder} 
-              floatingLabelText="Semester (example: fa17)"
+              floatingLabelText="Course Num (ex: cse331-f17)"
             />
             <br/>
             <TextField 
+              id="semester"
+              value={this.state.semester} 
+              onChange={this.fieldChange}
+              hintText="Semester (ex: Fall 2017)" 
+              className={styles.dividerUnder} 
+              floatingLabelText="Semester (ex: Fall 2017)"
+            />
+            <br/>
+            <TextField 
+              id="student_email"
+              value={this.state.student_email} 
+              onChange={this.fieldChange}
               hintText="Instructor Email" 
               className={styles.dividerUnder} 
-              loatingLabelText="Instructor Email"
+              floatingLabelText="Instructor Email"
             />  
             <br />
-            <RaisedButton label='Create Course' primary={true} />
+            <RaisedButton label='Create Course' onClick={() => {this.props.submitForm(this.state)}} primary={true} />
           </CardText>
         </Card>
       </div>
@@ -80,8 +112,18 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-
+    submitForm: submitForm,
   }, dispatch);
+}
+
+
+function getEditableState(state){
+  return ({
+      course_num: state.course_num,
+      display_name: state.display_name,
+      semester:state.semester,
+      student_email: state.student_email,
+    });
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateCourse);
