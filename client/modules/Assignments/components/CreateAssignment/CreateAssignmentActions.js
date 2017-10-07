@@ -44,7 +44,6 @@ export function submitForm(formData, course) {
       	if(data["_message"]){
         dispatch(throwError(data["_message"]));
       	}
-        // dispatch(throwError("getFucked"));
       })
   }
 }
