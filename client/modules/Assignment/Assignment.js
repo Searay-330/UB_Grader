@@ -46,12 +46,19 @@ export class Assignment extends Component {
   }
 
   render() {
-    var maxScore = this.props.maxScore;
+    
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
     console.log(assignmentData);
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
+    console.log(assignmentData.problems[0]);
+    var problemsArray = assignmentData.problems;
+    //Determine maxScore
+    var maxScore = 0;
+    for(var i = 0; i < problemsArray.length; i++){
+      maxScore = maxScore + problemsArray[i].score;
+    }
     return (
       <Card>
         <CardTitle title={this.props.params.assignment} subtitle={asst_desc}/>
@@ -76,7 +83,7 @@ export class Assignment extends Component {
         <CardText>
           {
             this.state.submitted
-              ? <p>Your submission has been successfully forwarded to daviddob@buffalo.edu for review.</p>
+              ? <p>Your submission has been submitted for review.</p>
               : null
           }
           {
