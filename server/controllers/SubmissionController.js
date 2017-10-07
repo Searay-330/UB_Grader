@@ -1,6 +1,7 @@
 import User from '../models/User'
 import Course from '../models/Course'
 import Submission from '../models/Submission'
+import * as TangoController from './TangoController'
 import * as AuthCheck from '../util/authentication'
 
 const request = require('request');
@@ -110,12 +111,6 @@ export function createSubmission(req, res, next) {
                                     submissionFound = true;   
                                     }
                                 });
-                                if(!submissionFound){
-                                    assignment.user_submissions.push({
-                                    email: user_email,
-                                    submissions: 0
-                                    });
-                                }
                                 assignment.user_submissions.forEach((sub) => {
                                     if(sub.email == user_email){
                                         var submission = new Submission();
@@ -128,23 +123,11 @@ export function createSubmission(req, res, next) {
                                         submission.feedback = "Placeholder";
                                         submission.form_data = "Placeholder";
                                         submission.grader = "Placeholder";
-
-                                        var tangoReq = request({
-                                            uri: 'http://localhost:3000/upload/test/courselab/',
-                                            method: 'POST',
-                                            headers: {
-                                                'filename': submission.file_name
-                                            }
-                                        }, function (err, resp, body) {
-                                            if (err) {
-                                              console.log('Error!');
-                                            } else {
-                                              console.log('URL: ' + body);
-                                            }
-                                          });
-                                          var form = tangoReq.form();
-                                          form.append('file', fs.createReadStream(`./uploads/${submission.course_num}/${submission.assignment_num}/submissions/${submission.file_name}`));
-
+                                    
+                                        if (assignment.auto_grader){
+                                            TangoController.sendToTango(submission, assignment, course);
+                                        }
+                                        
                                         course.save((err, courseObj) => {
                                             if (err) res.status(500).send(err);
                                             submission.save((err, submissionObj) => {

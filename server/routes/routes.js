@@ -143,8 +143,5 @@ router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email
 //Deletes a Submission
 // router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/:version/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.deleteSubmission);
 
-router.get('/openTango', TangoController.openTango);
-
-router.post('/uploadTango', TangoController.uploadTango);
 
 export default router;
