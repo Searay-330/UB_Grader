@@ -35,7 +35,7 @@ export function submitForm(formData, course) {
 	hold = (!hold) ? (formData.displayName != "") ? data.append("name", formData.displayName) : "Display Name Is A Required Field" : hold;
 	data.append("section_based",false);
 	data.append("auto_grader",true);
-	data.append("problems", JSON.stringify([{problem_name:formData.p_name, score : parseInt(formData.max_score) }]));
+	hold = (!hold) ? (formData.p_name != "" && parseInt(formData.max_score) != NaN) ? data.append("problems", JSON.stringify([{problem_name:formData.p_name, score : parseInt(formData.max_score) }])) : hold : hold;
 	if(hold){
 		return dispatch(throwError(hold));
 	}
