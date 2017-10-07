@@ -26,14 +26,46 @@ export function submitForm(formData, course) {
   	var hold = undefined;
 	var data;
 
+
+
 	data = new FormData();
-	// hold = (!hold) ? (formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "") ? data.append("assignment_num", encodeURIComponent(formData.name)) : "Assignment Name Is A Required Field Or Your String Contained No Urlable Chars" : hold;
+
+	//dates
+	hold = validateDates(formData);
+	if(hold == "skip"){
+		hold = undefined;
+	}else{
+		
+		if(hold){
+			return dispatch(throwError(hold));
+		}
+		formData.startDate.setHours(formData.startTime.getHours(),formData.startTime.getMinutes(),0, 0);
+		formData.dueDate.setHours(formData.dueTime.getHours(),formData.dueTime.getMinutes(),0, 0);
+		formData.endDate.setHours(formData.endTime.getHours(),formData.endTime.getMinutes(),0, 0);
+
+		if(formData.startDate.getTime() > formData.dueDate.getTime()){
+			return dispatch(throwError("Due Date Must Come After Start"));
+		}
+
+		if(formData.dueDate.getTime() > formData.endDate.getTime()){
+			return dispatch(throwError("End Date Must Come After Due"));
+		}
+
+		data.append("start_date", formData.startDate);
+		data.append("due_date", formData.dueDate);
+		data.append("end_date", formData.endDate);
+	}
+
+	// everything else
+	hold = (!hold) ? (formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "") ? data.append("assignment_num", encodeURIComponent(formData.name)) : "Assignment Name Is A Required Field Or Your String Contained No Urlable Chars" : hold;
 	hold = (!hold) ? (document.getElementById("tar") != null) ? data.append("tar", document.getElementById("tar").files[0], "tarball.tar") : hold : hold;
 	hold = (!hold) ? (document.getElementById("make") != null) ? data.append("make", document.getElementById("make").files[0], "makefile") : hold : hold;
 	hold = (!hold) ? (formData.category != "") ? data.append("category", formData.category) : "Category Is A Required Field" : hold;
 	hold = (!hold) ? (formData.displayName != "") ? data.append("name", formData.displayName) : "Display Name Is A Required Field" : hold;
+
 	data.append("section_based",false);
 	data.append("auto_grader",true);
+
 	if(!hold){
 		if(formData.p_name != "" && !isNaN(parseInt(formData.max_score))){
 			data.append("problems", JSON.stringify([{problem_name:formData.p_name, score : parseInt(formData.max_score) }]));
@@ -60,4 +92,29 @@ export function submitForm(formData, course) {
       	}
       })
   }
+}
+
+function validateDates(formData){
+	if(formData.startDate == null && formData.startTime == null && formData.dueDate == null && formData.dueTime == null && formData.endDate == null && formData.endTime == null){
+		return "skip";
+	}
+	if(formData.startDate == null){
+		return "Please Enter A Vaild Start Date";
+	}
+	if(formData.startTime == null){
+		return "Please Enter A Vaild Start Time";
+	}
+	if(formData.dueDate == null){
+		return "Please Enter A Vaild Due Date";
+	}
+	if(formData.dueTime == null){
+		return "Please Enter A Vaild Due Time";
+	}
+	if(formData.endDate == null){
+		return "Please Enter A Vaild End Date";
+	}
+	if(formData.endTime == null){
+		return "Please Enter A Vaild End Time";
+	}
+	return undefined;
 }
