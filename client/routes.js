@@ -34,7 +34,7 @@ export default (
     <Route path ="/courses/create" component={CreateCourse}/>
     <Route path="/courses" component={Courses}/>
     <Route path="/courses/:course/assignments" component={Assignments}>
-    <Route exact path="/courses/:course/assignments/create" component={CreateAssignment}/>
+      <Route exact path="/courses/:course/assignments/create" component={CreateAssignment}/>
       <Route path="/courses/:course/assignments/:assignment" component={Assignment}/>
     </Route>
   </Route>
