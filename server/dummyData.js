@@ -246,40 +246,40 @@ Course.count().exec((err, count) => {
 //                                        feedback:       "This is a submission for CSE442 assignment 2"
 //                                        });
     
-    const sampleSubmission4 = new Submission({
-                                        user_id:        user7.id,
-                                        course_id:      course_cse442._id,
-                                        assignment_id:  assignment2._id,
-                                        course_num:     course_cse442.course_num,            
-                                        assignment_num: assignment2.assignment_num,
-                                        version:        -1,
-                                        file_name:      "placeholder",
-                                        grader:         "placeholder",
-                                        form_data:      "placeholder",
-                                        feedback:       "This is a submission for CSE442 assignment 2 user 7"
-                                        });
+    // const sampleSubmission4 = new Submission({
+    //                                     user_id:        user7.id,
+    //                                     course_id:      course_cse442._id,
+    //                                     assignment_id:  assignment2._id,
+    //                                     course_num:     course_cse442.course_num,            
+    //                                     assignment_num: assignment2.assignment_num,
+    //                                     version:        -1,
+    //                                     file_name:      "placeholder",
+    //                                     grader:         "placeholder",
+    //                                     form_data:      "placeholder",
+    //                                     feedback:       "This is a submission for CSE442 assignment 2 user 7"
+    //                                     });
     
-    const sampleSubmission5 = new Submission({
-                                        user_id:        user7.id,
-                                        course_id:      course_cse442._id,
-                                        assignment_id:  assignment1._id,
-                                        course_num:     course_cse442.course_num,            
-                                        assignment_num: assignment1.assignment_num,
-                                        version:        -1,
-                                        file_name:      "placeholder",
-                                        grader:         "placeholder",
-                                        form_data:      "placeholder",
-                                        feedback:       "This is a submission for CSE442 assignment 1 user 7"
-                                        });
+    // const sampleSubmission5 = new Submission({
+    //                                     user_id:        user7.id,
+    //                                     course_id:      course_cse442._id,
+    //                                     assignment_id:  assignment1._id,
+    //                                     course_num:     course_cse442.course_num,            
+    //                                     assignment_num: assignment1.assignment_num,
+    //                                     version:        -1,
+    //                                     file_name:      "placeholder",
+    //                                     grader:         "placeholder",
+    //                                     form_data:      "placeholder",
+    //                                     feedback:       "This is a submission for CSE442 assignment 1 user 7"
+    //                                     });
     
-    Submission.create([sampleSubmission4,sampleSubmission5], (error) => {
-        if (!error) {
-            // console.log('ready to go....');
-        }
-        else {
-            console.log(error);
-        }
-    });
+    // Submission.create([sampleSubmission4,sampleSubmission5], (error) => {
+    //     if (!error) {
+    //         // console.log('ready to go....');
+    //     }
+    //     else {
+    //         console.log(error);
+    //     }
+    // });
 
 });
 

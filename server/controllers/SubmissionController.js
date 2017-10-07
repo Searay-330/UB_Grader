@@ -111,17 +111,20 @@ export function getAllSubmissions(req, res, next) {
  */
 
 export function createSubmission(req, res, next) {
-    var user_email = req.params.email;
+    var user_email = req.user.email;
+    console.log(user_email);
     var submissionFound = false;
-    if (req.files[0].length != 1){
+    if (!req.files[0] || req.files.length > 1){
         res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
     }
     else{
         User.findOne({"email": user_email}, (err, user) =>{
+            console.log(user);
             if (err){
                 res.status(500).send(err);   
             } else {
                 Course.findOne({'course_num': req.params.course_num }, (err,course) =>{
+                    console.log("Got here!");
                     if (err){
                         res.status(500).send(err);   
                     } else {
@@ -139,7 +142,7 @@ export function createSubmission(req, res, next) {
                                     });
                                 }
                                 assignment.user_submissions.forEach((sub) => {
-                                    if(sub.email == req.params.email){
+                                    if(sub.email == user_email){
                                         var version = sub.submissions;
                                         version += 1;
                                         sub.submissions = version;
@@ -147,6 +150,7 @@ export function createSubmission(req, res, next) {
                                         req.files[0].filename = file_name;
                                         var submission = new Submission();
                                         submission.user_id = user.id;
+                                        submission.user_email = user_email;
                                         submission.course_num = req.params.course_num;
                                         submission.assignment_num = req.params.assignment_num;
                                         submission.file_name = file_name;
