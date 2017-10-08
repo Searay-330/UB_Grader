@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const submssions_scoreSchema = new Schema({
 
     _id:                        false,
-    problem_id:                 { type: Schema.Types.ObjectId, ref: 'Courses.assignments.problems', required: true },
+    problem_id:                 { type: String, required: true },
     score:                      { type: Number, required: true },
 
 });
