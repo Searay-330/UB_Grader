@@ -2,7 +2,9 @@ import { Router } from 'express';
 import * as UserController from '../controllers/UserController'
 import * as AssignmentController from '../controllers/AssignmentController'
 import * as CourseController from '../controllers/CourseController'
+import * as SubmissionController from '../controllers/SubmissionController'
 import * as AuthCheck from '../util/authentication'
+import submissionsUpload from '../util/multer_submission_config'
 const router = new Router();
 const passport = require('passport');
 const multer = require('multer');
@@ -40,9 +42,25 @@ const tangoStorage = multer.diskStorage({
 	}
 });
 
+// const submissionsStorage = multer.diskStorage({ 
+// 	destination: (req, file, cb) => {
+// 		const assingment = req.params.assignment_num;
+//         const course = req.params.course_num;
+// 		const path = `./uploads/${course}/${assingment}/submissions`;
+// 		fs.mkdirsSync(path);
+// 		cb(null, path);
+// 	},
+// 	filename: (req, file, cb) => {
+// 		const file_name = 'temp'+'-'+file.originalname;		
+// 		cb(null ,file_name);
+// 	}
+// });
+
 
 const upload = multer({ storage: storage });
 const tangoUpload = multer({storage: tangoStorage});
+// const submissionsUpload = multer({ storage: submissionsStorage });
+
 
 //Google OAuth login route
 router.get('/auth/google', passport.authenticate('google', {
@@ -73,6 +91,15 @@ router.get('/courses/:course_num/sections', AuthCheck.isAuthenticated, AuthCheck
 
 //Returns the students of a specific section of a course.
 router.get('/courses/:course_num/:section_name/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
+
+//Returns all the submission of a specific user and assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getUserSubmissions);
+
+//Returns all the submissions of all users in a specific assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getAllSubmissions);
+
+//Returns latest submission of a specific user in a specific assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getLatestSubmission);
 
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
@@ -105,5 +132,14 @@ router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated
 router.post('/courses/:course_num/assignments/:assignment_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.updateAssignment);
 
 router.post('/courses/:course_num/assignments/:assignment_num/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.deleteAssignment);
+
+//Creates a new Submission
+router.post('/courses/:course_num/assignments/:assignment_num/submissions/create', AuthCheck.isAuthenticated, submissionsUpload.any(), SubmissionController.createSubmission);
+
+//Updates a Submission
+router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/:version/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.updateSubmission);
+
+//Deletes a Submission
+// router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/:version/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.deleteSubmission);
 
 export default router;
