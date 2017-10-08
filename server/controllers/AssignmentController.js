@@ -27,7 +27,6 @@ export function createAssignment(req, res){
                 due_date = req.body.due_date;
             }
             if (req.body.problems) {
-                console.log(req.body.problems);
                 problems = JSON.parse(req.body.problems);
             }
             var assignment = {
