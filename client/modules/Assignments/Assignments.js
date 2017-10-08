@@ -16,12 +16,13 @@ import Subheader from 'material-ui/Subheader';
 export class Assignments extends Component {
   constructor(props) {
     super(props);
-    this.state = { render: false, categories: [] };
+    this.state = { render: false, categories: []};
+    
   }
 
   componentDidMount() {
     this.props.getCourseData(this.props.params.course);
-    this.setState({ render: false, categories: [] });
+    this.setState({ render: false, categories: []});
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,7 +33,7 @@ export class Assignments extends Component {
       }
       this.categories[nextProps.assignments[i].category].push(nextProps.assignments[i]);
     }
-    this.setState({ render: true, categories: this.categories });
+    this.setState({ render: true, categories: this.categories, instructor: this.state.instructor});
 
   }
 
@@ -48,9 +49,14 @@ export class Assignments extends Component {
       this.props.getCourseData(this.props.params.course);
       this.props.resetRedir();
     }
+    var create = null;
+    if(this.props.perms[this.props.params.course] != "student"){
+      create = <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create"}} />;
+    } 
+    
     return (
       <div>
-        <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create"}} />
+        {create}
         <br />
         <br />
         <br />
@@ -66,9 +72,11 @@ export class Assignments extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
+  console.log(state);
   return {
     assignments: state.assignments.assignmentsData,
     redirected: state.create.redirect,
+    perms: state.app.perms,
   };
 }
 
