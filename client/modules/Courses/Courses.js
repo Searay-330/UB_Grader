@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import Course from './modules/Course/Course';
 import {getCourses} from './CoursesActions';
 import { PanelGroup, Grid, Row } from 'react-bootstrap';
+import RaisedButton from 'material-ui/FlatButton';
 
 export class Courses extends Component {
 
@@ -33,9 +34,27 @@ export class Courses extends Component {
     }
 
     render() {
+        
         if (!this.state.render) {
             return null;
         }
+
+        var isAdmin = false;
+        for(var i in this.props.perms){
+            if(this.props.perms[i] == 'admin'){
+                isAdmin = true;
+                break;
+            }
+        }
+
+        var create = null;
+        if(isAdmin){
+            create = <RaisedButton 
+                        labelStyle={{color:"white"}} 
+                        backgroundColor="#005BBB" 
+                        label="Create Course" 
+                        onClick={()=>{window.location = "/courses/create"}} />;
+        } 
         var courses = [];
         for (var i = 0; i < this.state.courses.length; i++) {
             var course = this.state.courses[i];
@@ -44,6 +63,10 @@ export class Courses extends Component {
             );
         }
         return (
+            <div>
+            {create}
+            <br/>
+            <br/>
             <PanelGroup>
                 <Grid>
                     <Row>
@@ -51,13 +74,15 @@ export class Courses extends Component {
                     </Row>
                 </Grid>
             </PanelGroup>
+            </div>
         )
     }
 }
 
 function mapStateToProps(state) {
     return {
-        courses: state.courses.coursesData
+        courses: state.courses.coursesData,
+        perms: state.app.perms,
     }
 }
 
