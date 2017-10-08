@@ -13,7 +13,7 @@ import styles from './Alert.css';
 export function Alert(props) {
   return (
     <div className={[styles.alert, styles.error].join(" ")}>
-        <span>This is a Horrible Problem Fix it</span>
+        <span>{props.text}</span>
     </div>
   );
 }

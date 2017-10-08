@@ -31,26 +31,32 @@ export class CreateAssignment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
-      displayName: '',
-      startDate: {},
-      dueDate: {},
-      endDate: {},
-      startTime: {},
-      dueTime: {},
-      endTime: {},
-      category: '',
-      p_name: '',
-      max_score: '',
+      name: "",
+      displayName: "",
+      startDate: null,
+      dueDate: null,
+      endDate: null,
+      startTime: null,
+      dueTime: null,
+      endTime: null,
+      category: "",
+      p_name: "",
+      max_score: "",
     };
+    if(this.props.perms[this.props.params.course] == "student"){
+      window.location = "/courses/" + this.props.params.course + "/assignments"; 
+    }
   }
 
 
   componentDidMount() {
+
   }
 
   componentWillReceiveProps(nextProps) {
-
+    if(nextProps.redirect){
+      this.context.router.push("/courses/" + nextProps.params.course + "/assignments");
+    }
   }
 
   wrapperFunction = (location)=>{return (event,date) => {this.dateChange(event,date,location)}};
@@ -82,9 +88,10 @@ export class CreateAssignment extends Component {
   };
 
   render() {
+    
     return (
       <div>
-      <Alert />
+      {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
        <Card initiallyExpanded={true}>
     <CardHeader
       title="Basic Settings"
@@ -104,7 +111,7 @@ export class CreateAssignment extends Component {
       <DatePicker id="endDate" value={this.state.endDate} onChange={this.wrapperFunction("endDate")} style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
       <TimePicker id="endTime" value={this.state.endTime} onChange={this.wrapperFunction("endTime")} className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" />
       <br />
-      <AutoComplete id="category" value={this.state.category} onUpdateInput={this.otherChange} floatingLabelText="Category" filter={AutoComplete.noFilter} openOnFocus={true} dataSource = {["hello"]}/>
+      <AutoComplete id="category" value={this.state.category} onUpdateInput={this.otherChange} floatingLabelText="Category" filter={AutoComplete.noFilter} openOnFocus={true} dataSource = {getCategories(this.props.assignmentsData)}/>
       <br />
       <br />
       <br />
@@ -162,16 +169,24 @@ export class CreateAssignment extends Component {
   }
 }
 
+
+CreateAssignment.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
-    assignmentData: state.assignments.assignmentsData,
+    assignmentsData: state.assignments.assignmentsData,
+    errorObject: state.create.errorObject,
+    redirect: state.create.redirect,
+    perms: state.app.perms,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    submitForm: submitForm,
+    submitForm: submitForm
   }, dispatch);
 }
 
