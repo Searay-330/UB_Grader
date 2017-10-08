@@ -3,63 +3,15 @@ import * as UserController from '../controllers/UserController'
 import * as AssignmentController from '../controllers/AssignmentController'
 import * as CourseController from '../controllers/CourseController'
 import * as SubmissionController from '../controllers/SubmissionController'
+import * as TangoController from '../controllers/TangoController'
 import * as AuthCheck from '../util/authentication'
-import submissionsUpload from '../util/multer_submission_config'
+import submissionsUpload from '../util/multerSubmissionConfig'
+import tangoUpload from '../util/multerTangoConfig'
+import callbackUpload from '../util/multerCallbackConfig'
+import rosterUpload from '../util/multerRosterConfig'
+
 const router = new Router();
 const passport = require('passport');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs-extra');
-const storage = multer.diskStorage({ 
-	destination: (req, file, cb) => {
-		const course = req.params.course_num;
-		const path = `./uploads/${course}`;
-		fs.mkdirsSync(path);
-		cb(null, path);
-	},
-	filename: (req, file, cb) => {
-		const file_name = req.user.email+'-'+file.originalname;
-		// const file_name = 'aamelunia'+'-'+file.originalname;		
-		cb(null ,file_name);
-	}
-});
-
-const tangoStorage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		const course = req.params.course_num;
-		const assignment = req.body.assignment_num;
-		const path = `./uploads/${course}/${assignment}/Tango`
-		fs.mkdirsSync(path);
-		cb(null, path);
-	},
-	filename: (req, file, cb) => {
-		if (path.extname(file.originalname)	== '.tar'){
-			cb(null, "autograde.tar");
-		}	
-		else {
-			cb(null, "autograde-Makefile");
-		}
-	}
-});
-
-// const submissionsStorage = multer.diskStorage({ 
-// 	destination: (req, file, cb) => {
-// 		const assingment = req.params.assignment_num;
-//         const course = req.params.course_num;
-// 		const path = `./uploads/${course}/${assingment}/submissions`;
-// 		fs.mkdirsSync(path);
-// 		cb(null, path);
-// 	},
-// 	filename: (req, file, cb) => {
-// 		const file_name = 'temp'+'-'+file.originalname;		
-// 		cb(null ,file_name);
-// 	}
-// });
-
-
-const upload = multer({ storage: storage });
-const tangoUpload = multer({storage: tangoStorage});
-// const submissionsUpload = multer({ storage: submissionsStorage });
 
 
 //Google OAuth login route
@@ -123,7 +75,7 @@ router.post('/courses/:course_num/:section_name/drop', AuthCheck.isAuthenticated
 router.post('/courses/:course_num/drop', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
-router.post('/courses/:course_num/importRoster', upload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+router.post('/courses/:course_num/importRoster', rosterUpload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
 
 //Create an assignment for a course
 router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, tangoUpload.any(), AssignmentController.createAssignment);
@@ -141,5 +93,7 @@ router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email
 
 //Deletes a Submission
 // router.post('/courses/:course_num/assignments/:assignment_num/submissions/:email/:version/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.deleteSubmission);
+
+router.post('/Tango/callback/:course_num/:assignment_num/:submission_id', callbackUpload.any(), TangoController.callbackTango);
 
 export default router;
