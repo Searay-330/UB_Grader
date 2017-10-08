@@ -6,6 +6,8 @@ var openURL = 'http://localhost:3000/open/test/';
 var uploadURL = 'http://localhost:3000/upload/test/';
 var addJobURL = 'http://localhost:3000/addJob/test/';
 
+var lastLine = require('last-line');
+
 function openTango(course_num, assignment_num) {
     var success = true;
     request.get(openURL + course_num + '-' + assignment_num + '/', function(err, response, body){
@@ -112,9 +114,24 @@ export function callbackTango(req, res){
     Submission.findById(req.params.submission_id, function(err, submission){
         var file = fs.readFileSync(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, 'utf8');
         submission.feedback = file;
-        submission.save((err, updatedSubmission) => {
-            if (err) res.status(500).send(err);
-            else res.status(200).send({});            
+        var scoresList = []
+        lastLine(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, function (err, temp) {
+           var output = JSON.parse(temp);
+           var scoresJson = output.scores;
+           for (var problem_name in scoresJson) {
+               if (scoresJson.hasOwnProperty(problem_name)) {
+                  scoresList.push({
+                    "problem_name" : problem_name,
+                    "score"        : scoresJson[problem_name]
+                  });
+               }
+            }
+            submission.set('scores', scoresList);
+             
+            submission.save((err, updatedSubmission) => {
+                if (err) res.status(500).send(err);
+                else res.status(200).send({});            
+            });
         });
     });
 }
