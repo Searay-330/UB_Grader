@@ -1,7 +1,7 @@
 import callApi from '../../util/apiCaller';
 
 export function populateGrades(data){
-  return {type:"populate", gradeData: data};
+  return {type:"grades", gradeData: data};
 }
 
 export function getGrades(courseNum, assignmentName) {
