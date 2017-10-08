@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import {Alert} from '../../../../components/Alert/Alert';
 
 // Import Style
 import styles from './CreateCourse.css';
@@ -51,6 +51,7 @@ export class CreateCourse extends Component {
   render() {
     return (
       <div>
+        {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
         <Card>
           <CardHeader
             title="Basic Settings"
@@ -107,6 +108,7 @@ function mapStateToProps(state) {
   console.log(state);
   return {
     coursesData: state.courses.coursesData,
+    errorObject: state.create.errorObject,
   };
 }
 
