@@ -43,7 +43,7 @@ export class CreateAssignment extends Component {
       p_name: "",
       max_score: "",
     };
-    if(this.props.perms[this.props.params.course] != "student"){
+    if(this.props.perms[this.props.params.course] == "student"){
       window.location = "/courses/" + this.props.params.course + "/assignments"; 
     }
   }
