@@ -49,6 +49,16 @@ export class CreateCourse extends Component {
   };
 
   render() {
+    var isAdmin = false;
+    for(var i in this.props.perms){
+        if(this.props.perms[i] == 'admin'){
+            isAdmin = true;
+            break;
+        }
+    }
+    if(!isAdmin){
+      return <div> You are not authorized. </div>;
+    }
     return (
       <div>
         {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
@@ -109,6 +119,7 @@ function mapStateToProps(state) {
   return {
     coursesData: state.courses.coursesData,
     errorObject: state.create.errorObject,
+    perms: state.app.perms,
   };
 }
 
