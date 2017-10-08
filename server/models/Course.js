@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const course_sectionSchema = new Schema({
 
-    name:                       { type: String, required: true, unique: true },
+    name:                       { type: String, required: true, unique: true, sparse: true},
     start_date:                 { type: Date },
     due_date:                   { type: Date },
     end_date:                   { type: Date },
@@ -29,10 +29,19 @@ const course_assignments_problemSchema = new Schema({
 
 });
 
+const user_submission_schema = new Schema({
+    
+        email:              { type: String, required: true },
+        submissions:        { type: Number, required: true },
+    
+});
+
 const course_assignmentSchema = new Schema({
 
     category:                   { type: String, required: true },
     name:                       { type: String, required: true },
+    user_submissions:           [user_submission_schema],    
+    assignment_num:             { type: String, required: true, unique: true, sparse: true},
     section_based:              { type: Boolean, required: true, default: true },
     section_due_dates:          [course_assignments_section_due_dateSchema], 
     start_date:                 { type: Date },
@@ -42,8 +51,8 @@ const course_assignmentSchema = new Schema({
     auto_grader:                { type: Boolean, required: true },                                     
                             
     form:                       {
-                                    file:               { type: Boolean },
-                                    file_name:          { type: String },
+                                    file:               { type: Boolean, default: true },
+                                    file_name:          { type: String, default: "handin.c" },
                                     form_name:          { type: String },
                                     text_fields:        { type: [String] },
 

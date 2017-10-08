@@ -2,6 +2,9 @@
   --banner-height: 50px;
 }
 
+.point{
+  cursor: pointer;
+}
 
 .right {
     float: right !important;

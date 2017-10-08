@@ -9,6 +9,7 @@ import bs from './modules/bs/BsReducer';
 import courses from './modules/Courses/CoursesReducer';
 import assignments from './modules/Assignments/AssignmentsReducer';
 import assignment from './modules/Assignment/AssignmentReducer';
+import create from './modules/Assignments/components/CreateAssignment/CreateAssignmentReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
@@ -17,4 +18,5 @@ export default combineReducers({
   courses,
   assignments,
   assignment,
+  create,
 });

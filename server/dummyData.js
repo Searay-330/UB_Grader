@@ -1,5 +1,6 @@
 import Course from './models/Course.js';
 import User from './models/User.js';
+import Submission from './models/Submission.js'
 import mongoose from 'mongoose';
 
 
@@ -14,7 +15,10 @@ Course.count().exec((err, count) => {
     const assignment1 = {
                         _id:                new mongoose.Types.ObjectId(),
                         category:           'Phase 1', 
-                        name:               'Create Prototype', 
+                        name:               'Create Prototype',
+                        assignment_num:     'assignment1-cse442-f17',
+                        // user_submissions:   [temp1, temp2, temp3],
+                        display_name:       'Create Prototype',
                         section_based:      false, 
                         start_date:         new Date('<2017-09-20>'), 
                         due_date:           new Date('<2017-09-30>'), 
@@ -27,7 +31,10 @@ Course.count().exec((err, count) => {
     const assignment2 = {
                         _id:                new mongoose.Types.ObjectId(),
                         category:           'Phase 2', 
-                        name:               'Create MVP', 
+                        name:               'Create MVP',
+                        assignment_num:     'assignment2-cse442-f17',
+                        // user_submissions:   [temp1, temp2, temp3],
+                        display_name:       'Create MVP',
                         section_based:      false, 
                         start_date:         new Date('<2017-09-30>'), 
                         due_date:           new Date('<2017-10-20>'), 
@@ -56,7 +63,6 @@ Course.count().exec((err, count) => {
                     };
 
     const course_cse442 = new Course({
-                                    _id:                new mongoose.Types.ObjectId(),
                                     course_num:     'cse442-f17', 
                                     display_name:   'CSE 442', 
                                     semester:       'Fall 2017', 
@@ -65,7 +71,6 @@ Course.count().exec((err, count) => {
                                 });
     
     const course_cse331 = new Course({
-                                    _id:                new mongoose.Types.ObjectId(),        
                                     course_num:     'cse331-f17', 
                                     display_name:   'CSE 331', 
                                     semester:       'Fall 2017', 
@@ -97,36 +102,37 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',
+                                        course_role:    'Student',
+                                        section_id:     section1_id
                                     } 
                         });
 
     const user2 = new User({
                             first_name:     'Adhish', 
                             last_name:      'Chugh', 
-                            sys_role:       'admin',                            
                             email:          'adhishch@buffalo.edu', 
                             person_number:  '12345679', 
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',                                        
+                                        course_role:    'Student',
+                                        section_id:     section1_id                              
                                     } 
                          });
 
     const user3 = new User({
                             first_name:     'Dhruv', 
-                            last_name:      'Kumar', 
+                            last_name:      'Kumar',
+                            sys_role:       'admin', 
                             email:          'dkumar2@buffalo.edu', 
                             person_number:  '12345677', 
                             updated_at:      new Date(),
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',
+                                        course_role:    'Student',
                                         section_id:     section1_id,
-                                        section_name:   'Backend'
                                     } 
                         });
 
@@ -139,9 +145,8 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',
-                                        section_id:     section2_id,
-                                        section_name:   'Frontend'                                        
+                                        course_role:    'Student',
+                                        section_id:     section2_id                                 
                                     } 
                         });
 
@@ -154,9 +159,8 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',
-                                        section_id:     section2_id,
-                                        section_name:   'Frontend'                                        
+                                        course_role:    'Student',
+                                        section_id:     section2_id
                                     } 
                         });
     
@@ -169,9 +173,8 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',
-                                        section_id:     section2_id,
-                                        section_name:   'Frontend'                                        
+                                        course_role:    'Student',
+                                        section_id:     section2_id                                        
                                     } 
                         });
     
@@ -185,9 +188,8 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'student',
-                                        section_id:     section2_id,
-                                        section_name:   'Frontend'                                        
+                                        course_role:    'Student',
+                                        section_id:     section2_id                                        
                                     } 
                         });
 
@@ -200,7 +202,7 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_cse442._id,
                                         course_num:     'cse442-f17',                                         
-                                        course_role:    'instructor',
+                                        course_role:    'Teacher',
                                     } 
                         });
 
@@ -213,6 +215,71 @@ Course.count().exec((err, count) => {
             console.log(error);
         }
     });
+    
+//    const sampleSubmission1 = new Submission({
+//                                        user_id:        user3.id,
+//                                        course_id:      course_cse442._id,
+//                                        assignment_id:  assignment1._id,
+//                                        course_num:     course_cse442.course_num,            
+//                                        assignment_num: assignment1.assignment_num,
+//                                        version:        1,
+//                                        feedback:       "This is a submission for CSE442 assignment 1"
+//                                        });
+//    
+//    const sampleSubmission2 = new Submission({
+//                                        user_id:        user3.id,
+//                                        course_id:      course_cse442._id,
+//                                        assignment_id:  assignment1._id,
+//                                        course_num:     course_cse442.course_num,            
+//                                        assignment_num: assignment1.assignment_num,
+//                                        version:        2, 
+//                                        feedback:       "This is a submission for CSE442 assignment 1"
+//                                        });
+//    
+//    const sampleSubmission3 = new Submission({
+//                                        user_id:        user3.id,
+//                                        course_id:      course_cse442._id,
+//                                        assignment_id:  assignment2._id,
+//                                        course_num:     course_cse442.course_num,            
+//                                        assignment_num: assignment2.assignment_num,
+//                                        version:        1,
+//                                        feedback:       "This is a submission for CSE442 assignment 2"
+//                                        });
+    
+    // const sampleSubmission4 = new Submission({
+    //                                     user_id:        user7.id,
+    //                                     course_id:      course_cse442._id,
+    //                                     assignment_id:  assignment2._id,
+    //                                     course_num:     course_cse442.course_num,            
+    //                                     assignment_num: assignment2.assignment_num,
+    //                                     version:        -1,
+    //                                     file_name:      "placeholder",
+    //                                     grader:         "placeholder",
+    //                                     form_data:      "placeholder",
+    //                                     feedback:       "This is a submission for CSE442 assignment 2 user 7"
+    //                                     });
+    
+    // const sampleSubmission5 = new Submission({
+    //                                     user_id:        user7.id,
+    //                                     course_id:      course_cse442._id,
+    //                                     assignment_id:  assignment1._id,
+    //                                     course_num:     course_cse442.course_num,            
+    //                                     assignment_num: assignment1.assignment_num,
+    //                                     version:        -1,
+    //                                     file_name:      "placeholder",
+    //                                     grader:         "placeholder",
+    //                                     form_data:      "placeholder",
+    //                                     feedback:       "This is a submission for CSE442 assignment 1 user 7"
+    //                                     });
+    
+    // Submission.create([sampleSubmission4,sampleSubmission5], (error) => {
+    //     if (!error) {
+    //         // console.log('ready to go....');
+    //     }
+    //     else {
+    //         console.log(error);
+    //     }
+    // });
 
 });
 
