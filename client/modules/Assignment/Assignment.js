@@ -46,8 +46,10 @@ export class Assignment extends Component {
   }
 
   render() {
+    
     var maxScore = this.props.maxScore;
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
+    if(assignmentData == null){ return null; }
     console.log(assignmentData);
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
