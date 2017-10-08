@@ -65,13 +65,22 @@ export class Assignments extends Component {
       this.props.resetRedir();
     }
     var create = null;
+    var create2 = null;
     if(this.props.perms[this.props.params.course] != "student"){
       create = <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create"}} />;
+      create2 = <RaisedButton 
+                  labelStyle={{color:"white"}} 
+                  backgroundColor="#005BBB" 
+                  label="Add Students" 
+                  onClick={()=>{window.location = /courses/ + this.props.params.course + "/adduser"}} />;
     } 
     
     return (
       <div>
         {create}
+        <br/>
+        <br/>
+        {create2}
         <br />
         <br />
         <br />

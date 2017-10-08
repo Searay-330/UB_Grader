@@ -45,6 +45,10 @@ export class AddUser extends Component {
   };
 
   render() {
+    if(this.props.perms[this.props.params.course] == "student"){
+      return <div> You are not authorized. </div>;
+    }
+
     return (
       <div>
       {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
@@ -88,6 +92,7 @@ function mapStateToProps(state) {
   return {
     coursesData: state.courses.coursesData,
     errorObject: state.create.errorObject,
+     perms: state.app.perms,
   };
 }
 
@@ -103,6 +108,7 @@ function getEditableState(state){
       student_email: state.student_email,
       course_role: state.course_role,
       course_num: state.course_num,
+
     });
 }
 
