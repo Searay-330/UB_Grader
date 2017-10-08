@@ -1,14 +1,17 @@
 import callApi, { callApiWithFiles } from '../../util/apiCaller';
 
-export function createFileSubmission(data) {
-    return {type: 'file_submission', file: data};
+export function createFileSubmission() {
+    return {type: 'file_submission'};
 }
 
 export function submitFile(courseNum, assignmentNum, file) {
+    var submission = new FormData();
+    submission.append("files", file);
+    console.log(submission);
     return function (dispatch) {
         dispatch(() => {return {type:"wait"};});
-        return callApiWithFiles("courses/"+courseNum+"/assignments/"+assignmentNum+"/submissions/create").then(
-              data => {dispatch(createFileSubmission(file))
+        return callApiWithFiles("courses/"+courseNum+"/assignments/"+assignmentNum+"/submissions/create", submission).then(
+              data => {dispatch(createFileSubmission())
         })
     }
 }
@@ -17,12 +20,12 @@ export function createRecentSubmission(data) {
     return {type: 'score', submission: data};
 }
 
-export function getRecentScore(courseNum, assignmentNum, userEmail) { 
+export function getRecentScore(courseNum, assignmentNum, userEmail) {
     return function (dispatch) {
         dispatch(() => {return {type:"wait"};});
-        var path = "courses/" + courseNum+ "/assignments/" + assignmentNum + "/submissions/" + userEmail + "/latest";
-        return callApi(path, "get").then(data => {
-            dispatch(createRecentSubmission(data))
-          })
+        var path = "courses/" + courseNum+ "/assignments/" + assignmentNum + "/submissions/" + userEmail;
+        return callApi(path, "get").then(
+            data => {dispatch(createRecentSubmission(data))}
+        )
       }
 }

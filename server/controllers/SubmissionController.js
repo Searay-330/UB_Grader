@@ -1,7 +1,11 @@
 import User from '../models/User'
 import Course from '../models/Course'
 import Submission from '../models/Submission'
+import * as TangoController from './TangoController'
 import * as AuthCheck from '../util/authentication'
+
+const request = require('request');
+const fs = require('fs-extra');
 
 /**
  * Gets all the user submissions of a specific assignment.
@@ -88,7 +92,8 @@ export function getAllSubmissions(req, res, next) {
 export function createSubmission(req, res, next) {
     var user_email = req.user.email;
     var submissionFound = false;
-    if (!req.files[0] || req.files.length > 1){
+    console.log(req);
+    if (!req.body.files){
         res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
     }
     else{
@@ -107,12 +112,6 @@ export function createSubmission(req, res, next) {
                                     submissionFound = true;   
                                     }
                                 });
-                                if(!submissionFound){
-                                    assignment.user_submissions.push({
-                                    email: user_email,
-                                    submissions: 0
-                                    });
-                                }
                                 assignment.user_submissions.forEach((sub) => {
                                     if(sub.email == user_email){
                                         var submission = new Submission();
@@ -120,11 +119,17 @@ export function createSubmission(req, res, next) {
                                         submission.user_email = user_email;
                                         submission.course_num = req.params.course_num;
                                         submission.assignment_num = req.params.assignment_num;
-                                        submission.file_name = req.files[0].filename;
+                                        submission.file_name = req.body.files;
                                         submission.version = sub.submissions;
                                         submission.feedback = "Placeholder";
                                         submission.form_data = "Placeholder";
                                         submission.grader = "Placeholder";
+                                    
+                                        console.log("Calling send to Tango");
+                                        if (assignment.auto_grader){
+                                            TangoController.sendToTango(submission, assignment, course);
+                                        }
+
                                         course.save((err, courseObj) => {
                                             if (err) res.status(500).send(err);
                                             submission.save((err, submissionObj) => {

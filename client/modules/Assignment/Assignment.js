@@ -47,8 +47,8 @@ export class Assignment extends Component {
   }
 
   componentWillReceiveProps(NextProps) {
-    console.log("WILL REC");
-    console.log(NextProps);
+    // console.log("WILL REC");
+    // console.log(NextProps);
     var courseNum = NextProps.params.course;
     var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].assignment_num;
     var userEmail = NextProps.user.email;
@@ -63,6 +63,12 @@ export class Assignment extends Component {
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
+    var problemsArray = assignmentData.problems;
+    //Determine maxScore
+    var maxScore = 0;
+    for(var i = 0; i < problemsArray.length; i++){
+      maxScore = maxScore + problemsArray[i].score;
+    }
     return (
       <Card>
         <CardTitle title={this.props.params.assignment} subtitle={asst_desc} />
@@ -79,12 +85,17 @@ export class Assignment extends Component {
               </TableRow>
               <TableRow selectable={false}>
                 <TableRowColumn>Most recent score: </TableRowColumn>
-                <TableRowColumn>{this.state.score}/{maxScore}</TableRowColumn>
+                <TableRowColumn>{this.props.score}</TableRowColumn>
               </TableRow>
             </TableBody>
           </Table>
         </CardMedia>
         <CardText>
+          {
+            this.state.feedbackVisible
+              ? <Feedback rawFeedback={this.props.feedback} />
+              : null
+          }
           {
             (this.state.fileChosen && !this.state.submitted)
             ? <div><br /></div>
@@ -92,18 +103,13 @@ export class Assignment extends Component {
           }
           {
             this.state.submitted
-              ? <div>Your submission has been successfully forwarded to daviddob@buffalo.edu for review.</div>
+              ? <p>Your submission has been submitted for review.</p>
               : null
           }
           {
             (this.state.fileChosen || this.state.submitted)
             ? null
             : <div>Please choose a file to submit.</div>
-          }
-          {
-            this.state.feedbackVisible
-              ? <Feedback rawFeedback={this.props.feedback} />
-              : null
           }
         </CardText>
         <CardActions>
@@ -151,7 +157,7 @@ export class Assignment extends Component {
       fileChosen: false,
       submitted: true,
     });
-    document.getElementById("submission").reset();
+    document.getElementById("submission").value="";
   }
 
   randoScore(score) {

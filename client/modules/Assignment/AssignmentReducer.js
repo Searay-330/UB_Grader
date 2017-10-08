@@ -6,16 +6,22 @@ const initialState = {
 };
 
 const AssignmentReducer = (state = initialState, action) => {
+  // console.log("REDUCIN SOME SHIT");
+  // console.log(action);
   switch (action.type) {
     case "file_submission":
+      console.log(action);
       return {
         
       }
     
     case "score":
-      console.log(action.score);
+      var score = action.submission[0].scores[0];
+      if (score == undefined){
+        score = "No submissions";
+      }
       return {
-        score: action.submission.score,
+        score: score
       }
 
     default:
