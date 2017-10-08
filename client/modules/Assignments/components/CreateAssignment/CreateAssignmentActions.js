@@ -16,9 +16,21 @@ export function throwError(message){
 	return {type:"error", error: message};
 }
 
+
 export function resetError(){
 	return {type:"error", error:""};
 }
+
+export function redirect(){
+	return {type:"redir"};
+}
+
+
+export function redirectReset(){
+	return {type: "redirr"};
+}
+
+
 
 export function submitForm(formData, course) {
   return function (dispatch) {
@@ -30,12 +42,14 @@ export function submitForm(formData, course) {
 
 	data = new FormData();
 
+	//must be FIRST
+	hold = (!hold) ? (formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "" && formData.name != "create") ? data.append("assignment_num", encodeURIComponent(formData.name)) : "Assignment Name Is A Required Field Or Your String Contained No Urlable Chars" : hold;
+
 	//dates
 	hold = validateDates(formData);
 	if(hold == "skip"){
 		hold = undefined;
 	}else{
-		
 		if(hold){
 			return dispatch(throwError(hold));
 		}
@@ -57,14 +71,14 @@ export function submitForm(formData, course) {
 	}
 
 	// everything else
-	hold = (!hold) ? (formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "") ? data.append("assignment_num", encodeURIComponent(formData.name)) : "Assignment Name Is A Required Field Or Your String Contained No Urlable Chars" : hold;
-	hold = (!hold) ? (document.getElementById("tar") != null) ? data.append("tar", document.getElementById("tar").files[0], "tarball.tar") : hold : hold;
-	hold = (!hold) ? (document.getElementById("make") != null) ? data.append("make", document.getElementById("make").files[0], "makefile") : hold : hold;
+	hold = (!hold) ? validateFiles() : hold;
+	hold = (!hold) ? data.append("make", document.getElementById("make").files[0]) : hold;
+	hold = (!hold) ? data.append("tar", document.getElementById("tar").files[0]) : (hold == "skip") ? undefined : hold;
 	hold = (!hold) ? (formData.category != "") ? data.append("category", formData.category) : "Category Is A Required Field" : hold;
 	hold = (!hold) ? (formData.displayName != "") ? data.append("name", formData.displayName) : "Display Name Is A Required Field" : hold;
 
 	data.append("section_based",false);
-	data.append("auto_grader",true);
+	data.append("auto_grader", (document.getElementById("tar") != null && document.getElementById("make") != null && document.getElementById("tar").files[0] && document.getElementById("make").files[0]) ? true : false);
 
 	if(!hold){
 		if(formData.p_name != "" && !isNaN(parseInt(formData.max_score))){
@@ -87,8 +101,10 @@ export function submitForm(formData, course) {
 	}
     return callApiWithFiles("courses/" + course + "/assignments/create", data)
       .then(data => {
-      	if(data["_message"]){
+      	if(data.hasOwnProperty("_message")){
         dispatch(throwError(data["_message"]));
+      	}else{
+      		dispatch(redirect());
       	}
       })
   }
@@ -115,6 +131,19 @@ function validateDates(formData){
 	}
 	if(formData.endTime == null){
 		return "Please Enter A Vaild End Time";
+	}
+	return undefined;
+}
+
+function validateFiles(){
+	if(document.getElementById("make") == null && document.getElementById("tar") == null){
+		return "skip";
+	}
+	if(document.getElementById("make").files[0] && !document.getElementById("tar").files[0]){
+		return "Please Input A Vaild Tar File";
+	}
+	if(!document.getElementById("make").files[0] && document.getElementById("tar").files[0]){
+		return "Please Input A Vaild Make File";
 	}
 	return undefined;
 }
