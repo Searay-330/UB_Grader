@@ -124,6 +124,7 @@ export function createSubmission(req, res, next) {
                                         submission.form_data = "Placeholder";
                                         submission.grader = "Placeholder";
                                     
+                                        console.log("Calling send to Tango");
                                         if (assignment.auto_grader){
                                             TangoController.sendToTango(submission, assignment, course);
                                         }

@@ -39,8 +39,8 @@ const submissionsStorage = multer.diskStorage({
 								course.save((err, courseObj) => {
 									if (err) res.status(500).send(err);
 									else {
-										const file_name = req.user.email+"_"+version+"_"+"handin.c";
-										cb(null ,file_name);
+										const file_name = req.user.email + "_" + version + "_" + assignment.form.file_name;
+										cb(null, file_name);
 									}
 								});
 							}
