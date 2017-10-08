@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import {Alert} from '../../../../components/Alert/Alert';
 
 // Import Style
 import styles from './AddUser.css';
@@ -27,7 +27,7 @@ export class AddUser extends Component {
     this.state = {
       student_email: '',
       course_role: '',
-      course_num: '',
+      course_num: this.props.params.course,
     };
   }
 
@@ -39,7 +39,6 @@ export class AddUser extends Component {
 
   fieldChange = (event) => {
       var st = getEditableState(this.state);
-      st.course_num = this.props.params.course;
       st.student_email = document.getElementById("student_email").value;
       st.course_role = document.getElementById("course_role").value;
       this.setState(st);
@@ -48,6 +47,7 @@ export class AddUser extends Component {
   render() {
     return (
       <div>
+      {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
         <Card>
           <CardHeader
             title="Basic Settings"
@@ -72,6 +72,7 @@ export class AddUser extends Component {
               className={styles.dividerUnder} 
               floatingLabelText="Course Role"
             />
+            <div>Default role choices are student or instructor. Support for custom roles will be added in the future.</div>
             <br/>
             <RaisedButton label='Add User' onClick={() => {this.props.submitForm(this.state)}} primary={true} />
           </CardText>
@@ -86,6 +87,7 @@ function mapStateToProps(state) {
   console.log(state);
   return {
     coursesData: state.courses.coursesData,
+    errorObject: state.create.errorObject,
   };
 }
 
