@@ -14,7 +14,7 @@ export function Course(props) {
             <CardTitle>{title}</CardTitle>
             <CardText>Semester: {props.semester}</CardText>
             <CardActions>
-                <RaisedButton label='Enter' primary={true} fullWidth={true} href={this.location.pathname + [props.courseNum, "assignments"].join('/')} />
+                <RaisedButton label='Enter' primary={true} fullWidth={true} href={[this.location.pathname, props.courseNum, "assignments"].join('/')} />
             </CardActions>
         </Card>
     );

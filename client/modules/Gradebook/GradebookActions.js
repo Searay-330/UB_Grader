@@ -4,11 +4,11 @@ export function populateGrades(data){
   return {type:"populate", gradeData: data};
 }
 
-export function getGrades() {
+export function getGrades(courseNum, assignmentName) {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
     //TODO
-    return callApi("").then(
+    return callApi("courses/" + courseNum + "/assignments/" + assignmentName + "/submissions").then(
       data => { dispatch(populateGrades(data))}
     )
   }

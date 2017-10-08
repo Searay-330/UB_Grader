@@ -23,7 +23,8 @@ export class Header extends Component {
     var icon = [];
 
     if (this.props.in_course) {
-      icon.push(<FlatButton key='0' className={styles.button} label="Gradebook" />);
+      var path = "/courses/cse442_f17/assignments/gradebook";
+      icon.push(<FlatButton key='0' className={styles.button} label="Gradebook" href={path}/>);
     }
     if (this.props.user.first_name != "") {
       icon.push(<FlatButton key='1' className={styles.button} label={this.props.user.first_name} labelPosition="before" icon={<ActionExitToApp color='white'/>} href="/api/logout" />);
@@ -43,9 +44,9 @@ export class Header extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state);
   return {
-      in_course: (typeof state.assignments.assignmentsData != 'undefined'),
-      courses: state.courses.coursesData,
+      in_course: (typeof state.assignments.assignmentsData != 'undefined' && state.assignments.assignmentsData.length != 0),
       user: state.app.user,
   }
 }
