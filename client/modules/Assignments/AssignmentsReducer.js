@@ -10,7 +10,6 @@ const AssignmentsReducer = (state = initialState, action) => {
   switch (action.type) {
 
   	case "populate":
-
   		return {
   			assignmentsData: action.assignmentsData,
   			assignmentsMap: action.assignmentsMap,

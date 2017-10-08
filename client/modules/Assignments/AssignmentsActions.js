@@ -11,7 +11,10 @@ function mapping(data){
   	}
   	return map;
 }
+
+
 export function getCourseData(course_num) {
+  console.log("hasdasd");
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
     return callApi("courses/" + course_num + "/assignments","get")

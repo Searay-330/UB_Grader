@@ -43,14 +43,20 @@ export class CreateAssignment extends Component {
       p_name: "",
       max_score: "",
     };
+    if(this.props.perms[this.props.params.course] == "student"){
+      window.location = "/courses/" + this.props.params.course + "/assignments"; 
+    }
   }
 
 
   componentDidMount() {
+
   }
 
   componentWillReceiveProps(nextProps) {
-
+    if(nextProps.redirect){
+      this.context.router.push("/courses/" + nextProps.params.course + "/assignments");
+    }
   }
 
   wrapperFunction = (location)=>{return (event,date) => {this.dateChange(event,date,location)}};
@@ -82,7 +88,7 @@ export class CreateAssignment extends Component {
   };
 
   render() {
-
+    
     return (
       <div>
       {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
@@ -163,11 +169,18 @@ export class CreateAssignment extends Component {
   }
 }
 
+
+CreateAssignment.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
+
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
     assignmentsData: state.assignments.assignmentsData,
     errorObject: state.create.errorObject,
+    redirect: state.create.redirect,
+    perms: state.app.perms,
   };
 }
 
