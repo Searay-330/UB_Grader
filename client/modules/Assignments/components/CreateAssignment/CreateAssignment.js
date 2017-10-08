@@ -88,7 +88,9 @@ export class CreateAssignment extends Component {
   };
 
   render() {
-    
+    if(this.props.perms[this.props.params.course] == "student"){
+      return <div> You are not authorized. </div>;
+    }
     return (
       <div>
       {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
