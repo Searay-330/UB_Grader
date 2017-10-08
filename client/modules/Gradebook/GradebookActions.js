@@ -1,6 +1,6 @@
 import callApi from '../../util/apiCaller';
 
-export function populateGrades(data){
+export function createGrades(data){
   return {type:"grades", gradeData: data};
 }
 
@@ -9,7 +9,7 @@ export function getGrades(courseNum, assignmentName) {
     dispatch(() => {return {type:"wait"};});
     //TODO
     return callApi("courses/" + courseNum + "/assignments/" + assignmentName + "/submissions").then(
-      data => { dispatch(populateGrades(data))}
+      data => { dispatch(createGrades(data))}
     )
   }
 }

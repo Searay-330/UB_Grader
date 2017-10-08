@@ -26,8 +26,10 @@ export class Gradebook extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
+        this.props.getCourseData(this.props.params.course);
         this.setState({
-            render: true,
+            render: false,
             assignments: [],
         })
     }
@@ -81,10 +83,9 @@ export class Gradebook extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
-        // state.app.user
-        // assignments: state.assignments.assignmentData,
+        user: state.app.user,
+        assignments: state.assignments.assignmentsData,
     }
 }
 

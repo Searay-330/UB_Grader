@@ -10,6 +10,10 @@ const initialState = {
             return {
 
             }
+        case "populate":
+            return {
+                assignments: action.assignmentMap,
+            }
       default:
         return state;
     }
