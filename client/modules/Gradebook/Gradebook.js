@@ -42,7 +42,7 @@ export class Gradebook extends Component {
         for(var assignment in nextProps.assignments) {
             var assignmentNum = nextProps.assignments[assignment].assignment_num;
             console.log("Getting: " + courseNum + " " + assignmentNum + " " + email)
-            this.props.getStudentGrades(courseNum, assignmentNum, email);
+            this.props.getStudentGrades(courseNum, assignmentNum, email).then(()=>{this.forceUpdate()});
         }
         // console.log(this.props.submissions);
     }
@@ -74,12 +74,15 @@ export class Gradebook extends Component {
     }
 
     studentBook() {
+            console.log(Object.keys(this.props.submissions));
+        if(Object.keys(this.props.submissions) == 1){
+            return null;
+        }
         var rows = [];
         for (var assignment in this.props.assignments) {
             console.log(this.props.submissions);
             console.log(this.props.assignments[assignment].assignment_num);
             var key = this.props.assignments[assignment].assignment_num;
-            key = key.split("-").join("_");
             var data = this.props.submissions[key];
             console.log(data);
             row.push(
