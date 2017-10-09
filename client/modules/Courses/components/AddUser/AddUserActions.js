@@ -32,7 +32,7 @@ export function submitForm(formData) {
 	       	if(data.Status == "404"){
 	       		return dispatch(throwError(JSON.stringify(data)));
 	       	}
-	       	
+	       	return dispatch(throwError("User added successfully. Don't mind the scary red color, our green one is in the shop."));
 	    })
   	}
 }
