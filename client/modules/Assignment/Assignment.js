@@ -54,7 +54,6 @@ export class Assignment extends Component {
   }
 
   render() {
-    var maxScore = this.props.maxScore;
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
     if (assignmentData == null) { return null; }
     // console.log(assignmentData);
