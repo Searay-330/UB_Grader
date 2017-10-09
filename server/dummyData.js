@@ -104,7 +104,7 @@ Course.count().exec((err, count) => {
                             courses: {
                                         course_id:      course_testcourse._id,
                                         course_num:     'testcourse-f17',                                         
-                                        course_role:    'Student',
+                                        course_role:    'student',
                                     } 
                         });
 
