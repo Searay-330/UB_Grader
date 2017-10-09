@@ -22,7 +22,15 @@ passport.use(
     }, (accessToken,refreshToken,profile,done) => {
         User.findOne({ email: profile.emails[0].value }).then(existingUser =>{
             if (existingUser) {
-                done(null, existingUser);
+                if (!existingUser.first_name || !existingUser.last_name){
+                    existingUser.first_name = profile.name.givenName;
+                    existingUser.last_name = profile.name.familyName;
+                    existingUser.save().then(user => done(null, user));
+                }
+                else{
+                    done(null, existingUser);
+                }
+ 
             }
             else{
                 new User({email: profile.emails[0].value, first_name: profile.name.givenName, last_name: profile.name.familyName})

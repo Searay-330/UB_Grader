@@ -25,8 +25,8 @@ const user_courseSchema = new Schema({
 
 const userSchema = new Schema({
 
-    first_name:                 { type: String, required: true },
-    last_name:                  { type: String, required: true },
+    first_name:                 { type: String },
+    last_name:                  { type: String },
     email:                      { type: String, required: true, unique: true },
     person_number:              { type: String },
     sys_role:                   { type: String },
