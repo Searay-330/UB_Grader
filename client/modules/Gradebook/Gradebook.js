@@ -92,7 +92,7 @@ export class Gradebook extends Component {
                 continue;
             }
             console.log(data);
-            this.rows.push(<AssignmentGrade data={data} />);
+            this.rows.push(<AssignmentGrade name={key} data={data} />);
         }
         console.log(this.rows);
         return (

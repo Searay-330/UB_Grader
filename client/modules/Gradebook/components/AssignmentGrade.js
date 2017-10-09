@@ -9,9 +9,9 @@ export function AssignmentGrade(data) {
     var info = data.data;
     return (
         <tr key={0} selectable={false} displayRowCheckbox={false}>
+            <td>{data.name}</td>
             <td>{info.version}</td>
-            <td>{info.version}</td>
-            <td>{(info.scores.length == 0) ? "Waiting for feedback" : data.scores.reduce((a, b) => Number(a) + Number(b), 0)}</td>
+            <td>{(info.scores.length == 0) ? "Waiting for score" : data.scores.reduce((a, b) => Number(a) + Number(b), 0)}</td>
         </tr>
     );
 }
