@@ -38,6 +38,7 @@ export function submitForm(formData) {
 	        		if(instructorData.Status == "404"){
 	        			return dispatch(throwError(JSON.stringify(instructorData)));
 	        		}
+	        		return dispatch(throwError("Course created successfully. Don't mind the scary red color, our green one is in the shop."));
 	      		})
 	      })
   	}
