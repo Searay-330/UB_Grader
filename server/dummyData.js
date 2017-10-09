@@ -120,9 +120,18 @@ Course.count().exec((err, count) => {
                                         course_role:    'instructor',
                                     } 
                         });
+  
+  const user9 = new User({
+                            first_name:     'SuperUser', 
+                            last_name:      'One', 
+                            email:          'superuserone.442@gmail.com', 
+                            sys_role:       'admin',
+                            person_number:  '90601393', 
+                            updated_at:      new Date(),       
+                        });
 
 
-    User.create([user1,user2,user3,user4,user5,user6,user7,user8], (error) => {
+    User.create([user1,user2,user3,user4,user5,user6,user7,user8,user9], (error) => {
         if (!error) {
             // console.log('ready to go....');
         }
