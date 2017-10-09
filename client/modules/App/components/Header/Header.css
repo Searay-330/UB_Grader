@@ -2,13 +2,15 @@
   --banner-height: 50px;
 }
 
+.point{
+  cursor: pointer;
+}
 
 .right {
     float: right !important;
 }
 
 .header {
-  background: #eee url('../../header-bk.png') center;
   background-size: cover;
   border-bottom: 1px solid #ccc;
 
@@ -30,12 +32,24 @@
   border-bottom: 1px solid black;
 }
 
-.title{
-  height: 100%;
-  color: white;
-  line-height: var(--banner-height);
-  font-size: 20px;
-  font-weight: bold;
-  margin-right: 10px;
-  margin-left: 10px;
+.button{
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: bold !important;
+}
+
+.toolbar_group {
+  color: #005bbb !important;
+  background: #005bbb !important;
+}
+
+.inactiveLink {
+   pointer-events: none;
+   cursor: default;
+}
+
+.headerIcon{
+  line-height: 2.2 !important;
+  cursor: pointer;
+
 }

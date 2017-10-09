@@ -3,12 +3,23 @@ import { TOGGLE_ADD_POST } from './AppActions';
 
 // Initial State
 const initialState = {
-  
+  user: "",
+  perms: [],
 };
 
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
+  	case "login":
+  		return {
+        user: action.user,
+        perms: [],
+      }
 
+    case "perms" :
+    return{
+    	user: state.user,
+    	perms:action.perm,
+    }
     default:
       return state;
   }
@@ -16,8 +27,6 @@ const AppReducer = (state = initialState, action) => {
 
 /* Selectors */
 
-// Get showAddPost
-export const getShowAddPost = state => state.app.showAddPost;
 
 // Export Reducer
 export default AppReducer;

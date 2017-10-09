@@ -5,10 +5,12 @@ npm-debug.log
 dump.rdb
 .vscode/
 public/*
+uploads/*
 dist
 coverage/
 .nyc_output/
-assets/
 *.rar
 test.sublime-project
 test.sublime-workspace
+server/config/keys.js
+uploads/*
