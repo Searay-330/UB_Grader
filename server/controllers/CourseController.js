@@ -148,7 +148,7 @@ export function getSectionStudents(req, res){
         else {           
             users.forEach((user) => {
                 user.courses.forEach((course) => {
-                    if (course.course_num == req.params.course_num && course.section_name == req.params.section_name && course.course_role == 'Student'){
+                    if (course.course_num == req.params.course_num && course.section_name == req.params.section_name && course.course_role == 'student'){
                         studentList.push(user);
                     }
                 });
