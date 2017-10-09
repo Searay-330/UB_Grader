@@ -63,3 +63,4 @@ Password: cse442fall2017
 Note: You can also directly visit http://challenger.adhishchugh.com/ to view a live version of the prototype and login with the above credentials, if you wish to avoid all the setup.
 
 
+Note: to see the gradebook you MUST be using Chrome.
