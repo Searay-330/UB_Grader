@@ -9,6 +9,7 @@ import blueA700 from 'material-ui/styles/colors';
 export class Course extends Component {
 
     constructor(props) {
+        console.log(props);
         super(props);
         this.state = {
             isMounted: false,
@@ -35,7 +36,6 @@ export class Course extends Component {
 
 function mapStateToProps(state) {
     return {
-        semester: state.course.semester,
     };
 }
 
