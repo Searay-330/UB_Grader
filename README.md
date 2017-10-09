@@ -60,6 +60,10 @@ Please use the following login credentials to see the view of a sample student r
 Email: studentone.442@gmail.com
 Password: cse442fall2017
 
+Please use the following login credentials to see the view of a sample admin:
+Email: teacherone.442@gmail.com
+Password: cse442fall2017
+
 Note: You can also directly visit http://challenger.adhishchugh.com/ to view a live version of the prototype and login with the above credentials, if you wish to avoid all the setup.
 
 
