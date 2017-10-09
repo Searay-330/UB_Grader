@@ -26,7 +26,7 @@ export class Course extends Component {
                 <CardTitle>{title}</CardTitle>
                 <CardText>Semester: {this.props.semester}</CardText>
                 <CardActions>
-                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={[this.props.location, this.props.courseNum, "assignments"].join('/')} />
+                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={"/courses/" + this.props.courseNum + "/assignments"} />
                 </CardActions>
             </Card>
         );
