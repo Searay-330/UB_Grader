@@ -60,27 +60,42 @@ export class Assignments extends Component {
     for (var key in this.state.categories) {
       cats.push(<Category nowOpen={this.drawers[this.state.categories[key][0].category]} update={this.updateDrawers} key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
     }
-    if(this.props.redirected){
+    if (this.props.redirected) {
       this.props.getCourseData(this.props.params.course);
       this.props.resetRedir();
     }
     var create = null;
     var create2 = null;
-    if(this.props.perms[this.props.params.course] != "student"){
-      create = <RaisedButton labelStyle={{color:"white"}} backgroundColor="#005BBB" label="Create Assignment" onClick={()=>{window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create"}} />;
-      create2 = <RaisedButton 
-                  labelStyle={{color:"white"}} 
-                  backgroundColor="#005BBB" 
-                  label="Add Students" 
-                  onClick={()=>{window.location = /courses/ + this.props.params.course + "/adduser"}} />;
-    } 
-    
+    if (this.props.perms[this.props.params.course] != "student") {
+      create = <RaisedButton
+        labelStyle={{ color: "white" }}
+        backgroundColor="#005BBB"
+        label="Create Assignment"
+        onClick={() => { window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create" }}
+      />;
+      create2 = <RaisedButton
+        labelStyle={{ color: "white" }}
+        backgroundColor="#005BBB"
+        label="Add Students"
+        onClick={() => { window.location = /courses/ + this.props.params.course + "/adduser" }} />;
+    }
+    var gradebook = <RaisedButton
+      labelStyle={{ color: "white" }}
+      backgroundColor="#005BBB"
+      label="Gradebook"
+      onClick={() => { window.location = ("/courses/") + this.props.params.course + "/assignments/gradebook"; }}
+    />
+
+
     return (
       <div>
         {create}
-        <br/>
-        <br/>
+        <br />
+        <br />
         {create2}
+        <br />
+        <br />
+        {gradebook}
         <br />
         <br />
         <br />
@@ -94,6 +109,7 @@ export class Assignments extends Component {
   }
 }
  
+
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
