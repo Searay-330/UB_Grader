@@ -54,13 +54,20 @@ export class Assignment extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     var maxScore = this.props.maxScore;
+=======
+>>>>>>> dev
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
     if (assignmentData == null) { return null; }
     // console.log(assignmentData);
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
+<<<<<<< HEAD
+=======
+    console.log(assignmentData.problems[0]);
+>>>>>>> dev
     var problemsArray = assignmentData.problems;
     //Determine maxScore
     var maxScore = 0;
@@ -90,8 +97,13 @@ export class Assignment extends Component {
         </CardMedia>
         <CardText>
           {
+<<<<<<< HEAD
             this.state.feedbackVisible
               ? <Feedback rawFeedback={this.props.feedback} />
+=======
+            this.state.submitted
+              ? <p>Your submission has been submitted for review.</p>
+>>>>>>> dev
               : null
           }
           {
