@@ -93,7 +93,7 @@ export function createSubmission(req, res, next) {
     var user_email = req.user.email;
     var submissionFound = false;
     console.log(req);
-    if (!req.body.files){
+    if (!req.files){
         res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
     }
     else{
@@ -119,7 +119,7 @@ export function createSubmission(req, res, next) {
                                         submission.user_email = user_email;
                                         submission.course_num = req.params.course_num;
                                         submission.assignment_num = req.params.assignment_num;
-                                        submission.file_name = req.body.files;
+                                        submission.file_name = req.files[0].filename;
                                         submission.version = sub.submissions;
                                         submission.feedback = "Placeholder";
                                         submission.form_data = "Placeholder";
