@@ -1,26 +1,27 @@
 // Initial State
 const initialState = {
-  score:0,
-  maxScore:0,
+  score: 0,
   feedback:"Waiting for feedback",
 };
 
 const AssignmentReducer = (state = initialState, action) => {
-  // console.log("REDUCIN SOME SHIT");
-  // console.log(action);
   switch (action.type) {
     case "file_submission":
-      console.log(action);
-      return {
-        
-      }
+      return state;
     
-    case "score":
-      var score = action.submission[0].scores[0];
-      if (score == undefined){
-        score = "No submissions";
+    case "submission":
+      var score;
+      var feedback;
+      var len = action.submission.length;
+      if (action.submission[len-1] == undefined) {
+        score = "No score recorded";
+        feedback = "No submissions";
+      } else {
+        score = action.submission[len-1].scores.reduce((a, b) => a + b, 0);
+        feedback = action.submission[len-1].feedback;
       }
       return {
+        feedback: feedback,
         score: score
       }
 

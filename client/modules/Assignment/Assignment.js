@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import moment from '../../../assets/moment.min.js';
 //Import Actions
-import { submitFile, getRecentScore} from './AssignmentActions'
+import { submitFile, getRecentSubmission} from './AssignmentActions'
 // Import Style
 import styles from './Assignment.css';
 
@@ -38,8 +38,8 @@ export class Assignment extends Component {
       score: 0,
       fileChosen: false,
       submitted: false,
-      receivedFeedback: false,
     };
+    this.intervalID = setInterval(() => this.checkFeedback(), 5000);
   }
 
   componentDidMount() {
@@ -47,12 +47,10 @@ export class Assignment extends Component {
   }
 
   componentWillReceiveProps(NextProps) {
-    // console.log("WILL REC");
-    // console.log(NextProps);
     var courseNum = NextProps.params.course;
     var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].assignment_num;
     var userEmail = NextProps.user.email;
-    this.props.getRecentScore(courseNum, assignmentNum, userEmail);
+    this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
 
   render() {
@@ -85,7 +83,7 @@ export class Assignment extends Component {
               </TableRow>
               <TableRow selectable={false}>
                 <TableRowColumn>Most recent score: </TableRowColumn>
-                <TableRowColumn>{this.props.score}</TableRowColumn>
+                <TableRowColumn>{(typeof this.props.score === 'number') ? (this.props.score.toString() + "/" + maxScore.toString()) : this.props.score}</TableRowColumn>
               </TableRow>
             </TableBody>
           </Table>
@@ -160,8 +158,14 @@ export class Assignment extends Component {
     document.getElementById("submission").value="";
   }
 
-  randoScore(score) {
-    this.setState({ score: score });
+  checkFeedback() {
+    if(!this.state.isMounted) {
+      return;
+    }
+    var courseNum = this.props.params.course;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].assignment_num;
+    var userEmail = this.props.user.email;
+    this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
 }
 // Retrieve data from store as props
@@ -178,7 +182,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     submitFile: submitFile,
-    getRecentScore: getRecentScore,
+    getRecentSubmission: getRecentSubmission,
   }, dispatch);
 }
 

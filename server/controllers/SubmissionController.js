@@ -92,7 +92,6 @@ export function getAllSubmissions(req, res, next) {
 export function createSubmission(req, res, next) {
     var user_email = req.user.email;
     var submissionFound = false;
-    console.log(req);
     if (!req.files){
         res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
     }

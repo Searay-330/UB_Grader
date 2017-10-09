@@ -17,10 +17,10 @@ export function submitFile(courseNum, assignmentNum, file) {
 }
 
 export function createRecentSubmission(data) {
-    return {type: 'score', submission: data};
+    return {type: 'submission', submission: data};
 }
 
-export function getRecentScore(courseNum, assignmentNum, userEmail) {
+export function getRecentSubmission(courseNum, assignmentNum, userEmail) {
     return function (dispatch) {
         dispatch(() => {return {type:"wait"};});
         var path = "courses/" + courseNum+ "/assignments/" + assignmentNum + "/submissions/" + userEmail;
