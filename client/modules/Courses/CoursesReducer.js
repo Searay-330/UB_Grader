@@ -7,7 +7,7 @@ const initialState = {
   
     switch (action.type) {
   
-        case "populate":
+        case "courses":
             return {
                 coursesData: action.coursesData
   

@@ -33,6 +33,7 @@ export function redirectReset(){
 
 
 export function submitForm(formData, course) {
+	console.log(formData);
   return function (dispatch) {
     dispatch(resetError());
   	var hold = undefined;
@@ -99,6 +100,7 @@ export function submitForm(formData, course) {
 	if(hold){
 		return dispatch(throwError(hold));
 	}
+	console.log(data);
     return callApiWithFiles("courses/" + course + "/assignments/create", data)
       .then(data => {
       	if(data.hasOwnProperty("_message")){
