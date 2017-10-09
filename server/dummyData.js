@@ -58,6 +58,7 @@ Course.count().exec((err, count) => {
                             first_name:     'Richard', 
                             last_name:      'Hanulewicz', 
                             email:          'rshanule@buffalo.edu', 
+                            sys_role:       'admin',
                             person_number:  '12346789', 
                             updated_at:      new Date(),
                             courses: {
