@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import { getStudentGrades, getProfessorGrades, getUserInfo } from './GradebookActions';
 
+import AssignmentGrade from './components/AssignmentGrade';
 import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
 import {
     Table,
@@ -13,6 +14,8 @@ import {
     TableRow,
     TableRowColumn,
 } from 'material-ui/Table';
+
+import { PanelGroup, Grid, Row, Col } from 'react-bootstrap';
 
 export class Gradebook extends Component {
 
@@ -39,16 +42,16 @@ export class Gradebook extends Component {
         var courseNum = nextProps.params.course;
         var email = nextProps.user.email;
         console.log(nextProps.assignments);
-        for(var assignment in nextProps.assignments) {
+        for (var assignment in nextProps.assignments) {
             var assignmentNum = nextProps.assignments[assignment].assignment_num;
             console.log("Getting: " + courseNum + " " + assignmentNum + " " + email)
-            this.props.getStudentGrades(courseNum, assignmentNum, email).then(()=>{this.forceUpdate()});
+            this.props.getStudentGrades(courseNum, assignmentNum, email).then(() => { this.forceUpdate() });
         }
         // console.log(this.props.submissions);
     }
 
     render() {
-        
+
         // console.log(this.props);
         return (
             this.studentBook()
@@ -57,58 +60,55 @@ export class Gradebook extends Component {
 
     instructorBook() {
         return (
-        <Card>
-            <CardTitle title="Grades" />
-            <CardMedia>
-                <Table>
-                    <TableHeader>
+            <Card>
+                <CardTitle title="Grades" />
+                <CardMedia>
+                    <Table>
+                        <TableHeader>
 
-                    </TableHeader>
-                    <TableBody>
+                        </TableHeader>
+                        <TableBody>
 
-                    </TableBody>
-                </Table>
-            </CardMedia>
-        </Card>
+                        </TableBody>
+                    </Table>
+                </CardMedia>
+            </Card>
         )
     }
 
     studentBook() {
-            console.log(Object.keys(this.props.submissions));
-        if(Object.keys(this.props.submissions) == 1){
+        console.log(Object.keys(this.props.submissions));
+        if (Object.keys(this.props.submissions) == 1) {
             return null;
         }
-        var rows = [];
+        this.rows = [];
+        console.log(this.props);
         for (var assignment in this.props.assignments) {
             console.log(this.props.submissions);
             console.log(this.props.assignments[assignment].assignment_num);
             var key = this.props.assignments[assignment].assignment_num;
             var data = this.props.submissions[key];
+            if (data == undefined) {
+                continue;
+            }
             console.log(data);
-            row.push(
-                <TableRow>
-                    <TableRowColumn>{data}.</TableRowColumn>
-                    <TableRowColumn>{data.version}</TableRowColumn>
-                    <TableRowColumn>{(data.scores.length == 0) ? "Waiting for feedback" : data.scores.reduce((a, b) => a + b, 0)}</TableRowColumn>
-                </TableRow>
-            );
+            this.rows.push(<AssignmentGrade data={data} />);
         }
+        console.log(this.rows);
         return (
-        <Card>
-            <CardTitle title="Grades" />
-            <CardMedia>
-                <Table>
-                    <TableHeader displaySelectAll={false}>
-                        <TableHeaderColumn>Assignment</TableHeaderColumn>
-                        <TableHeaderColumn>Score</TableHeaderColumn>
-                        <TableHeaderColumn>Version</TableHeaderColumn>
-                    </TableHeader>
-                    <TableBody>
-                        {rows}
-                    </TableBody>
-                </Table>
-            </CardMedia>
-        </Card>
+            <Card>
+                <CardTitle title="Grades" />
+                <CardMedia>
+                        <table style="width:100%">
+                            <tr>
+                                <th>Assignment</th>
+                                <th>Score</th>
+                                <th>Version</th>
+                            </tr>
+                            {this.rows}
+                        </table>
+                </CardMedia>
+            </Card>
         )
     }
 }
