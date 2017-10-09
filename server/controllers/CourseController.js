@@ -225,30 +225,49 @@ export function addCourseToUser(req,res){
                     res.status(500).send(err);
                 }
                 else{
-                    if (courseobj && userobj) {            
-                        var course_info = {
-                                            course_id:    courseobj.id,
-                                            course_num:   courseobj.course_num,
-                                            course_role:  req.body.course_role
-                                        }
-                        userobj.courses.forEach((course) => {
-                            if (course.course_num == course_info.course_num){
-                                alreadyEnrolled = true;
-                            }
-                        });
-                        if (alreadyEnrolled){
-                            res.status(200).send({Status: 200, Message: 'User is already enrolled in course!'});  
-                        } 
-                        else {
-                            userobj.courses.addToSet(course_info);
-                            userobj.save((err, updateduserobj) => {
-                                if (err) res.status(500).send(err);                
-                                else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+courseobj.display_name});
+                    if (courseobj){
+                        if (userobj) {            
+                            var course_info = {
+                                                course_id:    courseobj.id,
+                                                course_num:   courseobj.course_num,
+                                                course_role:  req.body.course_role
+                                            }
+                            userobj.courses.forEach((course) => {
+                                if (course.course_num == course_info.course_num){
+                                    alreadyEnrolled = true;
+                                }
                             });
+                            if (alreadyEnrolled){
+                                res.status(200).send({Status: 200, Message: 'User is already enrolled in course!'});  
+                            } 
+                            else {
+                                userobj.courses.addToSet(course_info);
+                                userobj.save((err, updateduserobj) => {
+                                    if (err) res.status(500).send(err);                
+                                    else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+courseobj.display_name});
+                                });
+                            }
                         }
+                        else {
+                                const new_user = new User({
+                                    email:      req.body.student_email,
+                                    updated_at: new Date(),
+                                    courses:     {
+                                                    course_id:      courseobj.id,
+                                                    course_num:     courseobj.course_num,
+                                                    course_role:    req.body.course_role
+                                                }
+                                });
+
+                                User.create(new_user, (err) => {
+                                    if (err) res.status(500).send(err);
+                                    else res.status(200).send({Status: 200, Message: 'Successfully added '+req.body.student_email+' to '+courseobj.display_name});
+        
+                                }); 
+                        }    
                     }
                     else{
-                        res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course and/or user'});                              
+                        res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course'});                              
                     }
                 }
             });
