@@ -5,6 +5,7 @@ import { TOGGLE_ADD_POST } from './AppActions';
 const initialState = {
   user: "",
   perms: [],
+  isAdmin: false,
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -13,12 +14,14 @@ const AppReducer = (state = initialState, action) => {
   		return {
         user: action.user,
         perms: [],
+        admin: false,
       }
 
     case "perms" :
     return{
     	user: state.user,
     	perms:action.perm,
+      admin:action.admin
     }
     default:
       return state;

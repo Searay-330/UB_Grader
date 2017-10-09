@@ -13,7 +13,7 @@ export function perms(user){
         coursePerms[user.courses[i].course_num] = (admin)? "admin" : user.courses[i].course_role;
     }
 
-    return {type:"perms", perm: coursePerms};
+    return {type:"perms", perm: coursePerms, admin: admin};
 }
 
 

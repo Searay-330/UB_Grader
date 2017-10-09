@@ -52,7 +52,10 @@ export class CreateAssignment extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.perms[nextProps.params.course] == "student"){
+    if(nextProps.admin){
+      this.authed = true;
+    }
+    else if(nextProps.perms[nextProps.params.course] == "student"){
       window.location = "/courses/" + nextProps.params.course + "/assignments"; 
     }else if(nextProps.perms[nextProps.params.course]){
       this.authed = true;
@@ -186,6 +189,7 @@ function mapStateToProps(state) {
     errorObject: state.create.errorObject,
     redirect: state.create.redirect,
     perms: state.app.perms,
+    admin: state.app.admin,
   };
 }
 
