@@ -1,5 +1,5 @@
 const defaultState = {
-    semester: 'Fall 2017'
+    semester: ''
 };
 
 const CourseReducer = (state = defaultState, action) => {
