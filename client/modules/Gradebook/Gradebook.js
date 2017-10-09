@@ -74,10 +74,14 @@ export class Gradebook extends Component {
     }
 
     studentBook() {
-        console.log(this.props.submissions);
         var rows = [];
-        for (var submission in this.props.submissions) {
-            var data = this.props.submissions[submission];
+        for (var assignment in this.props.assignments) {
+            console.log(this.props.submissions);
+            console.log(this.props.assignments[assignment].assignment_num);
+            var key = this.props.assignments[assignment].assignment_num;
+            key = key.split("-").join("_");
+            var data = this.props.submissions[key];
+            console.log(data);
             row.push(
                 <TableRow>
                     <TableRowColumn>{data}.</TableRowColumn>
@@ -107,9 +111,11 @@ export class Gradebook extends Component {
 }
 
 function mapStateToProps(state) {
+    // console.log(state);
     return {
         user: state.app.user,
         assignments: state.assignments.assignmentsData,
+        submissions: state.gradebook.submissions,
     }
 }
 

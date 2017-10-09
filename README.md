@@ -43,6 +43,8 @@ cookieKey: 'randomstring'
 ```
 Also be sure to create a OAuth 2.0 Client ID and in which http://localhost:8000 is added to your authorized Javascript origins and that http://localhost:8000/api/auth/google/callback is added to your authorize redirect URIs.
 
+Lastly, you'll need to have Tango set up locally and the directions to do so can be found at https://github.com/daviddob/Tango/wiki
+
 Then you can run the following commands in your terminal:
 
 ```

@@ -10,12 +10,12 @@ const initialState = {
         
         case "student_grades":
         case "professor_grades":
-            console.log(action);
+            // console.log(action);
             if (action.gradeData != undefined && action.gradeData.length != 0) {
                 state.submissions[action.assignmentNum] = action.gradeData[0];
                 console.log("ADDED SUBMISSION");
-                console.log(state.submissions);
             }
+            // console.log(state.submissions);
             return {
                 submissions: state.submissions,
                 userData: state.userData

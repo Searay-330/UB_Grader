@@ -43,9 +43,7 @@ export class CreateAssignment extends Component {
       p_name: "",
       max_score: "",
     };
-    if(this.props.perms[this.props.params.course] == "student"){
-      window.location = "/courses/" + this.props.params.course + "/assignments"; 
-    }
+    this.authed = false;
   }
 
 
@@ -54,6 +52,11 @@ export class CreateAssignment extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    if(nextProps.perms[nextProps.params.course] == "student"){
+      window.location = "/courses/" + nextProps.params.course + "/assignments"; 
+    }else if(nextProps.perms[nextProps.params.course]){
+      this.authed = true;
+    }
     if(nextProps.redirect){
       this.context.router.push("/courses/" + nextProps.params.course + "/assignments");
     }
@@ -88,7 +91,9 @@ export class CreateAssignment extends Component {
   };
 
   render() {
-    
+    if(!this.authed){
+      return(null);
+    }
     return (
       <div>
       {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}

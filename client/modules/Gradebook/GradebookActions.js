@@ -5,7 +5,6 @@ export function createStudentGrades(assignmentNum, data){
 }
 
 export function getStudentGrades(courseNum, assignmentNum, email) {
-  console.log("GETTIN DA GERDS");
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
     //TODO
