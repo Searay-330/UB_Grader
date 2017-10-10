@@ -61,7 +61,7 @@ export class CreateCourse extends Component {
     }
     return (
       <div>
-        {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
+        {(this.props.errorObject != "") ? <Alert text={this.props.errorObject} type={this.props.errorType}/> : null}
         <Card>
           <CardHeader
             title="Basic Settings"
@@ -115,10 +115,10 @@ export class CreateCourse extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
-  console.log(state);
   return {
     coursesData: state.courses.coursesData,
-    errorObject: state.create.errorObject,
+    errorObject: state.createCourse.errorObject,
+    errorType: state.createCourse.errorType,
     perms: state.app.perms,
   };
 }
