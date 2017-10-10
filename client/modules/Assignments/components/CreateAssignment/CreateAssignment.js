@@ -99,7 +99,7 @@ export class CreateAssignment extends Component {
     }
     return (
       <div>
-      {(this.props.errorObject != "") ? <Alert text={this.props.errorObject} type="message"/> : null}
+      {(this.props.errorObject != "") ? <Alert text={this.props.errorObject} type="error"/> : null}
        <Card initiallyExpanded={true}>
     <CardHeader
       title="Basic Settings"
