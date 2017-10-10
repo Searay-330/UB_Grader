@@ -2,7 +2,6 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './modules/App/App';
-import Bs from './modules/bs/bs';
 import Courses from './modules/Courses/Courses'
 import Assignments from './modules/Assignments/Assignments';
 import Assignment from './modules/Assignment/Assignment';
@@ -32,7 +31,6 @@ export default (
   <Route path="/" component={App}>
   	<Route path="/api/auth/google" component={() => window.location = "/api/auth/google" } />
     <Route path="/api/logout" component={() => window.location = "/api/logout" } />
-    <Route path="testing" component={Bs}/>
     <Route path ="/courses/:course/adduser" component={AddUser}/>
     <Route path ="/courses/create" component={CreateCourse}/>
     <Route path="/courses" component={Courses}/>

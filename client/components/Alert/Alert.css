@@ -11,3 +11,15 @@
 	border-color: #ebcccc;
 	color: #a94442;
 }
+
+.message{
+	background-color: #dedef2;
+	border-color: #cccceb;
+	color: #007399;
+}
+
+.success{
+	background-color: #def2de;
+	border-color: #ccebcc;
+	color: #008040;
+}
