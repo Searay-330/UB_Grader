@@ -1,6 +1,7 @@
 // Initial State
 const initialState = {
   errorObject: "",
+  errorType: "",
 };
 
 
@@ -8,7 +9,7 @@ const CreateCourseReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case "error":
-      return {errorObject: action.error};
+      return {errorObject: action.error, errorType: action.errorType};
 
     default:
       return state;
@@ -17,4 +18,4 @@ const CreateCourseReducer = (state = initialState, action) => {
 
 
 // Export Reducer
-export default CreateCoursesReducer;
+export default CreateCourseReducer;

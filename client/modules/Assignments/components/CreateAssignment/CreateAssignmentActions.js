@@ -44,63 +44,55 @@ export function submitForm(formData, course) {
 	data = new FormData();
 
 	//must be FIRST
-	hold = (!hold) ? (formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "" && formData.name != "create") ? data.append("assignment_num", encodeURIComponent(formData.name)) : "Assignment Name Is A Required Field Or Your String Contained No Urlable Chars" : hold;
+	if(formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "" && formData.name != "create") {
+		data.append("assignment_num", encodeURIComponent(formData.name)); 
+	}else{ 
+		return dispatch(throwError("Assignment Name Is A Required Field Or Your String Contained No Urlable Chars")); 
+	};
 
 	//dates
 	hold = validateDates(formData);
 	if(hold == "skip"){
 		hold = undefined;
+	}else if(hold){
+		return dispatch(throwError(hold));
 	}else{
-		if(hold){
-			return dispatch(throwError(hold));
-		}
-		formData.startDate.setHours(formData.startTime.getHours(),formData.startTime.getMinutes(),0, 0);
-		formData.dueDate.setHours(formData.dueTime.getHours(),formData.dueTime.getMinutes(),0, 0);
-		formData.endDate.setHours(formData.endTime.getHours(),formData.endTime.getMinutes(),0, 0);
-
-		if(formData.startDate.getTime() > formData.dueDate.getTime()){
-			return dispatch(throwError("Due Date Must Come After Start"));
-		}
-
-		if(formData.dueDate.getTime() > formData.endDate.getTime()){
-			return dispatch(throwError("End Date Must Come After Due"));
-		}
-
 		data.append("start_date", formData.startDate);
 		data.append("due_date", formData.dueDate);
 		data.append("end_date", formData.endDate);
 	}
 
-	// everything else
-	hold = (!hold) ? validateFiles() : hold;
-	hold = (!hold) ? data.append("make", document.getElementById("make").files[0]) : hold;
-	hold = (!hold) ? data.append("tar", document.getElementById("tar").files[0]) : (hold == "skip") ? undefined : hold;
+	//files
+	hold = validateFiles();
+	if(hold == "skip"){
+		hold = undefined;
+	}else if(hold){
+		return dispatch(throwError(hold));
+	}else{
+		data.append("make", document.getElementById("make").files[0]);
+		data.append("tar", document.getElementById("tar").files[0]);
+	}
+
+	//problems
+	hold = validateProblems(formData);
+	if(hold == "skip"){
+		hold = undefined;
+	}else if(hold){
+		return dispatch(throwError(hold));
+	}else{
+		data.append("problems", JSON.stringify([{problem_name:formData.p_name, score : parseInt(formData.max_score) }]));
+	}
+	
+	//everything else
 	hold = (!hold) ? (formData.category != "") ? data.append("category", formData.category) : "Category Is A Required Field" : hold;
 	hold = (!hold) ? (formData.displayName != "") ? data.append("name", formData.displayName) : "Display Name Is A Required Field" : hold;
 
 	data.append("section_based",false);
 	data.append("auto_grader", (document.getElementById("tar") != null && document.getElementById("make") != null && document.getElementById("tar").files[0] && document.getElementById("make").files[0]) ? true : false);
 
-	if(!hold){
-		if(formData.p_name != "" && !isNaN(parseInt(formData.max_score))){
-			data.append("problems", JSON.stringify([{problem_name:formData.p_name, score : parseInt(formData.max_score) }]));
-		}
-		if(formData.p_name != "" && isNaN(parseInt(formData.max_score))){
-			hold = "Please Enter A Vaild Number For Score";
-		}
-		if(formData.p_name == "" && !isNaN(parseInt(formData.max_score))){
-			hold = "Plesea Enter A Vaild Name For The Problem";
-		}
-		if(formData.p_name == "" && isNaN(parseInt(formData.max_score)) && formData.max_score != ""){
-			hold = "Plesea Enter A Vaild Name For The Problem And A Vaild Score";
-		}
-
-	}
-
 	if(hold){
 		return dispatch(throwError(hold));
 	}
-	console.log(data);
     return callApiWithFiles("courses/" + course + "/assignments/create", data)
       .then(data => {
       	if(data.hasOwnProperty("_message")){
@@ -134,6 +126,21 @@ function validateDates(formData){
 	if(formData.endTime == null){
 		return "Please Enter A Vaild End Time";
 	}
+
+
+	formData.startDate.setHours(formData.startTime.getHours(),formData.startTime.getMinutes(),0, 0);
+	formData.dueDate.setHours(formData.dueTime.getHours(),formData.dueTime.getMinutes(),0, 0);
+	formData.endDate.setHours(formData.endTime.getHours(),formData.endTime.getMinutes(),0, 0);
+
+	if(formData.startDate.getTime() > formData.dueDate.getTime()){
+		return "Due Date Must Come After Start";
+	}
+
+	if(formData.dueDate.getTime() > formData.endDate.getTime()){
+		return "End Date Must Come After Due";
+	}
+
+
 	return undefined;
 }
 
@@ -148,4 +155,22 @@ function validateFiles(){
 		return "Please Input A Vaild Make File";
 	}
 	return undefined;
+}
+
+function validateProblems(formData){
+	if(formData.p_name != "" && !isNaN(parseInt(formData.max_score))){
+		return undefined;
+	}
+	if(formData.p_name != "" && isNaN(parseInt(formData.max_score))){
+		return "Please Enter A Vaild Number For Score";
+	}
+	if(formData.p_name == "" && !isNaN(parseInt(formData.max_score))){
+		return "Plesea Enter A Vaild Name For The Problem";
+	}
+	if(formData.p_name == "" && isNaN(parseInt(formData.max_score)) && formData.max_score != ""){
+		return "Plesea Enter A Vaild Name For The Problem And A Vaild Score";
+	}
+
+	return "skip";
+
 }

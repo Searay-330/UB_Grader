@@ -114,7 +114,6 @@ export class Gradebook extends Component {
 }
 
 function mapStateToProps(state) {
-    console.log(state);
     return {
         user: state.app.user,
         assignments: state.assignments.assignmentsData,
