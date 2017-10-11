@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/FlatButton';
 
 // Import Components
 import Category from './modules/Category/Category';
-// Import Bootstrap
+// Import Material
 import { GridList } from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
 

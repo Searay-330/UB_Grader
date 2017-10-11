@@ -57,6 +57,10 @@ export class App extends Component {
     }
   }
 
+  openMenu = ()=>{
+    alert("click");
+  };
+
 
   render() {
     let home = null
@@ -87,7 +91,7 @@ export class App extends Component {
               },
             ]}
           />
-          <Header user={this.props.user.first_name}/>
+          <Header user={this.props.user.first_name} drawerFunction = {this.openMenu}/>
           <div className={styles.container}>
           {home}
 

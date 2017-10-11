@@ -15,7 +15,7 @@ export function Header(props) {
   var appBar = <AppBar showMenuIconButton={false} onTitleTouchTap={()=>{window.location="/"}} title={<span className={styles.point}>Autograder 3.0</span>} />;
   if (props.user != "") {
     var icon = <FlatButton label={props.user} labelPosition="before" icon={<ActionExitToApp />} href="/api/logout" />
-    appBar = <AppBar showMenuIconButton={false} onTitleTouchTap={()=>{window.location="/"}} title={<span className={styles.point}>Autograder 3.0</span>} iconElementRight={icon} />;
+    appBar = <AppBar showMenuIconButton={true} onLeftIconButtonTouchTap={() => {props.drawerFunction();}} onTitleTouchTap={()=>{window.location="/"}} title={<span className={styles.point}>Autograder 3.0</span>} iconElementRight={icon} />;
   }
   return (
     <div>
