@@ -6,6 +6,7 @@ const initialState = {
   user: "",
   perms: [],
   isAdmin: false,
+  menuItems: undefined,
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -15,13 +16,23 @@ const AppReducer = (state = initialState, action) => {
         user: action.user,
         perms: [],
         admin: false,
+        menuItems: undefined,
       }
 
     case "perms" :
     return{
     	user: state.user,
     	perms:action.perm,
-      admin:action.admin
+      admin:action.admin,
+      menuItems: undefined,
+    }
+
+    case "menuUpdate" :
+    return{
+      user: state.user,
+      perms:state.perm,
+      admin:state.admin,
+      menuItems: action.items,
     }
     default:
       return state;

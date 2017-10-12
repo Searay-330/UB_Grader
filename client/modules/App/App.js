@@ -43,12 +43,12 @@ const muiTheme = getMuiTheme({
 export class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { isMounted: false };
+    this.state = { isMounted: false, menuOpen: false};
   }
 
   componentDidMount() {
     this.props.checkUser();
-    this.setState({isMounted: true}); // eslint-disable-line
+    this.setState({isMounted: true, menuOpen: false}); // eslint-disable-line
   }
 
   componentWillReceiveProps(nextProps){
@@ -57,9 +57,13 @@ export class App extends Component {
     }
   }
 
-  openMenu = ()=>{
-    alert("click");
+  toggleMenu = (open)=>{
+    console.log(open);
+    // code for menu goes here
+    this.setState({isMounted: true, menuOpen: open});
+    
   };
+
 
 
   render() {
@@ -91,7 +95,7 @@ export class App extends Component {
               },
             ]}
           />
-          <Header user={this.props.user.first_name} drawerFunction = {this.openMenu}/>
+          <Header user={this.props.user.first_name} drawerVar = {this.state.menuOpen} drawerFunction = {this.toggleMenu} menuItems={this.props.menuItems}/>
           <div className={styles.container}>
           {home}
 
@@ -114,6 +118,7 @@ App.contextTypes = {
 function mapStateToProps(state) {
   return {
     user: state.app.user,
+    menuItems: state.app.menuItems,
     
   };
 }
