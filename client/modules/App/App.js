@@ -58,7 +58,6 @@ export class App extends Component {
   }
 
   toggleMenu = (open)=>{
-    console.log(open);
     // code for menu goes here
     this.setState({isMounted: true, menuOpen: open});
     
