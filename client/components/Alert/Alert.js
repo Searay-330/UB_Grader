@@ -11,23 +11,25 @@ import styles from './Alert.css';
 
 
 export function Alert(props) {
+	var classname = "";
 	switch(props.type){
 		case "error":
-			return (<div className={[styles.alert, styles.error].join(" ")}><span>{props.text}</span></div>);	
+			classname = styles.error;
 		break;
-
-		case "message":
-			return (<div className={[styles.alert, styles.message].join(" ")}><span>{props.text}</span></div>);	
-		break;
-
+		
 		case "success":
-			return (<div className={[styles.alert, styles.success].join(" ")}><span>{props.text}</span></div>);	
+			classname = styles.success;	
 		break;
 
 		default:
-			return (<div className={[styles.alert, styles.message].join(" ")}><span>{props.text}</span></div>);	
+			classname = styles.message;
 		break;
 	}
+
+
+
+
+	return (<div className={[styles.alert, classname].join(" ")}><span>{props.text}</span></div>);
   
 }
 
