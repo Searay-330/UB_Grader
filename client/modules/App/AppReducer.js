@@ -30,7 +30,7 @@ const AppReducer = (state = initialState, action) => {
     case "menuUpdate" :
     return{
       user: state.user,
-      perms:state.perm,
+      perms:state.perms,
       admin:state.admin,
       menuItems: action.items,
     }

@@ -6,12 +6,14 @@ import { bindActionCreators } from 'redux';
 import { getCourseData } from './AssignmentsActions'
 import {redirectReset} from './components/CreateAssignment/CreateAssignmentActions';
 import RaisedButton from 'material-ui/FlatButton';
+import {changeMenuItems} from '../App/AppActions';
 
 // Import Components
 import Category from './modules/Category/Category';
 // Import Material
 import { GridList } from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
+import MenuItem from 'material-ui/MenuItem';
 
 export class Assignments extends Component {
   constructor(props) {
@@ -36,6 +38,19 @@ export class Assignments extends Component {
       this.categories[nextProps.assignments[i].category].push(nextProps.assignments[i]);
     }
 
+    if(nextProps.perms){
+    var create = null;
+    var create2 = null;
+    var gradebook = null;
+    if(nextProps.perms[this.props.params.course] != "student"){
+      create = <MenuItem key={0} onClick={()=>{window.location = "/create"}}>Create Assignemnt</MenuItem>;
+      create2 = <MenuItem key={1} onClick={() => { window.location = /courses/ + this.props.params.course + "/adduser" }}>Add User To Course</MenuItem>;
+    } 
+    gradebook = <MenuItem key={2} onClick={() => { window.location = ("/courses/") + this.props.params.course + "/assignments/gradebook"}}>Gradebook</MenuItem>;
+    var elems = [create,create2, gradebook];
+    nextProps.changeMenuItems(elems);
+    }
+
     this.setState({ render: true, categories: this.categories, drawers: this.drawers});
 
   }
@@ -53,6 +68,10 @@ export class Assignments extends Component {
 
 
   render() {
+    if(!this.props.perms){
+      console.log(this.props.perms);
+      return null;
+    }
     var childComp = this.props.children;
     if (this.state.render && this.props.children) { return(<div>{childComp}</div>); }
     if(!this.state.render) {return null;}
@@ -64,41 +83,11 @@ export class Assignments extends Component {
       this.props.getCourseData(this.props.params.course);
       this.props.resetRedir();
     }
-    var create = null;
-    var create2 = null;
-    if (this.props.perms[this.props.params.course] != "student") {
-      create = <RaisedButton
-        labelStyle={{ color: "white" }}
-        backgroundColor="#005BBB"
-        label="Create Assignment"
-        onClick={() => { window.location = (window.location.toString().charAt(window.location.toString().length - 1) != "/") ? window.location + "/create" : window.location.toString().substring(-1) + "create" }}
-      />;
-      create2 = <RaisedButton
-        labelStyle={{ color: "white" }}
-        backgroundColor="#005BBB"
-        label="Add Students"
-        onClick={() => { window.location = /courses/ + this.props.params.course + "/adduser" }} />;
-    }
-    var gradebook = <RaisedButton
-      labelStyle={{ color: "white" }}
-      backgroundColor="#005BBB"
-      label="Gradebook"
-      onClick={() => { window.location = ("/courses/") + this.props.params.course + "/assignments/gradebook"; }}
-    />
+
 
 
     return (
       <div>
-        {create}
-        <br />
-        <br />
-        {create2}
-        <br />
-        <br />
-        {gradebook}
-        <br />
-        <br />
-        <br />
         <GridList
           cols={3}
         >
@@ -124,6 +113,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     getCourseData: getCourseData,
     resetRedir: redirectReset,
+    changeMenuItems: changeMenuItems,
   }, dispatch);
 }
 
