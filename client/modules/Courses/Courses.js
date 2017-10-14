@@ -59,7 +59,7 @@ export class Courses extends Component {
         for (var i = 0; i < this.props.courses.length; i++) {
             var course = this.props.courses[i];
             courses.push(
-                <Course key={course['id']} courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']} location={this.props.location.pathname}/>
+                <Course key={course['id']} courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']}/>
             );
         }
         return (
