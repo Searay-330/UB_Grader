@@ -27,3 +27,7 @@ export function getUserLoggedIn() {
       })
   }
 }
+
+export function changeMenuItems(items){
+  return {type:"menuUpdate", items: items}
+}

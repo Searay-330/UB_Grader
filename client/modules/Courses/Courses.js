@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import {changeMenuItems} from '../App/AppActions';
+import MenuItem from 'material-ui/MenuItem';
 import Course from './modules/Course/Course';
 import {getCourses} from './CoursesActions';
 import { PanelGroup, Grid, Row } from 'react-bootstrap';
@@ -49,11 +51,8 @@ export class Courses extends Component {
 
         var create = null;
         if(isAdmin){
-            create = <RaisedButton 
-                        labelStyle={{color:"white"}} 
-                        backgroundColor="#005BBB" 
-                        label="Create Course" 
-                        onClick={()=>{window.location = "/courses/create"}} />;
+            create = <MenuItem onClick={()=>{window.location = "/courses/create"}}>Create Course</MenuItem>;
+            this.props.changeMenuItems(create);
         } 
         var courses = [];
         for (var i = 0; i < this.state.courses.length; i++) {
@@ -64,7 +63,6 @@ export class Courses extends Component {
         }
         return (
             <div>
-            {create}
             <br/>
             <br/>
             <PanelGroup>
@@ -89,6 +87,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getCourses: getCourses,
+        changeMenuItems: changeMenuItems,
+
     }, dispatch);
 }
 
