@@ -43,10 +43,10 @@ export class Assignments extends Component {
     var create2 = null;
     var gradebook = null;
     if(nextProps.perms[this.props.params.course] != "student"){
-      create = <MenuItem key={0} onClick={()=>{window.location = "/create"}}>Create Assignemnt</MenuItem>;
-      create2 = <MenuItem key={1} onClick={() => { window.location = /courses/ + this.props.params.course + "/adduser" }}>Add User To Course</MenuItem>;
+      create = <MenuItem key={0} onClick={()=>{window.location = "/courses/" + this.props.params.course + "/assignments/create"}}>Create Assignemnt</MenuItem>;
+      create2 = <MenuItem key={1} onClick={() => { window.location = "/courses/" + this.props.params.course + "/adduser" }}>Add User To Course</MenuItem>;
     } 
-    gradebook = <MenuItem key={2} onClick={() => { window.location = ("/courses/") + this.props.params.course + "/assignments/gradebook"}}>Gradebook</MenuItem>;
+    gradebook = <MenuItem key={2} onClick={() => { window.location = "/courses/" + this.props.params.course + "/assignments/gradebook"}}>Gradebook</MenuItem>;
     var elems = [create,create2, gradebook];
     nextProps.changeMenuItems(elems);
     }
