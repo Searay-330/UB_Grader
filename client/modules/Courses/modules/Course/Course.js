@@ -9,15 +9,14 @@ import blueA700 from 'material-ui/styles/colors';
 export class Course extends Component {
 
     constructor(props) {
-        console.log(props);
         super(props);
-        this.state = {
-            isMounted: false,
-        };
+        // this.state = {
+        //     isMounted: false,
+        // };
     }
 
     componentDidMount() {
-        this.setState({ isMounted: true });
+    //     this.setState({ isMounted: true });
     }
 
     render() {

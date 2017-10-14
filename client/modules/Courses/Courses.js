@@ -15,7 +15,6 @@ export class Courses extends Component {
         super(props);
         this.state = {
             rendered: false,
-            courses: []
         };
     }
 
@@ -23,27 +22,15 @@ export class Courses extends Component {
         this.props.getCourses();
         this.setState({
             render: false,
-            courses: [],
         });
     }
 
     componentWillReceiveProps(nextProps) {
         this.courses = nextProps.courses;
-        this.setState({
-            render: true,
-            courses: this.courses,
-        });
-    }
-
-    render() {
         
-        if (!this.state.render) {
-            return null;
-        }
-
         var isAdmin = false;
-        for(var i in this.props.perms){
-            if(this.props.perms[i] == 'admin'){
+        for(var i in nextProps.perms){
+            if(nextProps.perms[i] == 'admin'){
                 isAdmin = true;
                 break;
             }
@@ -54,9 +41,21 @@ export class Courses extends Component {
             create = <MenuItem onClick={()=>{window.location = "/courses/create"}}>Create Course</MenuItem>;
             this.props.changeMenuItems(create);
         } 
+
+        this.setState({
+            render: true,
+        });
+    }
+
+    render() {
+        
+        if (!this.state.render) {
+            return null;
+        }
+
         var courses = [];
-        for (var i = 0; i < this.state.courses.length; i++) {
-            var course = this.state.courses[i];
+        for (var i = 0; i < this.props.courses.length; i++) {
+            var course = this.props.courses[i];
             courses.push(
                 <Course key={course['id']} courseNum={course['course_num']} displayName={course['display_name']} semester={course['semester']} location={this.props.location.pathname}/>
             );

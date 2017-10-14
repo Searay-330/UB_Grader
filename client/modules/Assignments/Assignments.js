@@ -102,6 +102,7 @@ export class Assignments extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
+  console.log(state);
   return {
     assignments: state.assignments.assignmentsData,
     redirected: state.create.redirect,
