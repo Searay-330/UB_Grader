@@ -33,11 +33,12 @@ export default (
     <Route path="/api/logout" component={() => window.location = "/api/logout" } />
     <Route path ="/courses/:course/adduser" component={AddUser}/>
     <Route path ="/courses/create" component={CreateCourse}/>
-    <Route path="/courses" component={Courses}/>
+    <Route path="/courses" component={Courses}>
     <Route path="/courses/:course/assignments" component={Assignments}>
       <Route path="/courses/:course/assignments/gradebook" component={Gradebook}/>
       <Route exact path="/courses/:course/assignments/create" component={CreateAssignment}/>
       <Route path="/courses/:course/assignments/:assignment" component={Assignment}/>
+    </Route>
     </Route>
   </Route>
 

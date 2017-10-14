@@ -8,6 +8,7 @@ import Course from './modules/Course/Course';
 import {getCourses} from './CoursesActions';
 import { PanelGroup, Grid, Row } from 'react-bootstrap';
 import RaisedButton from 'material-ui/FlatButton';
+import { GridList } from 'material-ui/GridList';
 
 export class Courses extends Component {
 
@@ -48,7 +49,8 @@ export class Courses extends Component {
     }
 
     render() {
-        
+        var childComp = this.props.children;
+        if (this.state.render && this.props.children) { return(<div>{childComp}</div>); }
         if (!this.state.render) {
             return null;
         }
@@ -62,15 +64,11 @@ export class Courses extends Component {
         }
         return (
             <div>
-            <br/>
-            <br/>
-            <PanelGroup>
-                <Grid>
-                    <Row>
-                        {courses}
-                    </Row>
-                </Grid>
-            </PanelGroup>
+                <br />
+                <br />
+                <GridList cols={3} cellHeight={300}>
+                    {courses}
+                </GridList>
             </div>
         )
     }
