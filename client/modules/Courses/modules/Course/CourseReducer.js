@@ -5,9 +5,9 @@ const defaultState = {
 };
 
 const CourseReducer = (state = defaultState, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case "course":
-        console.log("COURSE ACTION");
+            console.log("COURSE ACTION");
             return {
                 courseNum: action.courseNum,
                 displayName: action.displayName,

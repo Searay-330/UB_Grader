@@ -1,22 +1,22 @@
 const initialState = {
-    coursesData:[],
-  };
-  
-  
-  const coursesReducer = (state = initialState, action) => {
-  
+    coursesData: [],
+};
+
+
+const coursesReducer = (state = initialState, action) => {
+
     switch (action.type) {
-  
+
         case "courses":
             return {
                 coursesData: action.coursesData
-  
+
             }
-      default:
-        return state;
+        default:
+            return state;
     }
-  };
-  
-  
-  // Export Reducer
-  export default coursesReducer;
+};
+
+
+// Export Reducer
+export default coursesReducer;
