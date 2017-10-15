@@ -1,15 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import {chooseCourse} from './CourseActions';
+
+
 
 import RaisedButton from 'material-ui/RaisedButton';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
-import blueA700 from 'material-ui/styles/colors';
+import { Card, CardActions, CardTitle, CardText } from 'material-ui/Card';
 
 export class Course extends Component {
 
     constructor(props) {
-        console.log(props);
         super(props);
         this.state = {
             isMounted: false,
@@ -27,10 +28,15 @@ export class Course extends Component {
                 <CardTitle>{title}</CardTitle>
                 <CardText>Semester: {this.props.semester}</CardText>
                 <CardActions>
-                    <RaisedButton label='Enter' primary={true} fullWidth={true} href={"/courses/" + this.props.courseNum + "/assignments"} />
+                    <RaisedButton label='Enter' primary={true} fullWidth={true} onClick={() => this.enterCourse()} />
                 </CardActions>
             </Card>
         );
+    }
+
+    enterCourse() {
+        this.props.chooseCourse(this.props);
+        window.location = "courses/" + this.props.courseNum + "/assignments";
     }
 }
 
@@ -41,6 +47,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
+        chooseCourse: chooseCourse,
     }, dispatch);
 }
 
