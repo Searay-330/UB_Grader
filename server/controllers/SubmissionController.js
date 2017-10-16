@@ -116,12 +116,13 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
         if (err){
             res.status(500).send(err);
         } else {
+            var calls = [];
             course.assignments.forEach((assignment) => {
-                console.log(assignment);
-                console.log("====================================");
-                var calls = [];
+                // console.log(assignment);
+                // console.log("====================================");
+                console.log(assignment.assignment_num);
                 assignment.user_submissions.forEach((sub) => {
-                    console.log(sub);
+                    // console.log(sub);
                     calls.push(function(callback) {
                         var temp = Submission.findOne({
                             version: sub.submissions, 
@@ -135,12 +136,11 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                         });
                     });
                 });
-
-                async.parallel(calls, function(err, result) {
-                    if (err) 
-                        return console.log(err);
-                    res.status(200).send(result);
-                });
+            });
+            async.parallel(calls, function(err, result) {
+                if (err) 
+                    return console.log(err);
+                res.status(200).send(result);
             });
         } 
     });
@@ -154,7 +154,6 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
  */
 
 export function getAllSubmissions(req, res, next){
-    console.log("Got here!")
     Submission.find({"course_num":req.params.course_num}, (err, submissions) => {
         var submissionList = []
         submissions.forEach((submission) => {
@@ -204,12 +203,16 @@ export function createSubmission(req, res, next) {
                                         submission.assignment_num = req.params.assignment_num;
                                         submission.file_name = req.files[0].filename;
                                         submission.version = sub.submissions;
-                                        submission.feedback = "Placeholder";
+                                        submission.feedback = "Waiting for feedback";
                                         submission.form_data = "Placeholder";
-                                        submission.grader = "Placeholder";
+                                        if(assignment.auto_grader){
+                                            submission.grader = "Autograder";
+                                        } else {
+                                            submission.grader = "Manual Grader";
+                                        }
                                     
-                                        console.log("Calling send to Tango");
                                         if (assignment.auto_grader){
+                                            console.log("Calling send to Tango");
                                             TangoController.sendToTango(submission, assignment, course);
                                         }
 
