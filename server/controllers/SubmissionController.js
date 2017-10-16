@@ -14,7 +14,6 @@ var async = require('async');
  */
 
 export function getUserSubmissions(req, res, next) {
-    console.log(req.params.email);
     Submission.find({'user_email': req.params.email}, (err, submissions) => {
         if (err){
             res.status(500).send(err);   
@@ -94,7 +93,7 @@ export function getAllLatestSubmissions(req, res, next) {
 
                     async.parallel(calls, function(err, result) {
                         if (err) 
-                            return console.log(err);
+                            return res.status(500).send(err);
                         res.status(200).send(result);
                     });
                 }
@@ -111,18 +110,13 @@ export function getAllLatestSubmissions(req, res, next) {
  */
 
 export function getAllLatestSubmissionsInAssignments(req, res, next) {
-    console.log("Got here!")
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
             res.status(500).send(err);
         } else {
             var calls = [];
             course.assignments.forEach((assignment) => {
-                // console.log(assignment);
-                // console.log("====================================");
-                console.log(assignment.assignment_num);
                 assignment.user_submissions.forEach((sub) => {
-                    // console.log(sub);
                     calls.push(function(callback) {
                         var temp = Submission.findOne({
                             version: sub.submissions, 
@@ -130,8 +124,6 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                             assignment_num: assignment.assignment_num,
                             course_num: req.params.course_num
                         }, (err, submissionObj) => {
-                            console.log(submissionObj);
-                            console.log("-----------------------------------------");
                             callback(err, submissionObj);
                         });
                     });
@@ -139,7 +131,7 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
             });
             async.parallel(calls, function(err, result) {
                 if (err) 
-                    return console.log(err);
+                    return res.status(500).send(err);
                 res.status(200).send(result);
             });
         } 
