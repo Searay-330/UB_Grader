@@ -45,13 +45,22 @@ router.get('/courses/:course_num/sections', AuthCheck.isAuthenticated, AuthCheck
 router.get('/courses/:course_num/:section_name/students', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.getSectionStudents);
 
 //Returns all the submission of a specific user and assignment
-router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getUserSubmissions);
+router.get('/courses/:course_num/assignments/:assignment_num/submissions/user/:email', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getUserSubmissions);
 
 //Returns all the submissions of all users in a specific assignment
 router.get('/courses/:course_num/assignments/:assignment_num/submissions', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getAllSubmissions);
 
 //Returns latest submission of a specific user in a specific assignment
 router.get('/courses/:course_num/assignments/:assignment_num/submissions/:email/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getLatestSubmission);
+
+//Returns latest submission of all users in a specific assignment
+router.get('/courses/:course_num/assignments/:assignment_num/submissions/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getAllLatestSubmissions);
+
+//Returns latest submission of all users in all assignments
+router.get('/courses/:course_num/submissions/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getAllLatestSubmissionsInAssignments);
+
+//Returns latest submissions of a user in all assignments
+router.get('/courses/:course_num/submissions/:email/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getLatestSubmissionsInAssignments);
 
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
