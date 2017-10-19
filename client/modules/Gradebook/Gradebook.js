@@ -2,20 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getStudentGrades, getProfessorGrades, getUserInfo } from './GradebookActions';
+import { getStudentGrades, getProfessorGrades } from './GradebookActions';
 
 import AssignmentGrade from './components/AssignmentGrade';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card';
-import {
-    Table,
-    TableBody,
-    TableHeader,
-    TableHeaderColumn,
-    TableRow,
-    TableRowColumn,
-} from 'material-ui/Table';
+import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 
-import { PanelGroup, Grid, Row, Col } from 'react-bootstrap';
+import ReactTable from 'react-table';
+import styles from 'react-table/react-table.css';
 
 export class Gradebook extends Component {
 
@@ -23,93 +16,73 @@ export class Gradebook extends Component {
         super(props);
         this.state = {
             render: false,
-            userData: {},
             submissions: {},
         }
     }
 
     componentDidMount() {
+        var courseNum = this.props.params.course;
+        var email = this.props.user.email;
+
+        this.props.getStudentGrades(courseNum, email);
         this.setState({
             render: false,
-            userData: {},
             submissions: {},
         })
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("NEXT PROPS");
-        console.log(nextProps);
-        var courseNum = nextProps.params.course;
-        var email = nextProps.user.email;
-        console.log(nextProps.assignments);
-        for (var assignment in nextProps.assignments) {
-            var assignmentNum = nextProps.assignments[assignment].assignment_num;
-            console.log("Getting: " + courseNum + " " + assignmentNum + " " + email)
-            this.props.getStudentGrades(courseNum, assignmentNum, email).then(() => { this.forceUpdate() });
-        }
-        // console.log(this.props.submissions);
+        this.setState({
+            render: true,
+            submissions: nextProps.submissions
+        })
     }
 
     render() {
+        if (!this.state.render) {
+            return null;
+        }
+        console.log(this.state.submissions);
+        const columns = [
+            {
+                Header: "Assignment",
+                accessor: "assignment_num"
+            },
+            {
+                Header: "Version",
+                accessor: "version"
+            },
+        ]
 
-        // console.log(this.props);
+        const data = [];
+
+        for (var i = 0; i < this.state.submissions.length; i++) {
+            data.push(this.state.submissions[i]);
+        }
+
+        const x = styles;
+
+        console.log(data);
         return (
-            this.studentBook()
+            <Card>
+                <CardTitle title="Grades" />
+                <CardMedia>
+                    <div style={styles}>
+                        <ReactTable
+                            columns={columns}
+                            data={data}
+                        />
+                    </div>
+                </CardMedia>
+            </Card>
         );
     }
 
     instructorBook() {
-        return (
-            <Card>
-                <CardTitle title="Grades" />
-                <CardMedia>
-                    <Table>
-                        <TableHeader>
-
-                        </TableHeader>
-                        <TableBody>
-
-                        </TableBody>
-                    </Table>
-                </CardMedia>
-            </Card>
-        )
     }
 
     studentBook() {
-        console.log(Object.keys(this.props.submissions));
-        if (Object.keys(this.props.submissions) == 1) {
-            return null;
-        }
-        this.rows = [];
-        console.log(this.props);
-        for (var assignment in this.props.assignments) {
-            console.log(this.props.submissions);
-            console.log(this.props.assignments[assignment].assignment_num);
-            var key = this.props.assignments[assignment].assignment_num;
-            var data = this.props.submissions[key];
-            if (data == undefined) {
-                continue;
-            }
-            console.log(data);
-            this.rows.push(<AssignmentGrade name={key} data={data} />);
-        }
-        console.log(this.rows);
-        return (
-            <Card>
-                <CardTitle title="Grades" />
-                <CardMedia>
-                        <table style="width:100%">
-                            <tr>
-                                <th>Assignment</th>
-                                <th>Score</th>
-                                <th>Version</th>
-                            </tr>
-                            {this.rows}
-                        </table>
-                </CardMedia>
-            </Card>
-        )
+
     }
 }
 
@@ -125,7 +98,6 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getStudentGrades: getStudentGrades,
         getProfessorGrades: getProfessorGrades,
-        getUserInfo: getUserInfo,
     }, dispatch);
 }
 
