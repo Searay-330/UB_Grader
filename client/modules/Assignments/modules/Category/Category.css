@@ -38,4 +38,6 @@
 	font-weight: bold;
 	font-size: 15px;
  	background-color: #005BBB !important;
+ 	color: white !important;
+ 	border-bottom: 2px solid black;
 }
