@@ -1,42 +1,26 @@
 import callApi from '../../util/apiCaller';
 
-export function createStudentGrades(assignmentNum, data){
-  return {type:"student_grades", assignmentNum: assignmentNum, gradeData: data};
+export function createStudentGrades(data){
+  return {type:"student_grades", gradeData: data};
 }
 
-export function getStudentGrades(courseNum, assignmentNum, email) {
+export function getStudentGrades(courseNum, email) {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
-    //TODO
-    return callApi("courses/" + courseNum + "/assignments/" + assignmentNum + "/submissions/" + email).then(
-      data => { dispatch(createStudentGrades(assignmentNum, data))}
+    return callApi("courses/" + courseNum + "/submissions/" + email + "/latest").then(
+      data => { dispatch(createStudentGrades(data))}
     )
   }
 }
 
-export function createProfessorGrades(assignmentNum, data){
-  return {type:"professor_grades", assignmentNum: assignmentNum, gradeData: data};
+export function createProfessorGrades(data){
+  return {type:"professor_grades", gradeData: data};
 }
 
-export function getProfessorGrades(courseNum, assignmentNum, email) {
+export function getProfessorGrades(courseNum) {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
-    //TODO
-    return callApi("courses/" + courseNum + "/assignments/" + assignmentNum + "/submissions/").then(
-      data => { dispatch(createProfessorGrades(data))}
-    )
-  }
-}
-
-export function createUserData(data) {
-  return {type:"user", userInfo: data};
-}
-
-export function getUserInfo() {
-  return function (dispatch) {
-    dispatch(() => {return {type:"wait"};});
-    //TODO
-    return callApi("current_user" ).then(
+    return callApi("courses/" + courseNum + "/submissions/latest").then(
       data => { dispatch(createProfessorGrades(data))}
     )
   }
