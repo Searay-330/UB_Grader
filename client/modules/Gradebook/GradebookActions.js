@@ -20,7 +20,6 @@ export function createProfessorGrades(data){
 export function getProfessorGrades(courseNum) {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
-    //TODO
     return callApi("courses/" + courseNum + "/submissions/latest").then(
       data => { dispatch(createProfessorGrades(data))}
     )

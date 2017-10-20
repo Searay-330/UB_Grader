@@ -40,12 +40,12 @@ export class Gradebook extends Component {
                 break;
             }
         }
-        
-        if (role == "instructor") {
-            this.props.getProfessorGrades(courseNum);
-        } else {
+
+        // if (role == "instructor") {
+        //     this.props.getProfessorGrades(courseNum);
+        // } else {
             this.props.getStudentGrades(courseNum, email);
-        }
+        // }
         this.setState({
             render: false,
             submissions: {},
@@ -77,61 +77,42 @@ export class Gradebook extends Component {
             }
             data.push(sub);
         }
-
+        console.log(data);
         return (
             <Card>
                 <CardTitle title="Grades" />
                 <CardMedia>
-                {
-                    (this.state.role == "instructor")
-                    ? this.instructorBook(data)
-                    : this.studentBook(data)
-                }
+                    {this.studentBook(data)}
                 </CardMedia>
             </Card>
         );
     }
 
     instructorBook(data) {
-        <Table>
-        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-            <TableRow>
-                <TableHeaderColumn>Assignment</TableHeaderColumn>
-                <TableHeaderColumn>Version</TableHeaderColumn>
-                <TableHeaderColumn>Score</TableHeaderColumn>
-            </TableRow>
-        </TableHeader>
-        <TableBody displayRowCheckbox={false}>
-            {data.map((n, index) => (
-                <TableRow key={index} >
-                    <TableRowColumn>{n.assignment_num}</TableRowColumn>
-                    <TableRowColumn>{n.version}</TableRowColumn>
-                    <TableRowColumn>{n.scores}</TableRowColumn>
-                </TableRow>
-            ))}
-        </TableBody>
-    </Table>
+
     }
 
     studentBook(data) {
-        <Table>
-            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                <TableRow>
-                    <TableHeaderColumn>Assignment</TableHeaderColumn>
-                    <TableHeaderColumn>Version</TableHeaderColumn>
-                    <TableHeaderColumn>Score</TableHeaderColumn>
-                </TableRow>
-            </TableHeader>
-            <TableBody displayRowCheckbox={false}>
-                {data.map((n, index) => (
-                    <TableRow key={index} >
-                        <TableRowColumn>{n.assignment_num}</TableRowColumn>
-                        <TableRowColumn>{n.version}</TableRowColumn>
-                        <TableRowColumn>{n.scores}</TableRowColumn>
+        return (
+            <Table selectable={false}>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                    <TableRow>
+                        <TableHeaderColumn>Assignment</TableHeaderColumn>
+                        <TableHeaderColumn>Version</TableHeaderColumn>
+                        <TableHeaderColumn>Score</TableHeaderColumn>
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false}>
+                    {data.map((n, index) => (
+                        <TableRow key={index} >
+                            <TableRowColumn>{n.assignment_num}</TableRowColumn>
+                            <TableRowColumn>{n.version}</TableRowColumn>
+                            <TableRowColumn>{n.scores}</TableRowColumn>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        )
     }
 }
 
