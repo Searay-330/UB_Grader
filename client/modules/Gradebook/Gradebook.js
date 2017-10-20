@@ -4,11 +4,17 @@ import { bindActionCreators } from 'redux';
 
 import { getStudentGrades, getProfessorGrades } from './GradebookActions';
 
-import AssignmentGrade from './components/AssignmentGrade';
 import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 
-import ReactTable from 'react-table';
-import styles from 'react-table/react-table.css';
+import {
+    Table,
+    TableBody,
+    TableFooter,
+    TableHeader,
+    TableHeaderColumn,
+    TableRow,
+    TableRowColumn,
+} from 'material-ui/Table';
 
 export class Gradebook extends Component {
 
@@ -57,22 +63,38 @@ export class Gradebook extends Component {
         const data = [];
 
         for (var i = 0; i < this.state.submissions.length; i++) {
-            data.push(this.state.submissions[i]);
+            var sub = this.state.submissions[i];
+            if (sub.scores == undefined) {
+                sub.scores = '-';
+            } else {
+                sub.scores = sub.scores.reduce((a, b) => a + b, 0);
+            }
+            data.push(sub);
         }
-
-        const x = styles;
 
         console.log(data);
         return (
             <Card>
                 <CardTitle title="Grades" />
                 <CardMedia>
-                    <div style={styles}>
-                        <ReactTable
-                            columns={columns}
-                            data={data}
-                        />
-                    </div>
+                    <Table>
+                        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                            <TableRow>
+                                <TableHeaderColumn>Assignment</TableHeaderColumn>
+                                <TableHeaderColumn>Version</TableHeaderColumn>
+                                <TableHeaderColumn>Score</TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody displayRowCheckbox={false}>
+                            {data.map((n, index) => (
+                                <TableRow key={index} >
+                                    <TableRowColumn>{n.assignment_num}</TableRowColumn>
+                                    <TableRowColumn>{n.version}</TableRowColumn>
+                                    <TableRowColumn>{n.scores}</TableRowColumn>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
                 </CardMedia>
             </Card>
         );
