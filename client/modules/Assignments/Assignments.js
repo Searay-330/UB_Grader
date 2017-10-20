@@ -15,6 +15,8 @@ import { GridList } from 'material-ui/GridList';
 import Subheader from 'material-ui/Subheader';
 import MenuItem from 'material-ui/MenuItem';
 
+import styles from './Assignments.css';
+
 export class Assignments extends Component {
   constructor(props) {
     super(props);
@@ -90,6 +92,7 @@ export class Assignments extends Component {
       <div>
         <GridList
           cols={3}
+          className={styles.grid}
         >
           {cats}
         </GridList>

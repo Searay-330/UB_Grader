@@ -15,21 +15,19 @@ import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
 
 export function Category(category) {
-  console.log(styles);
   var locationToGo = (category.location.charAt(category.location.length - 1) == "/") ? category.location.substring(0, category.location.length - 1) : category.location;
   return (
 
-     <Card>
+     <Card className={styles.test}>
     <CardHeader
       title={category.name}
-      className ={ styles.header}
-      style={color:white}
+      className ={ [styles.header, styles.text].join(' ')}
     />
-    <CardMedia>
+    <CardMedia >
  
-        <Menu>
+        <Menu maxHeight={300} className={ [styles.menu, styles.menuDiv].join(' ')}>
           {category.assignments.map(assignment => (
-            <MenuItem key={assignment._id}
+            <MenuItem key={assignment.id}
               primaryText={assignment.name}
               onClick={() => { window.location += "/" +assignment.name; }} />
           ))}
