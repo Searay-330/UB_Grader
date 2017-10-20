@@ -13,15 +13,15 @@ export function getStudentGrades(courseNum, email) {
   }
 }
 
-export function createProfessorGrades(assignmentNum, data){
-  return {type:"professor_grades", assignmentNum: assignmentNum, gradeData: data};
+export function createProfessorGrades(data){
+  return {type:"professor_grades", gradeData: data};
 }
 
-export function getProfessorGrades(courseNum, assignmentNum, email) {
+export function getProfessorGrades(courseNum) {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
     //TODO
-    return callApi("courses/" + courseNum + "/assignments/" + assignmentNum + "/submissions/").then(
+    return callApi("courses/" + courseNum + "/submissions/latest").then(
       data => { dispatch(createProfessorGrades(data))}
     )
   }

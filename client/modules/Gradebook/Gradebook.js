@@ -23,24 +23,41 @@ export class Gradebook extends Component {
         this.state = {
             render: false,
             submissions: {},
+            role: "student",
         }
     }
 
     componentDidMount() {
+        console.log(this.props);
         var courseNum = this.props.params.course;
         var email = this.props.user.email;
 
-        this.props.getStudentGrades(courseNum, email);
+        var role = this.state.role;
+        for (var i = 0; i < this.props.user.courses.length; i++) {
+            var course = this.props.user.courses[i];
+            if (course.course_num == this.props.params.course) {
+                role = course.course_role;
+                break;
+            }
+        }
+        
+        if (role == "instructor") {
+            this.props.getProfessorGrades(courseNum);
+        } else {
+            this.props.getStudentGrades(courseNum, email);
+        }
         this.setState({
             render: false,
             submissions: {},
+            role: role,
         })
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({
             render: true,
-            submissions: nextProps.submissions
+            submissions: nextProps.submissions,
+            role: this.state.role,
         })
     }
 
@@ -48,23 +65,12 @@ export class Gradebook extends Component {
         if (!this.state.render) {
             return null;
         }
-        console.log(this.state.submissions);
-        const columns = [
-            {
-                Header: "Assignment",
-                accessor: "assignment_num"
-            },
-            {
-                Header: "Version",
-                accessor: "version"
-            },
-        ]
 
         const data = [];
 
         for (var i = 0; i < this.state.submissions.length; i++) {
             var sub = this.state.submissions[i];
-            if (sub.scores == undefined) {
+            if (sub.scores.length == 0) {
                 sub.scores = '-';
             } else {
                 sub.scores = sub.scores.reduce((a, b) => a + b, 0);
@@ -72,39 +78,60 @@ export class Gradebook extends Component {
             data.push(sub);
         }
 
-        console.log(data);
         return (
             <Card>
                 <CardTitle title="Grades" />
                 <CardMedia>
-                    <Table>
-                        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                            <TableRow>
-                                <TableHeaderColumn>Assignment</TableHeaderColumn>
-                                <TableHeaderColumn>Version</TableHeaderColumn>
-                                <TableHeaderColumn>Score</TableHeaderColumn>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody displayRowCheckbox={false}>
-                            {data.map((n, index) => (
-                                <TableRow key={index} >
-                                    <TableRowColumn>{n.assignment_num}</TableRowColumn>
-                                    <TableRowColumn>{n.version}</TableRowColumn>
-                                    <TableRowColumn>{n.scores}</TableRowColumn>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                {
+                    (this.state.role == "instructor")
+                    ? this.instructorBook(data)
+                    : this.studentBook(data)
+                }
                 </CardMedia>
             </Card>
         );
     }
 
-    instructorBook() {
+    instructorBook(data) {
+        <Table>
+        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+            <TableRow>
+                <TableHeaderColumn>Assignment</TableHeaderColumn>
+                <TableHeaderColumn>Version</TableHeaderColumn>
+                <TableHeaderColumn>Score</TableHeaderColumn>
+            </TableRow>
+        </TableHeader>
+        <TableBody displayRowCheckbox={false}>
+            {data.map((n, index) => (
+                <TableRow key={index} >
+                    <TableRowColumn>{n.assignment_num}</TableRowColumn>
+                    <TableRowColumn>{n.version}</TableRowColumn>
+                    <TableRowColumn>{n.scores}</TableRowColumn>
+                </TableRow>
+            ))}
+        </TableBody>
+    </Table>
     }
 
-    studentBook() {
-
+    studentBook(data) {
+        <Table>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                <TableRow>
+                    <TableHeaderColumn>Assignment</TableHeaderColumn>
+                    <TableHeaderColumn>Version</TableHeaderColumn>
+                    <TableHeaderColumn>Score</TableHeaderColumn>
+                </TableRow>
+            </TableHeader>
+            <TableBody displayRowCheckbox={false}>
+                {data.map((n, index) => (
+                    <TableRow key={index} >
+                        <TableRowColumn>{n.assignment_num}</TableRowColumn>
+                        <TableRowColumn>{n.version}</TableRowColumn>
+                        <TableRowColumn>{n.scores}</TableRowColumn>
+                    </TableRow>
+                ))}
+            </TableBody>
+        </Table>
     }
 }
 
