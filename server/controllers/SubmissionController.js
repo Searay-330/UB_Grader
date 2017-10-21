@@ -29,7 +29,7 @@ export function getUserSubmissions(req, res, next) {
             if(submissionFound){
                 res.status(200).send(submissionList);
             } else {
-                res.status(406).send({Status: 406, Message: "No submissions from this user at the moment"});
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
             }
         }
     });   
@@ -64,7 +64,7 @@ export function getLatestSubmission(req, res, next) {
                             });
                         }
                     });
-                    if(!submissionFound) res.status(406).send({Status: 406, Message: "No submissions from this user"});
+                    if(!submissionFound) res.status(404).send({Status: 404, Message: "No submissions from this user"});
                 }
             });
         } 
@@ -108,7 +108,7 @@ export function getAllLatestSubmissions(req, res, next) {
                         if(submissionFound){
                             res.status(200).send(result);
                         } else {
-                            res.status(406).send({Status: 406, Message: "No submissions at the moment"});
+                            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
                         }
                     });
                 }
@@ -154,7 +154,7 @@ export function getLatestSubmissionsInAssignments(req, res, next) {
                 if(submissionFound){
                     res.status(200).send(result);
                 } else {
-                    res.status(406).send({Status: 406, Message: "No submissions from this user at the moment"});
+                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
                 }
             });
         } 
@@ -196,7 +196,7 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                 if(submissionFound){
                     res.status(200).send(result);
                 } else {
-                    res.status(406).send({Status: 406, Message: "No submissions at the moment"});
+                    res.status(404).send({Status: 404, Message: "No submissions at the moment"});
                 }
             });
         } 
@@ -223,7 +223,7 @@ export function getAllSubmissions(req, res, next){
         if(submissionFound){
             res.status(200).send(submissionList);
         } else {
-            res.status(406).send({Status: 406, Message: "No submissions at the moment"});
+            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
         }
     });
 }
