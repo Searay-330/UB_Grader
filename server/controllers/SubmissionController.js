@@ -15,16 +15,18 @@ var async = require('async');
 
 export function getUserSubmissions(req, res, next) {
     var submissionFound = false;
-    Submission.find({'user_email': req.params.email}, (err, submissions) => {
+    Submission.find({
+        'course_num': req.params.course_num,
+        'assignment_num': req.params.assignment_num,
+        'user_email': req.params.email
+    }, (err, submissions) => {
         if (err){
             res.status(500).send(err);   
         } else {
             var submissionList = []
             submissions.forEach((submission) => {
-                if(submission.course_num == req.params.course_num && submission.assignment_num == req.params.assignment_num){
-                    submissionFound = true;
-                    submissionList.push(submission);
-                }
+                submissionFound = true; 
+                submissionList.push(submission);
             });
             if(submissionFound){
                 res.status(200).send(submissionList);
