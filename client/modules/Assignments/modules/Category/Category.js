@@ -6,7 +6,7 @@ import { Link } from 'react-router';
 import styles from './Category.css';
 
 import GridTile from 'material-ui/GridList';
-import {Card, CardMedia, CardTitle} from 'material-ui/Card';
+import {Card, CardMedia, CardHeader, CardTitle} from 'material-ui/Card';
 import RaisedButton from 'material-ui/RaisedButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -17,28 +17,24 @@ import Divider from 'material-ui/Divider';
 export function Category(category) {
   var locationToGo = (category.location.charAt(category.location.length - 1) == "/") ? category.location.substring(0, category.location.length - 1) : category.location;
   return (
-      <span style = {{marginRight: 20 + 'px', display:'block'}}>
-        <RaisedButton
-          fullWidth = {true}
-          label={category.name}
-          onClick={()=> {category.update(category.name, "toggle")}}
-        />
-        <Drawer
-          docked={false}
-          width={250}
-          open={category.nowOpen}
-          onRequestChange={(open) => {category.update(category.name, open)}}
-        >
-        <Menu>
+
+     <Card className={styles.test}>
+    <CardHeader
+      title={category.name}
+      className ={ [styles.header, styles.text].join(' ')}
+    />
+    <CardMedia >
+ 
+        <Menu maxHeight={300} className={ [styles.menu, styles.menuDiv].join(' ')}>
           {category.assignments.map(assignment => (
-            <MenuItem key={assignment._id}
+            <MenuItem key={assignment.id}
               primaryText={assignment.name}
               onClick={() => { window.location += "/" +assignment.name; }} />
           ))}
         </Menu>
 
-      </Drawer>
-    </span>
+    </CardMedia>
+  </Card>
   );
 }
 

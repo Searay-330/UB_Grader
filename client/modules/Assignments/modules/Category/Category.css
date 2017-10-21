@@ -34,8 +34,26 @@
 	
 }
 
+.menuDiv > div{
+	display: block !important;
+	width: 100% !important;
+	overflow: hidden;
+}
+
+.menu {
+	display: block !important;
+	width: 100% !important;
+}
+
 .header{
 	font-weight: bold;
 	font-size: 15px;
  	background-color: #005BBB !important;
+ 	border-bottom: 2px solid black;
+}
+
+.text > div > span{
+	color: white !important;
+	font-weight: bold !important;
+	font-size: 1.2em !important;
 }
