@@ -1,12 +1,14 @@
 const request = require('request');
 const fs = require('fs-extra');
 import Submission from '../models/Submission'
+import Course from '../models/Course'
 
 var openURL = 'http://localhost:3000/open/test/';
 var uploadURL = 'http://localhost:3000/upload/test/';
 var addJobURL = 'http://localhost:3000/addJob/test/';
 
 var lastLine = require('last-line');
+var async = require('async');
 
 function openTango(course_num, assignment_num) {
     var success = true;
@@ -111,27 +113,55 @@ export function sendToTango(submission, assignment, course){
 }
 
 export function callbackTango(req, res){
+    res.status(200).send({});
     Submission.findById(req.params.submission_id, function(err, submission){
         var file = fs.readFileSync(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, 'utf8');
         submission.feedback = file;
-        var scoresList = []
+        // var scoresList = []
         lastLine(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, function (err, temp) {
-           var output = JSON.parse(temp);
-           var scoresJson = output.scores;
-           for (var problem_name in scoresJson) {
-               if (scoresJson.hasOwnProperty(problem_name)) {
-                  scoresList.push({
-                    "problem_name" : problem_name,
-                    "score"        : scoresJson[problem_name]
-                  });
-               }
-            }
-            submission.set('scores', scoresList);
-             
-            submission.save((err, updatedSubmission) => {
-                if (err) res.status(500).send(err);
-                else res.status(200).send({});            
-            });
+            try {
+                var scoresList = []
+                var output = JSON.parse(temp);
+                var scoresJson = output.scores;
+                for (var problem_name in scoresJson) {
+                    if (scoresJson.hasOwnProperty(problem_name)) {
+                    scoresList.push({
+                        "problem_name" : problem_name,
+                        "score"        : scoresJson[problem_name]
+                    });
+                    }
+                }
+                submission.set('scores', scoresList);
+                submission.save((err, updatedSubmission) => {
+                    if (err){
+                        // res.status(500).send(err);
+                    }          
+                });
+           } catch(e){
+                var scoresList = []
+                Course.findOne({'course_num': submission.course_num}, (err, course) => {
+                    if (err){
+                        // res.status(500).send(err);
+                    } else {
+                        course.assignments.forEach((assignment) => {
+                            if(assignment.assignment_num == submission.assignment_num){
+                                assignment.problems.forEach((prob) => {
+                                    scoresList.push({
+                                        "problem_name" : prob.problem_name,
+                                        "score"        : 0
+                                    });
+                                });
+                                submission.set('scores', scoresList);
+                                submission.save((err, updatedSubmission) => {
+                                    if (err){
+                                        // res.status(500).send(err);
+                                    }          
+                                });
+                            }
+                        });
+                    }
+                });
+           }
         });
     });
 }
