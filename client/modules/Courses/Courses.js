@@ -28,16 +28,8 @@ export class Courses extends Component {
     componentWillReceiveProps(nextProps) {
         this.courses = nextProps.courses;
 
-        var isAdmin = false;
-        for (var i in nextProps.perms) {
-            if (nextProps.perms[i] == 'admin') {
-                isAdmin = true;
-                break;
-            }
-        }
-
         var create = null;
-        if (isAdmin) {
+        if (nextProps.isAdmin) {
             create = <MenuItem onClick={() => { window.location = "/courses/create" }}>Create Course</MenuItem>;
             this.props.changeMenuItems(create);
         }
@@ -77,6 +69,7 @@ function mapStateToProps(state) {
     return {
         courses: state.courses.coursesData,
         perms: state.app.perms,
+        isAdmin:state.app.admin,
     }
 }
 
