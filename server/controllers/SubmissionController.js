@@ -274,12 +274,18 @@ export function createSubmission(req, res, next) {
                                             submission.grader = "Manual Grader";
                                         }
 
-                                        course.save((err, courseObj) => {
-                                            if (err) res.status(500).send(err);
-                                            submission.save((err, submissionObj) => {
-                                                if (err) res.status(500).send(err);
-                                                else res.status(200).send(submissionObj);
-                                            });
+                                        course.save((e, courseObj) => {
+                                            if (e){
+                                                res.status(500).send(e);
+                                            } else {
+                                                submission.save((err, submissionObj) => {
+                                                    if (err){
+                                                        res.status(500).send(err);
+                                                    } else{
+                                                         res.status(200).send(submissionObj);
+                                                    }
+                                                });
+                                            }
                                         });
                                     }
                                 })

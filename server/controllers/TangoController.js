@@ -113,34 +113,36 @@ export function sendToTango(submission, assignment, course){
 }
 
 export function callbackTango(req, res){
+    res.status(200).send({});
     Submission.findById(req.params.submission_id, function(err, submission){
         var file = fs.readFileSync(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, 'utf8');
         submission.feedback = file;
-        var scoresList = []
+        // var scoresList = []
         lastLine(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, function (err, temp) {
-           try {
-            var output = JSON.parse(temp);
-            var scoresJson = output.scores;
-            for (var problem_name in scoresJson) {
-                if (scoresJson.hasOwnProperty(problem_name)) {
-                   scoresList.push({
-                     "problem_name" : problem_name,
-                     "score"        : scoresJson[problem_name]
-                   });
+            try {
+                var scoresList = []
+                var output = JSON.parse(temp);
+                var scoresJson = output.scores;
+                for (var problem_name in scoresJson) {
+                    if (scoresJson.hasOwnProperty(problem_name)) {
+                    scoresList.push({
+                        "problem_name" : problem_name,
+                        "score"        : scoresJson[problem_name]
+                    });
+                    }
                 }
-             }
-             submission.set('scores', scoresList);
-              
-             submission.save((err, updatedSubmission) => {
-                 if (err) res.status(500).send(err);
-                 else res.status(200).send({});            
-             });
+                submission.set('scores', scoresList);
+                submission.save((err, updatedSubmission) => {
+                    if (err){
+                        // res.status(500).send(err);
+                    }          
+                });
            } catch(e){
+                var scoresList = []
                 Course.findOne({'course_num': submission.course_num}, (err, course) => {
                     if (err){
-                        res.status(500).send(err);
+                        // res.status(500).send(err);
                     } else {
-                        
                         course.assignments.forEach((assignment) => {
                             if(assignment.assignment_num == submission.assignment_num){
                                 assignment.problems.forEach((prob) => {
@@ -150,10 +152,10 @@ export function callbackTango(req, res){
                                     });
                                 });
                                 submission.set('scores', scoresList);
-                                
                                 submission.save((err, updatedSubmission) => {
-                                    if (err) res.status(500).send(err);
-                                    else res.status(200).send({});            
+                                    if (err){
+                                        // res.status(500).send(err);
+                                    }          
                                 });
                             }
                         });
