@@ -7,7 +7,7 @@ export function populateCourseData(data){
 function mapping(data){
 	var map = [];
 	for(var i = 0; i< data.length; ++i){
-  		map[data[i].name] = data[i];
+  		map[data[i].assignment_num] = data[i];
   	}
   	return map;
 }
