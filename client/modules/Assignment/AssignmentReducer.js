@@ -17,8 +17,12 @@ const AssignmentReducer = (state = initialState, action) => {
         score = "No score recorded";
         feedback = "No submissions";
       } else {
-        score = action.submission[len-1].scores["score"].reduce((a, b) => a + b, 0);
+        var total = 0;
+        score = action.submission[len-1].scores.forEach(function(element) {
+          total = element.score;
+        });
         feedback = action.submission[len-1].feedback;
+        score = total;
       }
       return {
         feedback: feedback,
