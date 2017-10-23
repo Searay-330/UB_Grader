@@ -73,11 +73,14 @@ export class Gradebook extends Component {
             if (sub.scores.length == 0) {
                 sub.scores = '-';
             } else {
-                sub.scores = sub.scores.reduce((a, b) => a + b, 0);
+                var total = 0;
+                sub.scores = sub.scores.forEach(function(element) {
+          total += element.score;
+        });
+            sub.scores = total;
             }
             data.push(sub);
         }
-        console.log(data);
         return (
             <Card>
                 <CardTitle title="Grades" />
