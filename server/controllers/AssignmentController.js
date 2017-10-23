@@ -47,7 +47,7 @@ export function createAssignment(req, res){
                 }
             });
             if (duplicate) {
-                res.status(200).send({ Status: 200, Message: 'assignment_num is not unique!' });         
+                res.status(200).send({ Status: 200, Message: 'Assignment Name is not unique!' });         
             }
             else {
                 courseobj.assignments.push(assignment);
