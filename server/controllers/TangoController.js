@@ -1,12 +1,14 @@
 const request = require('request');
 const fs = require('fs-extra');
 import Submission from '../models/Submission'
+import Course from '../models/Course'
 
 var openURL = 'http://localhost:3000/open/test/';
 var uploadURL = 'http://localhost:3000/upload/test/';
 var addJobURL = 'http://localhost:3000/addJob/test/';
 
 var lastLine = require('last-line');
+var async = require('async');
 
 function openTango(course_num, assignment_num) {
     var success = true;
@@ -138,16 +140,24 @@ export function callbackTango(req, res){
                     if (err){
                         res.status(500).send(err);
                     } else {
+                        
                         course.assignments.forEach((assignment) => {
                             if(assignment.assignment_num == submission.assignment_num){
-                                console.log(assignment.problems);
+                                assignment.problems.forEach((prob) => {
+                                    scoresList.push({
+                                        "problem_name" : prob.problem_name,
+                                        "score"        : 0
+                                    });
+                                });
+                                submission.set('scores', scoresList);
+                                
+                                submission.save((err, updatedSubmission) => {
+                                    if (err) res.status(500).send(err);
+                                    else res.status(200).send({});            
+                                });
                             }
                         });
                     }
-                });
-                submission.save((err, updatedSubmission) => {
-                    if (err) res.status(500).send(err);
-                    else res.status(200).send({});            
                 });
            }
         });
