@@ -40,11 +40,22 @@ export function createAssignment(req, res){
                 due_date: due_date,
                 problems: problems
             }
-            courseobj.assignments.push(assignment);
-            courseobj.save((err, updatedcourseobj) => {
-                if (err) res.status(500).send(err);
-                else res.status(200).send(assignment);
+            var duplicate = false;
+            courseobj.assignments.forEach((assignment) => {
+                if (assignment.assignment_num == req.body.assignment_num){
+                    duplicate = true;
+                }
             });
+            if (duplicate) {
+                res.status(200).send({ Status: 200, Message: 'assignment_num is not unique!' });         
+            }
+            else {
+                courseobj.assignments.push(assignment);
+                courseobj.save((err, updatedcourseobj) => {
+                    if (err) res.status(500).send(err);
+                    else res.status(200).send(assignment);
+                });
+            }  
         }
     });
 }
