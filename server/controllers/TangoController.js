@@ -116,22 +116,40 @@ export function callbackTango(req, res){
         submission.feedback = file;
         var scoresList = []
         lastLine(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, function (err, temp) {
-           var output = JSON.parse(temp);
-           var scoresJson = output.scores;
-           for (var problem_name in scoresJson) {
-               if (scoresJson.hasOwnProperty(problem_name)) {
-                  scoresList.push({
-                    "problem_name" : problem_name,
-                    "score"        : scoresJson[problem_name]
-                  });
-               }
-            }
-            submission.set('scores', scoresList);
-             
-            submission.save((err, updatedSubmission) => {
-                if (err) res.status(500).send(err);
-                else res.status(200).send({});            
-            });
+           try {
+            var output = JSON.parse(temp);
+            var scoresJson = output.scores;
+            for (var problem_name in scoresJson) {
+                if (scoresJson.hasOwnProperty(problem_name)) {
+                   scoresList.push({
+                     "problem_name" : problem_name,
+                     "score"        : scoresJson[problem_name]
+                   });
+                }
+             }
+             submission.set('scores', scoresList);
+              
+             submission.save((err, updatedSubmission) => {
+                 if (err) res.status(500).send(err);
+                 else res.status(200).send({});            
+             });
+           } catch(e){
+                Course.findOne({'course_num': submission.course_num}, (err, course) => {
+                    if (err){
+                        res.status(500).send(err);
+                    } else {
+                        course.assignments.forEach((assignment) => {
+                            if(assignment.assignment_num == submission.assignment_num){
+                                console.log(assignment.problems);
+                            }
+                        });
+                    }
+                });
+                submission.save((err, updatedSubmission) => {
+                    if (err) res.status(500).send(err);
+                    else res.status(200).send({});            
+                });
+           }
         });
     });
 }
