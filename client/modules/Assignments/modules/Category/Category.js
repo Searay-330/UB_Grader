@@ -16,8 +16,9 @@ import Divider from 'material-ui/Divider';
 
 export function Category(category) {
   var locationToGo = (category.location.charAt(category.location.length - 1) == "/") ? category.location.substring(0, category.location.length - 1) : category.location;
-  return (
 
+  return (
+    
      <Card className={styles.test}>
     <CardHeader
       title={category.name}
@@ -29,7 +30,7 @@ export function Category(category) {
           {category.assignments.map(assignment => (
             <MenuItem key={assignment.id}
               primaryText={assignment.name}
-              onClick={() => { window.location += "/" +assignment.name; }} />
+              onClick={() => { window.location = "/courses/"  + category.courseNum + "/assignments/" + assignment.name; }} />
           ))}
         </Menu>
 
