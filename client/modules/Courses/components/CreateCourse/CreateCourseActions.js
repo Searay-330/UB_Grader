@@ -19,7 +19,7 @@ export function submitForm(formData) {
 	    dispatch(() => {return {type:"wait"};});
 	    dispatch(resetError());
 	    if(formData.display_name == ""){
-	   		return dispatch(throwError("Please enter a Display Name", "success"));
+	   		return dispatch(throwError("Please enter a Display Name", "error"));
 	   	}
 	   	if(formData.course_num == ""){
 	   		return dispatch(throwError("Please enter a Course Num", "error"));
@@ -35,9 +35,9 @@ export function submitForm(formData) {
 	    	return callApi("courses/" + formData.course_num + "/enroll", 'post', instructorData).then(instructorData => {
 	        		console.log(instructorData);
 	        		if(instructorData.Status == "404"){
-	        			return dispatch(throwError(JSON.stringify(instructorData), "success"));
+	        			return dispatch(throwError(JSON.stringify(instructorData), "error"));
 	        		}
-	        		return dispatch(throwError("Course created successfully. Don't mind the scary red color, our green one is in the shop.", "success"));
+	        		return dispatch(throwError("Course created successfully.", "success"));
 	      		})
 	      })
   	}
