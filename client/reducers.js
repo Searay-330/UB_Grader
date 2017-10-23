@@ -12,6 +12,7 @@ import assignment from './modules/Assignment/AssignmentReducer';
 import create from './modules/Assignments/components/CreateAssignment/CreateAssignmentReducer';
 import gradebook from './modules/Gradebook/GradebookReducer';
 import createCourse from './modules/Courses/components/CreateCourse/CreateCourseReducer';
+import addUser from './modules/Courses/components/AddUser/AddUserReducer';
 
 // Combine all reducers into one root reducer
 export default combineReducers({
@@ -23,4 +24,5 @@ export default combineReducers({
   create,
   createCourse,
   gradebook,
+  addUser,
 });

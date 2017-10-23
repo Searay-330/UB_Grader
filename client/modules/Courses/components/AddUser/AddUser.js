@@ -51,7 +51,7 @@ export class AddUser extends Component {
 
     return (
       <div>
-      {(this.props.errorObject != "") ? <Alert text={this.props.errorObject}/> : null}
+      {(this.props.errorObject != "") ? <Alert text={this.props.errorObject} type={this.props.errorType}/> : null}
         <Card>
           <CardHeader
             title="Basic Settings"
@@ -91,8 +91,9 @@ function mapStateToProps(state) {
   console.log(state);
   return {
     coursesData: state.courses.coursesData,
-    errorObject: state.create.errorObject,
-     perms: state.app.perms,
+    errorObject: state.addUser.errorObject,
+    errorType: state.addUser.errorType,
+    perms: state.app.perms,
   };
 }
 

@@ -1,9 +1,7 @@
-// Initial State
 const initialState = {
   errorObject: "",
   errorType: "",
 };
-
 
 const CreateCourseReducer = (state = initialState, action) => {
 
