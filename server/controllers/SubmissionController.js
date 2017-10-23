@@ -15,21 +15,23 @@ var async = require('async');
 
 export function getUserSubmissions(req, res, next) {
     var submissionFound = false;
-    Submission.find({'user_email': req.params.email}, (err, submissions) => {
+    Submission.find({
+        'course_num': req.params.course_num,
+        'assignment_num': req.params.assignment_num,
+        'user_email': req.params.email
+    }, (err, submissions) => {
         if (err){
             res.status(500).send(err);   
         } else {
             var submissionList = []
             submissions.forEach((submission) => {
-                if(submission.course_num == req.params.course_num && submission.assignment_num == req.params.assignment_num){
-                    submissionFound = true;
-                    submissionList.push(submission);
-                }
+                submissionFound = true; 
+                submissionList.push(submission);
             });
             if(submissionFound){
                 res.status(200).send(submissionList);
             } else {
-                res.status(406).send({Status: 406, Message: "No submissions from this user at the moment"});
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
             }
         }
     });   
@@ -64,7 +66,7 @@ export function getLatestSubmission(req, res, next) {
                             });
                         }
                     });
-                    if(!submissionFound) res.status(406).send({Status: 406, Message: "No submissions from this user"});
+                    if(!submissionFound) res.status(404).send({Status: 404, Message: "No submissions from this user"});
                 }
             });
         } 
@@ -108,7 +110,7 @@ export function getAllLatestSubmissions(req, res, next) {
                         if(submissionFound){
                             res.status(200).send(result);
                         } else {
-                            res.status(406).send({Status: 406, Message: "No submissions at the moment"});
+                            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
                         }
                     });
                 }
@@ -154,7 +156,7 @@ export function getLatestSubmissionsInAssignments(req, res, next) {
                 if(submissionFound){
                     res.status(200).send(result);
                 } else {
-                    res.status(406).send({Status: 406, Message: "No submissions from this user at the moment"});
+                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
                 }
             });
         } 
@@ -196,7 +198,7 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                 if(submissionFound){
                     res.status(200).send(result);
                 } else {
-                    res.status(406).send({Status: 406, Message: "No submissions at the moment"});
+                    res.status(404).send({Status: 404, Message: "No submissions at the moment"});
                 }
             });
         } 
@@ -223,7 +225,7 @@ export function getAllSubmissions(req, res, next){
         if(submissionFound){
             res.status(200).send(submissionList);
         } else {
-            res.status(406).send({Status: 406, Message: "No submissions at the moment"});
+            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
         }
     });
 }
