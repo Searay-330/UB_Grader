@@ -95,8 +95,8 @@ export function submitForm(formData, course) {
 	}
     return callApiWithFiles("courses/" + course + "/assignments/create", data)
       .then(data => {
-      	if(data.hasOwnProperty("_message")){
-        dispatch(throwError(data["_message"]));
+      	if(data.hasOwnProperty("Message")){
+        dispatch(throwError(data["Message"]));
       	}else{
       		dispatch(redirect());
       	}
