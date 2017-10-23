@@ -33,7 +33,6 @@ export function redirectReset(){
 
 
 export function submitForm(formData, course) {
-	console.log(formData);
   return function (dispatch) {
     dispatch(resetError());
   	var hold = undefined;
@@ -43,9 +42,10 @@ export function submitForm(formData, course) {
 
 	data = new FormData();
 
+	formData.name = formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]+/g, '');
 	//must be FIRST
-	if(formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]/, '') != "" && formData.name != "create") {
-		data.append("assignment_num", encodeURIComponent(formData.name)); 
+	if(formData.name != "" && formData.name != "create") {
+		data.append("assignment_num", encodeURIComponent(formData.name));
 	}else{ 
 		return dispatch(throwError("Assignment Name Is A Required Field Or Your String Contained No Urlable Chars")); 
 	};
