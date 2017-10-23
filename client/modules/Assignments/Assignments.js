@@ -79,7 +79,13 @@ export class Assignments extends Component {
     if(!this.state.render) {return null;}
     var cats = [];
     for (var key in this.state.categories) {
-      cats.push(<Category nowOpen={this.drawers[this.state.categories[key][0].category]} update={this.updateDrawers} key={this.state.categories[key][0].category} name={this.state.categories[key][0].category} location={this.props.location.pathname} assignments={this.state.categories[key]} />);
+      cats.push(<Category 
+        nowOpen={this.drawers[this.state.categories[key][0].category]} 
+        update={this.updateDrawers} key={this.state.categories[key][0].category} 
+        name={this.state.categories[key][0].category} 
+        location={this.props.location.pathname} 
+        assignments={this.state.categories[key]}
+        courseNum={this.props.params.course} />);
     }
     if (this.props.redirected) {
       this.props.getCourseData(this.props.params.course);
