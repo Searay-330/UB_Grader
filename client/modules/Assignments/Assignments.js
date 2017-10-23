@@ -44,7 +44,7 @@ export class Assignments extends Component {
     var create = null;
     var create2 = null;
     var gradebook = null;
-    if(nextProps.perms[this.props.params.course] != "student"){
+    if(nextProps.perms[this.props.params.course] != "student" || nextProps.isAdmin){
       create = <MenuItem key={0} onClick={()=>{window.location = "/courses/" + this.props.params.course + "/assignments/create"}}>Create Assignment</MenuItem>;
       create2 = <MenuItem key={1} onClick={() => { window.location = "/courses/" + this.props.params.course + "/adduser" }}>Add User To Course</MenuItem>;
     } 
@@ -109,6 +109,7 @@ function mapStateToProps(state) {
     assignments: state.assignments.assignmentsData,
     redirected: state.create.redirect,
     perms: state.app.perms,
+    isAdmin: state.app.admin,
   };
 }
 
