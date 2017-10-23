@@ -23,7 +23,7 @@ export function createRecentSubmission(data) {
 export function getRecentSubmission(courseNum, assignmentNum, userEmail) {
     return function (dispatch) {
         dispatch(() => {return {type:"wait"};});
-        var path = "courses/" + courseNum+ "/assignments/" + assignmentNum + "/submissions/" + userEmail;
+        var path = "courses/" + courseNum+ "/assignments/" + assignmentNum + "/submissions/user/" + userEmail;
         return callApi(path, "get").then(
             data => {dispatch(createRecentSubmission(data))}
         )
