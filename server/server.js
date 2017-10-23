@@ -3,7 +3,13 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
-import { User, Submission, Course } from './models/Schema.js';
+import User from './models/User'
+import Course from './models/Course'
+import Submission from './models/Submission'
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const keys = require('./config/keys');
+require('./services/passport');
 
 // Webpack Requirements
 import webpack from 'webpack';
@@ -32,7 +38,7 @@ import Helmet from 'react-helmet';
 // Import required modules
 import routes from '../client/routes';
 import { fetchComponentData } from './util/fetchData';
-import test from './routes/test.routes';
+import serverRoutes from './routes/routes';
 import dummyData from './dummyData';
 import serverConfig from './config';
 
@@ -47,6 +53,7 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
   }
 
   // feed some dummy data in DB.
+  console.log('Inserting Dummy Data!');
   dummyData();
 });
 
@@ -55,7 +62,14 @@ app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use('/static', Express.static(path.resolve(__dirname, '../assets')));
-app.use('/api',test);
+app.use(cookieSession({
+    maxAge: 24*60*60*1000,
+    keys: [keys.cookieKey]
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/api',serverRoutes);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
@@ -80,7 +94,7 @@ const renderFullPage = (html, initialState) => {
         <link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />
       </head>
       <body>
-        <div id="root">${html}</div>
+        <div id="root">${process.env.NODE_ENV === 'production' ? html : `<div>${html}</div>`}</div>      
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
           ${process.env.NODE_ENV === 'production' ?

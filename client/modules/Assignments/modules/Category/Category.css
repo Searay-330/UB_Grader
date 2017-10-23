@@ -1,0 +1,59 @@
+#top{
+	background-color: #005BBB;
+	width: 100%;
+	min-width: 100%;
+	display: block;
+	color:white;
+	font-size: 20px;
+  	font-weight: bold;
+}
+
+.card{
+	min-height: 250px;
+	height: 250px;
+	background-color: lightgray;
+	padding-right: 0px !important; 
+	padding-left: 0px !important;
+	box-shadow: 4px 4px 8px #888888;
+	margin-right: 10px;
+  	margin-left: 10px;
+  	margin-bottom: 10px;
+}
+
+.border_fix{
+	border-top: 1px !important;
+}
+
+.tile {
+	text-align: center;
+}
+
+.list {
+	width: 400px !important;
+	margin: 0px !important;
+	
+}
+
+.menuDiv > div{
+	display: block !important;
+	width: 100% !important;
+	overflow: hidden;
+}
+
+.menu {
+	display: block !important;
+	width: 100% !important;
+}
+
+.header{
+	font-weight: bold;
+	font-size: 15px;
+ 	background-color: #005BBB !important;
+ 	border-bottom: 2px solid black;
+}
+
+.text > div > span{
+	color: white !important;
+	font-weight: bold !important;
+	font-size: 1.2em !important;
+}

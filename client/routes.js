@@ -2,7 +2,13 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './modules/App/App';
-import Bs from './modules/bs/Bs';
+import Courses from './modules/Courses/Courses'
+import Assignments from './modules/Assignments/Assignments';
+import Assignment from './modules/Assignment/Assignment';
+import CreateAssignment from './modules/Assignments/components/CreateAssignment/CreateAssignment';
+import CreateCourse from './modules/Courses/components/CreateCourse/CreateCourse';
+import AddUser from './modules/Courses/components/AddUser/AddUser';
+import Gradebook from './modules/Gradebook/Gradebook';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -23,7 +29,17 @@ if (process.env.NODE_ENV !== 'production') {
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
 export default (
   <Route path="/" component={App}>
-    <Route path="testing" component={Bs}/>
+    <Route path="/api/auth/google" component={() => window.location = "/api/auth/google"} />
+    <Route path="/api/logout" component={() => window.location = "/api/logout"} />
+    <Route path="/courses/:course/adduser" component={AddUser} />
+    <Route path="/courses/create" component={CreateCourse} />
+    <Route path="/courses" component={Courses}>
+      <Route path="/courses/:course/assignments" component={Assignments}>
+        <Route path="/courses/:course/assignments/gradebook" component={Gradebook} />
+        <Route exact path="/courses/:course/assignments/create" component={CreateAssignment} />
+        <Route path="/courses/:course/assignments/:assignment" component={Assignment} />
+      </Route>
+    </Route>
   </Route>
 
 );

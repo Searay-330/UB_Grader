@@ -3,12 +3,37 @@ import { TOGGLE_ADD_POST } from './AppActions';
 
 // Initial State
 const initialState = {
-  
+  user: "",
+  perms: [],
+  isAdmin: false,
+  menuItems: undefined,
 };
 
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
+  	case "login":
+  		return {
+        user: action.user,
+        perms: [],
+        admin: false,
+        menuItems: undefined,
+      }
 
+    case "perms" :
+    return{
+    	user: state.user,
+    	perms:action.perm,
+      admin:action.admin,
+      menuItems: undefined,
+    }
+
+    case "menuUpdate" :
+    return{
+      user: state.user,
+      perms:state.perms,
+      admin:state.admin,
+      menuItems: action.items,
+    }
     default:
       return state;
   }
@@ -16,8 +41,6 @@ const AppReducer = (state = initialState, action) => {
 
 /* Selectors */
 
-// Get showAddPost
-export const getShowAddPost = state => state.app.showAddPost;
 
 // Export Reducer
 export default AppReducer;
