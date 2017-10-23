@@ -60,7 +60,7 @@ router.get('/courses/:course_num/assignments/:assignment_num/submissions/latest'
 router.get('/courses/:course_num/submissions/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getAllLatestSubmissionsInAssignments);
 
 //Returns latest submissions of a user in all assignments
-router.get('/courses/:course_num/submissions/:email/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructor, SubmissionController.getLatestSubmissionsInAssignments);
+router.get('/courses/:course_num/submissions/:email/latest', AuthCheck.isAuthenticated, AuthCheck.isInstructorOrUser, SubmissionController.getLatestSubmissionsInAssignments);
 
 //Returns information about a specific user.
 router.get('/users/:user_id', AuthCheck.isAuthenticated, UserController.getUser);
