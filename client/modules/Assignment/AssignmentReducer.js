@@ -13,6 +13,7 @@ const AssignmentReducer = (state = initialState, action) => {
       var score;
       var feedback;
       var len = action.submission.length;
+      console.log(action.submission);
 
       if (action.submission[len-1] == undefined) {
         score = "No score recorded";
