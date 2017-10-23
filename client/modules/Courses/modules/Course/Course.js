@@ -36,7 +36,7 @@ export class Course extends Component {
 
     enterCourse() {
         this.props.chooseCourse(this.props);
-        window.location = "courses/" + this.props.courseNum + "/assignments";
+        window.location = "/courses/" + this.props.courseNum + "/assignments";
     }
 }
 
