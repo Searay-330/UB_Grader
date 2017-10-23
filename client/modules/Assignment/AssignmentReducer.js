@@ -19,6 +19,7 @@ const AssignmentReducer = (state = initialState, action) => {
       } else {
         var total = 0;
         score = action.submission[len-1].scores.forEach(function(element) {
+          console.log(element.score)
           total = element.score;
         });
         feedback = action.submission[len-1].feedback;

@@ -60,7 +60,7 @@ export class Assignment extends Component {
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
-    console.log(assignmentData.problems[0]);
+    console.log(this.props.score.toString());
     var problemsArray = assignmentData.problems;
     //Determine maxScore
     var maxScore = 0;
