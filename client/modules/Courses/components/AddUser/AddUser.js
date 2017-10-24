@@ -48,7 +48,7 @@ export class AddUser extends Component {
     if(this.props.perms[this.props.params.course] == "student"){
       return <div> You are not authorized. </div>;
     }
-
+	
     return (
       <div>
       {(this.props.errorObject != "") ? <Alert text={this.props.errorObject} type={this.props.errorType}/> : null}
@@ -79,6 +79,10 @@ export class AddUser extends Component {
             <div>Default role choices are student or instructor. Support for custom roles will be added in the future.</div>
             <br/>
             <RaisedButton label='Add User' onClick={() => {this.props.submitForm(this.state)}} primary={true} />
+			       <br/>
+			       <b>CSV File</b> <input type="file" id="csvfile" accept=".csv"> 
+			       <br/>
+			       <RaisedButton label="Add from CSV" onClick={() => {this.props.importRoster(this.getElementById('csvfile'))} />
           </CardText>
         </Card>
       </div>
