@@ -80,7 +80,7 @@ export class AddUser extends Component {
             <br/>
             <RaisedButton label='Add User' onClick={() => {this.props.submitForm(this.state)}} primary={true} />
 			       <br/>
-			       <b>CSV File</b> <input type="file" id="csvfile" accept=".csv"> 
+			       <b>CSV File</b> <input type="file" id="csvfile" accept=".csv"/> 
 			       <br/>
 			       <RaisedButton label="Add from CSV" onClick={() => {this.props.importRoster(this.getElementById('csvfile'))}} />
           </CardText>
