@@ -15,7 +15,7 @@ const submssions_scoreSchema = new Schema({
 const submissionSchema = new Schema({
     
         user_id:                    { type: Schema.Types.ObjectId, ref: 'Users', required: true },
-        timestamp :                      { type : Date, default: Date.now },
+        timestamp :                 { type : Date, default: Date.now },
         user_email:                 { type: String, required: true},   
         course_id:                  { type: Schema.Types.ObjectId, ref: 'Courses'},
         course_num:                 { type: String, required: true },
