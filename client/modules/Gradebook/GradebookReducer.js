@@ -1,5 +1,6 @@
 const initialState = {
     submissions: {},
+    roster: []
 };
 
 
@@ -12,6 +13,9 @@ const AssignmentsReducer = (state = initialState, action) => {
             return {
                 submissions: action.gradeData,
             }
+        
+        case "roster":
+            return
 
         default:
             return state;

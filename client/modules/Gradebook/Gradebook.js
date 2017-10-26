@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getStudentGrades, getProfessorGrades } from './GradebookActions';
+import { getStudentGrades, getProfessorGrades, getCourseRoster } from './GradebookActions';
 
 import { Card, CardMedia, CardTitle } from 'material-ui/Card';
 
@@ -24,11 +24,11 @@ export class Gradebook extends Component {
             render: false,
             submissions: {},
             role: "student",
+            roster: [],
         }
     }
 
     componentDidMount() {
-        console.log(this.props);
         var courseNum = this.props.params.course;
         var email = this.props.user.email;
 
@@ -41,15 +41,16 @@ export class Gradebook extends Component {
             }
         }
 
-        // if (role == "instructor") {
-        //     this.props.getProfessorGrades(courseNum);
-        // } else {
+        if (role == "instructor") {
+            this.props.getProfessorGrades(courseNum);
+        } else {
             this.props.getStudentGrades(courseNum, email);
-        // }
+        }
         this.setState({
             render: false,
             submissions: {},
             role: role,
+            roster: [],
         })
     }
 
@@ -58,6 +59,7 @@ export class Gradebook extends Component {
             render: true,
             submissions: nextProps.submissions,
             role: this.state.role,
+            roster: nextProps.roster, 
         })
     }
 
@@ -65,7 +67,49 @@ export class Gradebook extends Component {
         if (!this.state.render) {
             return null;
         }
+        console.log(this.props);
+        console.log(this.state);
 
+
+        return (
+            <Card>
+                <CardTitle title="Grades" />
+                <CardMedia>{
+                    (this.state.role == "instructor")
+                        ? this.studentBook()
+                        : this.studentBook()
+                }
+                </CardMedia>
+            </Card>
+        );
+    }
+
+    instructorBook(data) {
+
+        return (
+            <Table selectable={false}>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
+                    <TableRow>
+                        <TableHeaderColumn>Student</TableHeaderColumn>
+                        <TableHeaderColumn>Assignment</TableHeaderColumn>
+                        <TableHeaderColumn>Version</TableHeaderColumn>
+                        <TableHeaderColumn>Score</TableHeaderColumn>
+                    </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox={false}>
+                    {data.map((n, index) => (
+                        <TableRow key={index} >
+                            <TableRowColumn>{n.assignment_num}</TableRowColumn>
+                            <TableRowColumn>{n.version}</TableRowColumn>
+                            <TableRowColumn>{n.scores}</TableRowColumn>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        )
+    }
+
+    studentBook() {
         const data = [];
 
         for (var i = 0; i < this.state.submissions.length; i++) {
@@ -74,28 +118,13 @@ export class Gradebook extends Component {
                 sub.scores = '-';
             } else {
                 var total = 0;
-                sub.scores = sub.scores.forEach(function(element) {
-          total += element.score;
-        });
-            sub.scores = total;
+                sub.scores = sub.scores.forEach(function (element) {
+                    total += element.score;
+                });
+                sub.scores = total;
             }
             data.push(sub);
         }
-        return (
-            <Card>
-                <CardTitle title="Grades" />
-                <CardMedia>
-                    {this.studentBook(data)}
-                </CardMedia>
-            </Card>
-        );
-    }
-
-    instructorBook(data) {
-
-    }
-
-    studentBook(data) {
         return (
             <Table selectable={false}>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
@@ -133,6 +162,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         getStudentGrades: getStudentGrades,
         getProfessorGrades: getProfessorGrades,
+        getCourseRoster: getCourseRoster,
     }, dispatch);
 }
 
