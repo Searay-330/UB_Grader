@@ -38,10 +38,10 @@ const user_submission_schema = new Schema({
 
 const course_assignmentSchema = new Schema({
 
+    _id:                        { type: String},
     category:                   { type: String, required: true },
     name:                       { type: String, required: true },
     user_submissions:           [user_submission_schema],    
-    assignment_num:             { type: String, required: true, unique: true, sparse: true},
     section_based:              { type: Boolean, required: true, default: true },
     section_due_dates:          [course_assignments_section_due_dateSchema], 
     start_date:                 { type: Date },
@@ -72,9 +72,14 @@ const course_assignmentSchema = new Schema({
     problems:                   [course_assignments_problemSchema],             
     late_penalty:               { type: Number },
     max_over_latest:            { type:Boolean, default: true },
-
 });
 
+course_assignmentSchema.virtual('assignment_num').get(function() {
+    return this._id;
+});
+
+course_assignmentSchema.set('toJSON', { virtuals: true});
+course_assignmentSchema.set('toObject', { virtuals: true});
 
 const courseSchema = new Schema({
     
