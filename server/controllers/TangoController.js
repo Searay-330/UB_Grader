@@ -112,46 +112,57 @@ export function sendToTango(submission, assignment, course){
     }       
 }
 
-export async function callbackTango(req, res){
+export function callbackTango(req, res){
     res.status(200).send({});
     Submission.findById(req.params.submission_id, function(err, submission){
         var file = fs.readFileSync(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, 'utf8');
         submission.feedback = file;
-        // var scoresList = []
         lastLine(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, function (err, temp) {
             try {
                 var scoresList = []
                 var output = JSON.parse(temp);
                 var scoresJson = output.scores;
-                for (var problem_name in scoresJson) {
-                    if (scoresJson.hasOwnProperty(problem_name)) {
-                    scoresList.push({
-                        "problem_name" : problem_name,
-                        "score"        : scoresJson[problem_name]
+                Course.findOne({'course_num': submission.course_num}, (err, course) => {
+                    var assignment = course.assignments.id(req.params.assignment_num);
+                    
+                    assignment.problems.forEach((prob) => {
+
+                        for (var problem_name in scoresJson) {
+                            if (scoresJson.hasOwnProperty(problem_name) && problem_name == prob.problem_name) {
+                            scoresList.push({
+                                "problem_name" : problem_name,
+                                "score"        : scoresJson[problem_name]
+                            });
+                            }
+                        }
                     });
-                    }
-                }
-                submission.set('scores', scoresList);
-                submission.save((err, updatedSubmission) => {
-                    if (err){
-                        // res.status(500).send(err);
-                    }          
+    
+                    submission.set('scores', scoresList);
+                    submission.save((err, updatedSubmission) => {
+                        if (err){
+                            // res.status(500).send(err);
+                        }          
+                    });
                 });
            } catch(e){
                 var scoresList = []
-                let course = await Course.findOne({'course_num': submission.course_num});
-                let assignment = course.assignments.id(submission.assignment_num);
-
-                assignment.problems.forEach((prob) => {
-                    scoresList.push({
-                        "problem_name" : prob.problem_name,
-                        "score"        : 0
+                Course.findOne({'course_num': submission.course_num}, (err, course) => { 
+                    var assignment = course.assignments.id(req.params.assignment_num);
+                        
+                    assignment.problems.forEach((prob) => {
+                        scoresList.push({
+                            "problem_name" : prob.problem_name,
+                            "score"        : 0
+                        });
                     });
+                    submission.set('scores', scoresList);
+                    submission.save((err, updatedSubmission) => {
+                        if (err){
+                            // res.status(500).send(err);
+                        }          
+                    }); 
                 });
-                submission.set('scores', scoresList);
-                submission.save((err, updatedSubmission) => {       
-                });
-           }
+            }
         });
     });
 }
