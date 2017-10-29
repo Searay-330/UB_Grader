@@ -6,6 +6,19 @@ import * as AuthCheck from '../util/authentication'
 
 var async = require('async');
 
+function getCourse(num){
+    Course.findOne({'course_num': num}, (err, course) => {
+        if (err){
+            res.status(500).send(err);
+        }
+        if(course){
+            return course
+        } else {
+            return {}
+        }
+    });
+}
+
 /**
  * Gets all the user submissions of a specific assignment.
  * @param req : User's request (should contain course_num, assignment_num, email as a parameter)
@@ -13,28 +26,21 @@ var async = require('async');
  * Sends a list of the submissions of a user in a perticular assignment back as the response (a list of json objects)
  */
 
-export function getUserSubmissions(req, res, next) {
-    var submissionFound = false;
-    Submission.find({
-        'course_num': req.params.course_num,
-        'assignment_num': req.params.assignment_num,
-        'user_email': req.params.email
-    }, (err, submissions) => {
-        if (err){
-            res.status(500).send(err);   
+export async function getUserSubmissions(req, res) {
+    try{
+        let submissions = await Submission.find({
+            'course_num': req.params.course_num,
+            'assignment_num': req.params.assignment_num,
+            'user_email': req.params.email
+        });
+        if(submissions.length){
+            res.status(200).send(submissions);
         } else {
-            var submissionList = []
-            submissions.forEach((submission) => {
-                submissionFound = true; 
-                submissionList.push(submission);
-            });
-            if(submissionFound){
-                res.status(200).send(submissionList);
-            } else {
-                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
-            }
+            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
         }
-    });   
+    } catch(err) {
+        res.status(500).send(err);
+    }
 }
 
 /**
@@ -44,33 +50,21 @@ export function getUserSubmissions(req, res, next) {
  * Sends the latest submissions of a user in a perticular assignment back as the response (a list of json object)
  */
 
-export function getLatestSubmission(req, res, next) {
-    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
-        if (err){
-            res.status(500).send(err);
-        } else {
-            var submissionFound = false;
-            course.assignments.forEach((assignment) => {
-                if(assignment.assignment_num == req.params.assignment_num){
-                    assignment.user_submissions.forEach((sub) => {
-                        if(sub.email == req.params.email){
-                            submissionFound = true;
-                            var latest_version = sub.submissions;
-                            Submission.findOne({
-                                version: latest_version, 
-                                user_email: req.params.email, 
-                                assignment_num: req.params.assignment_num,
-                                course_num: req.params.course_num
-                            }, (err, submissionObj) => {
-                                res.status(200).send(submissionObj);
-                            });
-                        }
-                    });
-                    if(!submissionFound) res.status(404).send({Status: 404, Message: "No submissions from this user"});
-                }
-            });
-        } 
-    });   
+export async function getLatestSubmission(req, res, next) {
+    try {
+        let submissions = await Submission.findOne({
+            "user_email": req.params.email, 
+            'course_num': req.params.course_num, 
+            "assignment_num": req.params.assignment_num}).sort('-version').exec(function (err, submission) {
+            if(submission){
+                res.status(200).send(submission);
+            } else {
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+            }
+        });
+    } catch (err) {
+                res.status(500).send(err);
+    }
 }
 
  /**
@@ -237,64 +231,45 @@ export function getAllSubmissions(req, res, next){
  * Sends back a JSON object of the created submission.
  */
 
-export function createSubmission(req, res, next) {
-    var user_email = req.user.email;
-    var submissionFound = false;
+export async function createSubmission(req, res, next) {
     if (!req.files){
         res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
     }
     else{
-        User.findOne({"email": user_email}, (err, user) =>{
-            if (err){
-                res.status(500).send(err);   
-            } else {
-                Course.findOne({'course_num': req.params.course_num }, (err,course) =>{
-                    if (err){
-                        res.status(500).send(err);   
-                    } else {
-                        course.assignments.forEach((assignment) => {
-                            if(assignment.assignment_num == req.params.assignment_num){
-                                assignment.user_submissions.forEach((sub) => {
-                                    if(sub.email == user_email){
-                                        var submission = new Submission();
-                                        submission.user_id = user.id;
-                                        submission.user_email = user_email;
-                                        submission.course_num = req.params.course_num;
-                                        submission.assignment_num = req.params.assignment_num;
-                                        submission.file_name = req.files[0].filename;
-                                        submission.version = sub.submissions;
-                                        submission.feedback = "Waiting for feedback";
-                                        submission.form_data = "Placeholder";
-                                        
-                                        if (assignment.auto_grader){
-                                            submission.grader = "Autograder";
-                                            console.log("Calling send to Tango");
-                                            TangoController.sendToTango(submission, assignment, course);
-                                        } else {
-                                            submission.grader = "Manual Grader";
-                                        }
+        try{
+            let user = await User.findOne({"email": req.user.email});
+            let course = await Course.findOne({'course_num': req.params.course_num});
+            let  assignment = course.assignments.id(req.params.assignment_num);
+            assignment.user_submissions.forEach((sub) => {
+                if(sub.email == user.email){
+                    var submission = new Submission();
+                    submission.user_id = user.id;
+                    submission.user_email = user.email;
+                    submission.course_num = course.course_num;
+                    submission.assignment_num = assignment.assignment_num;
+                    submission.file_name = req.files[0].filename;
+                    submission.version = sub.submissions;
+                    submission.feedback = "Waiting for feedback";
+                    submission.form_data = "Placeholder";
 
-                                        course.save((e, courseObj) => {
-                                            if (e){
-                                                res.status(500).send(e);
-                                            } else {
-                                                submission.save((err, submissionObj) => {
-                                                    if (err){
-                                                        res.status(500).send(err);
-                                                    } else{
-                                                         res.status(200).send(submissionObj);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                })
-                            }
-                        })   
+                    if (assignment.auto_grader){
+                        submission.grader = "Autograder";
+                        console.log("Calling send to Tango");
+                        TangoController.sendToTango(submission, assignment, course);
+                    } else {
+                        submission.grader = "Manual Grader";
                     }
-                });   
-            }
-        });
+                    
+                    submission.save((err, submissionObj) => {
+                        if (err) res.status(500).send(err);
+                        res.status(200).send(submissionObj);
+                    });
+                }
+            });
+
+        } catch(err){
+            res.status(500).send(err);
+        }
     }
 
  }
