@@ -112,7 +112,7 @@ export function sendToTango(submission, assignment, course){
     }       
 }
 
-export function callbackTango(req, res){
+export async function callbackTango(req, res){
     res.status(200).send({});
     Submission.findById(req.params.submission_id, function(err, submission){
         var file = fs.readFileSync(`./uploads/${submission.course_num}/${submission.assignment_num}/feedback/${submission.user_email}_${submission.version}_feedback.txt`, 'utf8');
@@ -139,27 +139,17 @@ export function callbackTango(req, res){
                 });
            } catch(e){
                 var scoresList = []
-                Course.findOne({'course_num': submission.course_num}, (err, course) => {
-                    if (err){
-                        // res.status(500).send(err);
-                    } else {
-                        course.assignments.forEach((assignment) => {
-                            if(assignment.assignment_num == submission.assignment_num){
-                                assignment.problems.forEach((prob) => {
-                                    scoresList.push({
-                                        "problem_name" : prob.problem_name,
-                                        "score"        : 0
-                                    });
-                                });
-                                submission.set('scores', scoresList);
-                                submission.save((err, updatedSubmission) => {
-                                    if (err){
-                                        // res.status(500).send(err);
-                                    }          
-                                });
-                            }
-                        });
-                    }
+                let course = await Course.findOne({'course_num': submission.course_num});
+                let assignment = course.assignments.id(submission.assignment_num);
+
+                assignment.problems.forEach((prob) => {
+                    scoresList.push({
+                        "problem_name" : prob.problem_name,
+                        "score"        : 0
+                    });
+                });
+                submission.set('scores', scoresList);
+                submission.save((err, updatedSubmission) => {       
                 });
            }
         });
