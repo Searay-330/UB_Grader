@@ -82,7 +82,7 @@ export class AddUser extends Component {
 			       <br/>
 			       <b>CSV File</b> <input type="file" id="csvfile" accept=".csv"/> 
 			       <br/>
-			       <RaisedButton label="Add from CSV" onClick={() => {this.props.importRoster(this.getElementById('csvfile'))}} />
+			       <RaisedButton label="Add from CSV" onClick={() => {this.props.importRoster(this.getElementById('csvfile'))}} primary={true} />
           </CardText>
         </Card>
       </div>
