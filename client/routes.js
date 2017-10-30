@@ -9,6 +9,7 @@ import CreateAssignment from './modules/Assignments/components/CreateAssignment/
 import CreateCourse from './modules/Courses/components/CreateCourse/CreateCourse';
 import AddUser from './modules/Courses/components/AddUser/AddUser';
 import Gradebook from './modules/Gradebook/Gradebook';
+import ErrorPages from './modules/ErrorPages/ErrorPages'
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -40,6 +41,7 @@ export default (
         <Route path="/courses/:course/assignments/:assignment" component={Assignment} />
       </Route>
     </Route>
+    <Route path="*" component={ErrorPages} />
   </Route>
 
 );
