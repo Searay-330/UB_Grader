@@ -41,7 +41,7 @@ export default (
         <Route path="/courses/:course/assignments/:assignment" component={Assignment} />
       </Route>
     </Route>
-    <Route path="*" component={ErrorPages} />
+    <Route path="*" component={ErrorPages} error="404" />
   </Route>
 
 );

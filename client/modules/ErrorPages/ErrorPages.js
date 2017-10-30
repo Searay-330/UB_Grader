@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 
+import NotFound from './components/NotFound'
+
 
 
 export class ErrorPages extends Component {
@@ -22,9 +24,16 @@ export class ErrorPages extends Component {
   }
 
   render() {
-    return(
-      <h1>404</h1>
-      );
+    switch(this.props.route.error){
+
+      case "404":
+        return <NotFound />;
+      break;
+
+      default:
+        return null;
+      break;
+    }  
   }
 }
 
