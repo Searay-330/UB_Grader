@@ -24,6 +24,52 @@ function openTango(course_num, assignment_num) {
     return success;
 }
 
+function infoFromTango(submission, assignment, course) {
+	var url = uploadURL + course.course_num + '-' + assignment.assignment_num + '/';
+	var success = true;
+	var tangoReq = request({
+		uri: url,
+		method: 'GET',
+		headers: {
+			'filename': filename,
+		},
+		body:,
+	}, function (err, response, body)
+	{
+		console.log(JSON.stringify(response));
+		if (err) {
+			success = false;
+		}
+		else {
+			success = true;
+		}
+	});
+	return success;
+}
+
+function poolFromTango(autograding_image, assignment, course) {
+	var url = uploadURL + course.course_num + '-' + assignment.assignment_num + '/';
+	var success = true;
+	var tangoReq = request({
+		uri: url,
+		method: 'GET',
+		headers: {
+			'image' : autograding_image,
+		}
+		body:,
+	}, function (err, response, body)
+	{
+		console.log(JSON.stringify(response));
+		if (err) {
+			success = false;
+		}
+		else {
+			success = true;
+		}
+	});
+	return success;
+}
+
 function uploadToTango(filename, filepath, url) {
     var file = fs.readFileSync(filepath);
     var success = true;
