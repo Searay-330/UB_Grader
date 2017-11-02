@@ -45,7 +45,7 @@ export function submitForm(formData, course) {
 	formData.name = formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]+/g, '');
 	//must be FIRST
 	if(formData.name != "" && formData.name != "create") {
-		data.append("assignment_num", encodeURIComponent(formData.name));
+		data.append("_id", encodeURIComponent(formData.name));
 	}else{ 
 		return dispatch(throwError("Assignment Name Is A Required Field Or Your String Contained No Urlable Chars")); 
 	};

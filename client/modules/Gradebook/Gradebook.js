@@ -109,7 +109,7 @@ export class Gradebook extends Component {
 
                     {data.map((n, index) => (
                         <TableRow key={index} >
-                            <TableRowColumn>{this.props.assignmentsMapping[n.assignment_num].name}</TableRowColumn>
+                            <TableRowColumn>{this.props.assignmentsMapping[n._id].name}</TableRowColumn>
                             <TableRowColumn>{n.version}</TableRowColumn>
                             <TableRowColumn>{n.scores}</TableRowColumn>
                         </TableRow>

@@ -30,7 +30,7 @@ export function Category(category) {
           {category.assignments.map(assignment => (
             <MenuItem key={assignment._id}
               primaryText={assignment.name}
-              onClick={() => { window.location = "/courses/"  + category.courseNum + "/assignments/" + assignment.assignment_num; }} />
+              onClick={() => { window.location = "/courses/"  + category.courseNum + "/assignments/" + assignment._id; }} />
           ))}
         </Menu>
 

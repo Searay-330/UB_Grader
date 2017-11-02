@@ -12,7 +12,7 @@ export function createAssignment(req, res) {
         if (err) {
             return res.status(500).send(err);
         }
-        var duplicate = courseobj.assignments.id(req.body.assignment_num);
+        var duplicate = courseobj.assignments.id(req.body._id);
         if (duplicate) {
             return res.status(200).send({ Status: 200, Message: 'Assignment Name is not unique!' });         
         }
@@ -33,7 +33,7 @@ export function createAssignment(req, res) {
             problems = JSON.parse(req.body.problems);
         }
         var assignment = {
-            _id: req.body.assignment_num,
+            _id: req.body._id,
             category: req.body.category,
             name: req.body.name,
             section_based: req.body.section_based,
@@ -63,7 +63,7 @@ export function updateAssignment(req, res){
             if (err){
                 return res.status(500).send(err);
             }  
-            var assignment = courseobj.assignments.id(req.params.assignment_num);
+            var assignment = courseobj.assignments.id(req.params._id);
             if (!assignment) {
                 return res.status(404).send({ Status: 404, Message: 'Assignment does not exist!' });
             }
@@ -92,7 +92,7 @@ export function deleteAssignment(req, res){
             if (err){
                 return res.status(500).send(err);
             }  
-            var assignment = courseobj.assignments.id(req.params.assignment_num);
+            var assignment = courseobj.assignments.id(req.params._id);
             if (!assignment) {
                 return res.status(404).send({ Status: 404, Message: 'Assignment does not exist!' });
             }
