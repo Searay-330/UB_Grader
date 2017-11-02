@@ -44,6 +44,14 @@ export class AddUser extends Component {
       this.setState(st);
   };
 
+  sendAddUser() {
+    this.props.submitForm(this.state);
+    var state = getEditableState(this.state);
+    state.student_email = '';
+    state.course_role = '';
+    this.setState(state);
+  }
+
   render() {
     if(this.props.perms[this.props.params.course] == "student"){
       return <div> You are not authorized. </div>;
@@ -78,7 +86,7 @@ export class AddUser extends Component {
             />
             <div>Default role choices are student or instructor. Support for custom roles will be added in the future.</div>
             <br/>
-            <RaisedButton label='Add User' onClick={() => {this.props.submitForm(this.state)}} primary={true} />
+            <RaisedButton label='Add User' onClick={() => this.sendAddUser()} primary={true} />
           </CardText>
         </Card>
       </div>
@@ -88,7 +96,6 @@ export class AddUser extends Component {
 
 // Retrieve data from store as props
 function mapStateToProps(state) {
-  console.log(state);
   return {
     coursesData: state.courses.coursesData,
     errorObject: state.addUser.errorObject,

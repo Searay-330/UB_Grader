@@ -67,9 +67,10 @@ export class Assignment extends Component {
     for(var i = 0; i < problemsArray.length; i++){
       maxScore = maxScore + problemsArray[i].score;
     }
+    var displayName = this.props.assignmentData[this.props.params.assignment].name;
     return (
       <Card>
-        <CardTitle title={this.props.params.assignment} subtitle={asst_desc} />
+        <CardTitle title={displayName} subtitle={asst_desc} />
         <CardMedia>
           <Table>
             <TableBody displayRowCheckbox={false}>
