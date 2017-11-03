@@ -48,7 +48,7 @@ export class Assignment extends Component {
 
   componentWillReceiveProps(NextProps) {
     var courseNum = NextProps.params.course;
-    var assignmentNum = NextProps.assignmentData[NextProps.params.assignment]._id;
+    var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].id;
     var userEmail = NextProps.user.email;
     this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
@@ -150,7 +150,7 @@ export class Assignment extends Component {
       return;
     }
     var courseNum = this.props.params.course;
-    var assignmentNum = this.props.assignmentData[this.props.params.assignment]._id;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].id;
     this.props.submitFile(courseNum, assignmentNum, file);
     this.setState({ 
       fileChosen: false,
@@ -164,7 +164,7 @@ export class Assignment extends Component {
       return;
     }
     var courseNum = this.props.params.course;
-    var assignmentNum = this.props.assignmentData[this.props.params.assignment]._id;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].id;
     var userEmail = this.props.user.email;
     this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
