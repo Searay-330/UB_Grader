@@ -43,6 +43,7 @@ export class Gradebook extends Component {
 
         if (role == "instructor") {
             this.props.getProfessorGrades(courseNum);
+            this.props.getCourseRoster(courseNum);
         } else {
             this.props.getStudentGrades(courseNum, email);
         }
@@ -67,16 +68,15 @@ export class Gradebook extends Component {
         if (!this.state.render) {
             return null;
         }
-        console.log(this.props);
-        console.log(this.state);
-
+        // console.log(this.state);
+        // console.log(this.props);
 
         return (
             <Card>
                 <CardTitle title="Grades" />
                 <CardMedia>{
                     (this.state.role == "instructor")
-                        ? this.studentBook()
+                        ? this.instructorBook()
                         : this.studentBook()
                 }
                 </CardMedia>
@@ -84,24 +84,36 @@ export class Gradebook extends Component {
         );
     }
 
-    instructorBook(data) {
+    instructorBook() {
+        console.log(this.props);
+        const student_subs = [];
+
+        for (var i = 0; i < this.state.roster.length; i++) {
+            var student = this.state.roster[i];
+            student_subs.push(student);
+        }
+
+        const assignments = [];
+        for (var i = 0; i < this.props.assignments.length; i++) {
+            var assignment = this.props.assignments[i];
+            var key = assignment.name;
+            assignments.push(<TableHeaderColumn key={key + "1"}><b>{key}</b></TableHeaderColumn>);
+            assignments.push(<TableHeaderColumn key={key + "2"}><b>Version</b></TableHeaderColumn>);
+            assignments.push(<TableHeaderColumn key={key + "3"}><b>Score</b></TableHeaderColumn>);
+        }
 
         return (
             <Table selectable={false}>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
-                        <TableHeaderColumn>Student</TableHeaderColumn>
-                        <TableHeaderColumn>Assignment</TableHeaderColumn>
-                        <TableHeaderColumn>Version</TableHeaderColumn>
-                        <TableHeaderColumn>Score</TableHeaderColumn>
+                        <TableHeaderColumn><b>Student</b></TableHeaderColumn>
+                        {assignments}
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                    {data.map((n, index) => (
+                    {this.state.roster.map((n, index) => (
                         <TableRow key={index} >
-                            <TableRowColumn>{n.assignment_num}</TableRowColumn>
-                            <TableRowColumn>{n.version}</TableRowColumn>
-                            <TableRowColumn>{n.scores}</TableRowColumn>
+                            <TableRowColumn>{n.first_name + " " + n.last_name}</TableRowColumn>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -155,6 +167,7 @@ function mapStateToProps(state) {
         assignments: state.assignments.assignmentsData,
         assignmentsMapping: state.assignments.assignmentsMap,
         submissions: state.gradebook.submissions,
+        roster: state.gradebook.roster,
     }
 }
 

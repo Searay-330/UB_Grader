@@ -12,10 +12,14 @@ const AssignmentsReducer = (state = initialState, action) => {
         case "professor_grades":
             return {
                 submissions: action.gradeData,
+                roster: state.roster,
             }
         
         case "roster":
-            return
+            return {
+                submissions: state.submissions,
+                roster: action.roster,
+            }
 
         default:
             return state;
