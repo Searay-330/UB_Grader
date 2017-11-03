@@ -33,7 +33,7 @@ export function createAssignment(req, res) {
             problems = JSON.parse(req.body.problems);
         }
         var assignment = {
-            id: req.body.id,
+            _id: req.body.id,
             category: req.body.category,
             name: req.body.name,
             section_based: req.body.section_based,
