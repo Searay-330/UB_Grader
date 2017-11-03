@@ -1,6 +1,6 @@
 /* eslint-disable global-require */
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route, IndexRoute} from 'react-router';
 import App from './modules/App/App';
 import Courses from './modules/Courses/Courses'
 import Assignments from './modules/Assignments/Assignments';
@@ -9,7 +9,8 @@ import CreateAssignment from './modules/Assignments/components/CreateAssignment/
 import CreateCourse from './modules/Courses/components/CreateCourse/CreateCourse';
 import AddUser from './modules/Courses/components/AddUser/AddUser';
 import Gradebook from './modules/Gradebook/Gradebook';
-import ErrorPages from './modules/ErrorPages/ErrorPages'
+import ErrorPages from './modules/ErrorPages/ErrorPages';
+import UpdateAssignment from './modules/Assignments/components/UpdateAssignment/UpdateAssignment';
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -38,7 +39,8 @@ export default (
       <Route path="/courses/:course/assignments" component={Assignments}>
         <Route path="/courses/:course/assignments/gradebook" component={Gradebook} />
         <Route exact path="/courses/:course/assignments/create" component={CreateAssignment} />
-        <Route path="/courses/:course/assignments/:assignment" component={Assignment} />
+        <Route exact path="/courses/:course/assignments/:assignment" component={Assignment} />
+        <Route path="/courses/:course/assignments/:assignment/update" component={UpdateAssignment}/>
       </Route>
     </Route>
     <Route path="*" component={ErrorPages} error="404" />
