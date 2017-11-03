@@ -74,6 +74,9 @@ const course_assignmentSchema = new Schema({
     max_over_latest:            { type:Boolean, default: true },
 });
 
+course_assignmentSchema.virtual('assignment_num').get(function() {
+    return this._id;
+});
 course_assignmentSchema.set('toJSON', { virtuals: true});
 course_assignmentSchema.set('toObject', { virtuals: true});
 
