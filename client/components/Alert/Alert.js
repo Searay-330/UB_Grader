@@ -30,7 +30,7 @@ export function Alert(props) {
 }
 
 function wasClicked(){
-	document.getElementById("alert").remove();
+	document.getElementById("alert").setAttribute("hidden", "true");
 }
 
 export default Alert;
