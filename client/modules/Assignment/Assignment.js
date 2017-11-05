@@ -56,17 +56,17 @@ export class Assignment extends Component {
   render() {
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
     if (assignmentData == null) { return null; }
-    // console.log(assignmentData);
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
-    console.log(this.props.score.toString());
     var problemsArray = assignmentData.problems;
+
     //Determine maxScore
     var maxScore = 0;
     for(var i = 0; i < problemsArray.length; i++){
       maxScore = maxScore + problemsArray[i].score;
     }
+
     var displayName = this.props.assignmentData[this.props.params.assignment].name;
     return (
       <Card>
