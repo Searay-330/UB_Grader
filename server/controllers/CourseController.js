@@ -17,8 +17,8 @@ export function getCourses(req, res) {
             if (err){
                 res.status(500).send(err);
             }
-            else {  
-                var courses = [];                
+            else {
+                var courses = [];
                 for (var i=0; i<allCourses.length; i++) {
                     courses.push({
                         id:             allCourses[i].id,
@@ -27,9 +27,9 @@ export function getCourses(req, res) {
                         semester:       allCourses[i].semester
                     });
                 }
-                res.status(200).send(courses); 
-            }            
-        });            
+                res.status(200).send(courses);
+            }
+        });
     }
     else {
         var courselist = [];
@@ -38,7 +38,7 @@ export function getCourses(req, res) {
             if (err) {
                 res.status(500).send(err);
             }
-            else {          
+            else {
                 req.user.courses.forEach((course) => {
                     courses.forEach((courseobj) => {
                         if (course.course_id == courseobj.id){
@@ -67,7 +67,7 @@ export function getCourses(req, res) {
 export function getAssignments(req, res){
     if (req.user.sys_role == 'admin') {
         Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
-            if (err) res.status(500).send(err);                    
+            if (err) res.status(500).send(err);
             else res.status(200).send(course.assignments);
         });
     }
@@ -75,9 +75,9 @@ export function getAssignments(req, res){
         var inCourse = false;
         req.user.courses.forEach((course) => {
             if (course.course_num == req.params.course_num){
-                inCourse = true;                
+                inCourse = true;
                 Course.findOne({ 'course_num': req.params.course_num }, (err, course) => {
-                    if (err) res.status(500).send(err);                    
+                    if (err) res.status(500).send(err);
                     else res.status(200).send(course.assignments);
                 });
             }
@@ -100,9 +100,9 @@ export function getStudents(req, res){
     var studentList = [];
     User.find({}, (err, users) => {
         if (err) {
-            res.status(500).send(err); 
+            res.status(500).send(err);
         }
-        else {          
+        else {
             users.forEach((user) => {
                 user.courses.forEach((course) => {
                     if (course.course_num == req.params.course_num && course.course_role == 'student'){
@@ -126,7 +126,7 @@ export function getStudents(req, res){
 export function getSections(req, res){
     var sectionList = [];
     Course.findOne({ 'course_num': req.params.course_num }, (err,course) =>{
-        if (err) res.status(500).send(err);                    
+        if (err) res.status(500).send(err);
         else res.status(200).send(course.sections);
     })
 }
@@ -145,7 +145,7 @@ export function getSectionStudents(req, res){
         if (err) {
             res.status(500).send(err);
         }
-        else {           
+        else {
             users.forEach((user) => {
                 user.courses.forEach((course) => {
                     if (course.course_num == req.params.course_num && course.section_name == req.params.section_name && course.course_role == 'student'){
@@ -154,7 +154,7 @@ export function getSectionStudents(req, res){
                 });
             });
             res.status(200).send(studentList);
-        } 
+        }
     });
 }
 
@@ -166,7 +166,7 @@ export function getSectionStudents(req, res){
  */
 
 export function createCourse(req, res){
-    var course = new Course(req.body);        
+    var course = new Course(req.body);
     course.save((err, courseobj) => {
         if (err) res.status(500).send(err);
         else res.status(200).send(courseobj);
@@ -185,14 +185,14 @@ export function updateCourse(req, res){
     Course.findOne({ 'course_num': req.params.course_num }, (err,courseobj) =>{
         if (err){
             res.status(500).send(err);
-        }  
+        }
         else {
             if (req.body.display_name){
                 courseobj.display_name = req.body.display_name;
             }
             if (req.body.semester){
                 courseobj.semester = req.body.semester;
-            }                   
+            }
             if (req.body.sections){
                 courseobj.sections = req.body.sections;
             }
@@ -216,9 +216,9 @@ export function addCourseToUser(req,res){
         // console.log(req.body);
         User.findOne({'email': req.body.student_email}, (err, userobj) => {
             if (err) {
-                res.status(500).send(err); 
+                res.status(500).send(err);
             }
-            else{                   
+            else{
                 Course.findOne({'course_num': req.params.course_num}, (err, courseobj) => {
                     var alreadyEnrolled = false;
                     if (err) {
@@ -226,7 +226,7 @@ export function addCourseToUser(req,res){
                     }
                     else{
                         if (courseobj){
-                            if (userobj) {            
+                            if (userobj) {
                                 var course_info = {
                                                     course_id:    courseobj.id,
                                                     course_num:   courseobj.course_num,
@@ -238,12 +238,12 @@ export function addCourseToUser(req,res){
                                     }
                                 });
                                 if (alreadyEnrolled){
-                                    res.status(200).send({Status: 200, Message: 'User is already enrolled in course!'});  
-                                } 
+                                    res.status(200).send({Status: 200, Message: 'User is already enrolled in course!'});
+                                }
                                 else {
                                     userobj.courses.addToSet(course_info);
                                     userobj.save((err, updateduserobj) => {
-                                        if (err) res.status(500).send(err);                
+                                        if (err) res.status(500).send(err);
                                         else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+courseobj.display_name});
                                     });
                                 }
@@ -258,23 +258,23 @@ export function addCourseToUser(req,res){
                                                         course_role:    req.body.course_role
                                                     }
                                     });
-    
+
                                     User.create(new_user, (err) => {
                                         if (err) res.status(500).send(err);
                                         else res.status(200).send({Status: 200, Message: 'Successfully added '+req.body.student_email+' to '+courseobj.display_name});
-            
-                                    }); 
-                            }    
+
+                                    });
+                            }
                         }
                         else{
-                            res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course'});                              
+                            res.status(404).send({Status: 404, Message: 'Sorry, unable to find that course'});
                         }
                     }
                 });
             }
         });
     }
-    
+
 
 //NEED TO DETERMINE WHAT SHOULD BE SENT BACK
 /**
@@ -286,18 +286,18 @@ export function addCourseToUser(req,res){
 export function addUserToSection(req,res){
     User.findOne({'email': req.body.student_email}, (err, userobj) => {
         if (err) {
-            res.status(500).send(err);    
+            res.status(500).send(err);
         }
-        else{                
+        else{
             Course.findOne({'course_num': req.params.course_num}, (err, courseobj) => {
                 var isInSection = false;
                 if (err) {
                     res.status(500).send(err);
                 }
                 if (!courseobj || !userobj) {
-                    res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user and/or course'});  
+                    res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user and/or course'});
                 }
-                else {           
+                else {
                     courseobj.sections.forEach((section) => {
                         if (section.name == req.params.section_name){
                             userobj.courses.forEach((course) => {
@@ -306,17 +306,17 @@ export function addUserToSection(req,res){
                                     course.section_name = section.name;
                                     isInSection = true;
                                     userobj.save((err, updateduserobj) => {
-                                        if (err) res.status(500).send(err);                
+                                        if (err) res.status(500).send(err);
                                         else res.status(200).send({Status: 200, Message: 'Successfully added '+userobj.email+' to '+section.name});
                                     });
                                 }
                             });
                         }
                     });
-                    if (!isInSection) res.status(406).send({Status: 406, Message: 'Sorry, cannot user to that section'});  
+                    if (!isInSection) res.status(406).send({Status: 406, Message: 'Sorry, cannot user to that section'});
                 }
             });
-        } 
+        }
     });
 }
 
@@ -332,11 +332,11 @@ export function removeUserFromSection(req, res){
     User.findOne({'email': req.body.student_email}, (err, userobj) => {
         var inSection = false;
         if (err) {
-            res.status(500).send(err);    
+            res.status(500).send(err);
         }
-        else{                
+        else{
             if (!userobj) {
-                res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});  
+                res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});
             }
             else {
                 userobj.courses.forEach((course) => {
@@ -345,14 +345,14 @@ export function removeUserFromSection(req, res){
                         course.section_id = undefined;
                         inSection = true;
                         userobj.save((err, updateduserobj) => {
-                            if (err) res.status(500).send(err);                
+                            if (err) res.status(500).send(err);
                             else res.status(200).send({Status: 200, Message: 'Successfully removed '+userobj.email+' from '+req.params.section_name});
                         });
                     }
                 });
                 if (!inSection) res.status(406).send({Status: 406, Message: 'Sorry, user is not enrolled in that course and/or section'});
-            } 
-        } 
+            }
+        }
     });
 }
 
@@ -366,7 +366,7 @@ export function removeUserFromSection(req, res){
 
 export function removeCourseFromUser(req,res){
     User.findOne({'email': req.body.student_email}, (err, userobj) => {
-        var isEnrolled = false;        
+        var isEnrolled = false;
         if (err) {
             res.status(500).send(err);
         }
@@ -378,17 +378,17 @@ export function removeCourseFromUser(req,res){
                         var index = userobj.courses.indexOf(course);
                         userobj.courses.splice(index,1);
                         userobj.save((err, updateduserobj) => {
-                            if (err) return res.status(500).send(err);                
+                            if (err) return res.status(500).send(err);
                             else res.status(200).send({Status: 200, Message: 'Successfully removed '+userobj.email+' from '+course.course_num});
-                        });            
+                        });
                     }
                 });
             }
             else{
-                return res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});   
+                return res.status(404).send({Status: 404, Message: 'Sorry, unable to find that user'});
             }
         }
-        if(!isEnrolled) res.status(406).send({Status: 406, Message: 'Sorry, unable to remove user from course'});                                      
+        if(!isEnrolled) res.status(406).send({Status: 406, Message: 'Sorry, unable to remove user from course'});
     });
 }
 
@@ -402,7 +402,7 @@ function addStudentFromCSV (data){
 
         User.findOne({'email': data[0]}, (err, userobj) => {
             if (err) {
-                reject(new Error(err));            
+                reject(new Error(err));
             }
             else{
                 Course.findOne({'course_num': data[3]}, (err, courseobj) => {
@@ -426,7 +426,7 @@ function addStudentFromCSV (data){
                             if (err) reject(new Error(err));
                             else resolve(new_user);
 
-                        });                
+                        });
                     }
                     else{
                         var new_course = {
@@ -457,7 +457,7 @@ function addStudentFromCSV (data){
 }
 
 /**
- * Helper function for removing all students registered for course that are not included in the CSV roster file/ 
+ * Helper function for removing all students registered for course that are not included in the CSV roster file/
  * @param updated_student_list : An array of all the students that are in the CSV roster file
  * @param course_num : The official course_num for which the CSV roster has been submitted.
  * Returns a promise.
@@ -475,9 +475,9 @@ function removeStudentsBasedOnCSV (updated_student_list, course_num){
                             var index = user.courses.indexOf(course);
                             user.courses.splice(index,1);
                             user.save((err, updateduserobj) => {
-                                if (err) reject(new Error(err));               
-                            }); 
-                        } 
+                                if (err) reject(new Error(err));
+                            });
+                        }
                     }
                 });
             });
@@ -499,7 +499,7 @@ function removeStudentsBasedOnCSV (updated_student_list, course_num){
  */
 
 export function importRoster(req, res){
-
+    var regexEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
     var roster = req.files[0].path;
     var error = false;
     var students = [];
@@ -507,14 +507,24 @@ export function importRoster(req, res){
     fs.createReadStream(roster)
     .pipe(csv())
     .on('data', (data) => {
-        students.push(data[0]);
-        course = data[3];
-        addStudentFromCSV(data)
-        .then((userobj) => {
-        })
-        .catch((err) => {
-            error = true;
-        });
+        //Check If More Than 4 Columns
+        if(data.length > 4){
+          res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students! You have more than four columns in your csv file.'});
+        } else{
+          //Check If First Column Contains An Email
+          if(regexEmail.test(data[0])){
+            students.push(data[0]);
+            course = data[3];
+            addStudentFromCSV(data)
+            .then((userobj) => {
+            })
+            .catch((err) => {
+                error = true;
+            });
+          } else{
+            res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students! One of your records does not contain a valid email address.'});
+          }
+        }
     })
     .on('end', (data) => {
         if (error) {
@@ -524,14 +534,14 @@ export function importRoster(req, res){
             if (req.body.complete){
                 removeStudentsBasedOnCSV(students, course)
                 .then(() => {
-                    res.status(200).send({Status: 200, Message: "Successfully updated the course's student list"});                    
+                    res.status(200).send({Status: 200, Message: "Successfully updated the course's student list"});
                 })
                 .catch((err) => {
-                    res.status(500).send({Status: 500, Message: "Sorry, unable to update the course's student list"});                    
+                    res.status(500).send({Status: 500, Message: "Sorry, unable to update the course's student list"});
                 });
             }
             else{
-                res.status(200).send({Status: 200, Message: "Successfully added students to the course"});                                    
+                res.status(200).send({Status: 200, Message: "Successfully added students to the course"});
             }
         }
     });
