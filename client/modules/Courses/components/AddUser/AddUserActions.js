@@ -42,7 +42,7 @@ export function submitCSV(formData1, formData) {
   	var formDataCSV = new FormData();
 	formDataCSV.append("complete", "false");
 
-        formDataCSV.append("WhoseIdeaWasThis", formData1);
+        formDataCSV.append("WhoseIdeaWasThis", formData1.files[0]);
         
   	return function (dispatch) {
   		dispatch(resetError());
