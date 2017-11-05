@@ -8,6 +8,7 @@ import styles from './AddUser.css';
 
 //Import Actions
 import { submitForm } from './AddUserActions'
+import { submitCSV } from './AddUserActions'
 
 import GridTile from 'material-ui/GridList';
 import {Card, CardText, CardHeader, CardActions, CardTitle} from 'material-ui/Card';
@@ -28,6 +29,7 @@ export class AddUser extends Component {
       student_email: '',
       course_role: '',
       course_num: this.props.params.course,
+      //csv_file: '',
     };
   }
 
@@ -41,6 +43,7 @@ export class AddUser extends Component {
       var st = getEditableState(this.state);
       st.student_email = document.getElementById("student_email").value;
       st.course_role = document.getElementById("course_role").value;
+      //st.csv_file = document.getElementById("csvfile");
       this.setState(st);
   };
 
@@ -87,6 +90,10 @@ export class AddUser extends Component {
             <div>Default role choices are student or instructor. Support for custom roles will be added in the future.</div>
             <br/>
             <RaisedButton label='Add User' onClick={() => this.sendAddUser()} primary={true} />
+	    <br/>
+	    <b>CSV File</b> <input type="file" id="csvfile" accept=".csv"/>
+            <br/>
+	    <RaisedButton label="Add from CSV" onClick={() => {this.props.submitCSV(document.getElementById("csvfile"),this.state)}} primary={true} />
           </CardText>
         </Card>
       </div>
@@ -107,6 +114,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     submitForm: submitForm,
+    submitCSV: submitCSV,
   }, dispatch);
 }
 
