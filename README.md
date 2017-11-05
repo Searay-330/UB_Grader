@@ -1,5 +1,5 @@
 # UB_Grader
-For Jesse.
+
 
 Ubuntu linux install instructions
 
@@ -31,7 +31,7 @@ npm install
 mkdir server/config
 touch server/config/keys.js
 ```
-Make sure you you have your own Google OAuth 2.0 API keys. Inside of keys.js you need to put your googleClientID and googleClientSecret  keys. The cookieKey is completely arbritrary and can be any random string. 
+Make sure you you have your own Google OAuth 2.0 API keys. Inside of keys.js you need to put your googleClientID and googleClientSecret  keys. The cookieKey is completely arbritrary and can be any random string.
 
 Example:
 ```
@@ -48,7 +48,7 @@ Lastly, you'll need to have Tango set up locally and the directions to do so can
 Then you can run the following commands in your terminal:
 
 ```
-npm install 
+npm install
 sudo service mongod start
 npm start
 ```
