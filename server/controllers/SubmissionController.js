@@ -15,7 +15,6 @@ var async = require('async');
 
 export function getUserSubmissions(req, res, next) {
     var submissionFound = false;
-    console.log(req.params);
     Submission.find({
         'course_num': req.params.course_num,
         'assignment_num': req.params.assignment_num,
