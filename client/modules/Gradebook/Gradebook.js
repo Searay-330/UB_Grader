@@ -157,8 +157,9 @@ export class Gradebook extends Component {
         console.log(styles);
 
         const studentInfo = this.getStudentInfo(assignemtNames, studentSubMap, this.state.roster);
+        
         return (
-            <div>
+            <div className={styles.upper}>
                 <Table bodyStyle={{width: '-fit-content'}} selectable={false}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
@@ -166,7 +167,7 @@ export class Gradebook extends Component {
                             {assignments}
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody  displayRowCheckbox={false}>
                         {studentInfo.map((n, index) => (
                             <TableRow key={index} >
                                 <TableRowColumn width={100}>{n.student.first_name + " " + n.student.last_name}</TableRowColumn>
