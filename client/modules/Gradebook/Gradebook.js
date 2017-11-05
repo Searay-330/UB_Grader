@@ -70,9 +70,10 @@ export class Gradebook extends Component {
         if (!this.state.render) {
             return null;
         }
+
         return (
             <Card>
-                <CardTitle title="Grades" />
+                <CardTitle title="Gradebook" />
                 <CardMedia>
                     {
                         (this.state.role == "instructor")
@@ -110,7 +111,7 @@ export class Gradebook extends Component {
         return studentSubMap;
     }
 
-    getStudentInfo(keyList, studentSubMap, roster) {
+    getStudentAllInfo(keyList, studentSubMap, roster) {
         const studentInfo = [];
         for (var i = 0; i < roster.length; i++) {
             var student = roster[i];
@@ -131,10 +132,7 @@ export class Gradebook extends Component {
                 } else {
                     submissions[key].scores = this.sumGrades(submissions[key].scores);
                 }
-
-                studentGrades.push(<TableRowColumn width={50} key={studentEmail + key + "space"}></TableRowColumn>);
-                // studentGrades.push(<TableRowColumn key={studentEmail + key + "version"}>{submissions[key].version}</TableRowColumn>);
-                studentGrades.push(<TableRowColumn width={10} key={studentEmail + key + "scores"}>{submissions[key].scores}</TableRowColumn>);
+                studentGrades.push(<TableRowColumn width={50} key={studentEmail + key + "scores"}>{submissions[key].scores}</TableRowColumn>);
             }
             studentInfo.push({ student: student, grades: studentGrades })
         }
@@ -149,29 +147,26 @@ export class Gradebook extends Component {
             var assignment = this.props.assignmentsMapping[key];
             var colKey = assignment.name;
             assignments.push(<TableHeaderColumn width={50} key={colKey + "name"}><b>{colKey}</b></TableHeaderColumn>);
-            // assignments.push(<TableHeaderColumn key={colKey + "version"}><b>Version</b></TableHeaderColumn>);
-            assignments.push(<TableHeaderColumn width={10} key={colKey + "score"}><b>Score</b></TableHeaderColumn>);
         }
 
         const studentSubMap = this.getStudentSubMap(this.state.submissions);
-        console.log(styles);
 
         const studentInfo = this.getStudentInfo(assignemtNames, studentSubMap, this.state.roster);
-        
+
         return (
             <div className={styles.upper}>
-                <Table bodyStyle={{width: '-fit-content'}} selectable={false}>
+                <Table selectable={false}>
                     <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                         <TableRow>
                             <TableHeaderColumn width={100}><b>Student</b></TableHeaderColumn>
                             {assignments}
                         </TableRow>
                     </TableHeader>
-                    <TableBody  displayRowCheckbox={false}>
-                        {studentInfo.map((n, index) => (
+                    <TableBody displayRowCheckbox={false}>
+                        {studentInfo.map((submission, index) => (
                             <TableRow key={index} >
-                                <TableRowColumn width={100}>{n.student.first_name + " " + n.student.last_name}</TableRowColumn>
-                                {n.grades}
+                                <TableRowColumn width={100}>{submission.student.first_name + " " + submission.student.last_name}</TableRowColumn>
+                                {submission.grades}
                             </TableRow>
                         ))}
                     </TableBody>
@@ -189,7 +184,7 @@ export class Gradebook extends Component {
             data.push(sub);
         }
         return (
-            <Table fixedHeader={false} selectable={false}>
+            <Table selectable={false}>
                 <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                     <TableRow>
                         <TableHeaderColumn>Assignment</TableHeaderColumn>

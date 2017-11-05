@@ -14,7 +14,7 @@ const AssignmentsReducer = (state = initialState, action) => {
                 submissions: action.gradeData,
                 roster: state.roster,
             }
-        
+
         case "roster":
             return {
                 submissions: state.submissions,
