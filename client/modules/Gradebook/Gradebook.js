@@ -106,11 +106,12 @@ export class Gradebook extends Component {
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                    {data.map((n, index) => (
+
+                    {data.map((submission, index) => (
                         <TableRow key={index} >
-                            <TableRowColumn>{n.assignment_num}</TableRowColumn>
-                            <TableRowColumn>{n.version}</TableRowColumn>
-                            <TableRowColumn>{n.scores}</TableRowColumn>
+                            <TableRowColumn>{this.props.assignmentsMapping[submission.assignment_num].name}</TableRowColumn>
+                            <TableRowColumn>{submission.version}</TableRowColumn>
+                            <TableRowColumn>{submission.scores}</TableRowColumn>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -123,6 +124,7 @@ function mapStateToProps(state) {
     return {
         user: state.app.user,
         assignments: state.assignments.assignmentsData,
+        assignmentsMapping: state.assignments.assignmentsMap,
         submissions: state.gradebook.submissions,
     }
 }

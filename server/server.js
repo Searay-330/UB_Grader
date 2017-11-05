@@ -3,9 +3,6 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
-import User from './models/User'
-import Course from './models/Course'
-import Submission from './models/Submission'
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
@@ -61,20 +58,23 @@ mongoose.connect(serverConfig.mongoURL, (error) => {
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
-app.use('/static', Express.static(path.resolve(__dirname, '../assets')));
+if(process.env.NODE_ENV === 'production'){
+  app.use(Express.static(path.resolve(__dirname, '../dist/client')));
+}else{
+  app.use('/static', Express.static(path.resolve(__dirname, '../assets')));
+}
 app.use(cookieSession({
-    maxAge: 24*60*60*1000,
+    maxAge: 24 * 60 * 60 * 1000,
     keys: [keys.cookieKey]
-  })
+})
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/api',serverRoutes);
+app.use('/api', serverRoutes);
 
 // Render Initial HTML
 const renderFullPage = (html, initialState) => {
   const head = Helmet.rewind();
-
   // Import Manifests
   const assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets);
   const chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets);
