@@ -51,7 +51,7 @@ export function submitCSV(formData1, formData) {
   		}
   		
 	    dispatch(() => {return {type:"wait"};});
-	    return callApi("courses/" + formData.course_num + "/importRoster", 'post', formDataCSV).then(formDataCSV => {
+	    	  return callApiWithFiles("courses/" + formData.course_num + "/importRoster", formDataCSV).then(formDataCSV => {
 	       	console.log(formDataCSV);
 	       	if(formDataCSV.Status == "404"){
 	       		return dispatch(throwError(JSON.stringify(formDataCSV)), "error");
