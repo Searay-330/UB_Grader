@@ -18,7 +18,6 @@ export function getCourseData(course_num) {
     dispatch(() => {return {type:"wait"};});
     return callApi("courses/" + course_num + "/assignments","get")
       .then(data => {
-        console.log(data);
         dispatch(populateCourseData(data))
       })
   }

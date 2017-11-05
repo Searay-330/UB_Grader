@@ -123,7 +123,6 @@ export class Gradebook extends Component {
             var studentGrades = [];
             for (var j = 0; j < keyList.length; j++) {
                 var key = keyList[j];
-                // console.log(key);
                 if (submissions[key] == undefined) {
                     submissions[key] = {
                         version: "-",
@@ -151,7 +150,7 @@ export class Gradebook extends Component {
 
         const studentSubMap = this.getStudentSubMap(this.state.submissions);
 
-        const studentInfo = this.getStudentInfo(assignemtNames, studentSubMap, this.state.roster);
+        const studentInfo = this.getStudentAllInfo(assignemtNames, studentSubMap, this.state.roster);
 
         return (
             <div className={styles.upper}>
