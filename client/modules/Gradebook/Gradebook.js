@@ -194,11 +194,11 @@ export class Gradebook extends Component {
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
 
-                    {data.map((n, index) => (
+                    {data.map((submission, index) => (
                         <TableRow key={index} >
-                            <TableRowColumn>{this.props.assignmentsMapping[n.assignment_num].name}</TableRowColumn>
-                            <TableRowColumn>{n.version}</TableRowColumn>
-                            <TableRowColumn>{n.scores}</TableRowColumn>
+                            <TableRowColumn>{this.props.assignmentsMapping[submission.assignment_num].name}</TableRowColumn>
+                            <TableRowColumn>{submission.version}</TableRowColumn>
+                            <TableRowColumn>{submission.scores}</TableRowColumn>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -36,3 +36,29 @@ export function submitForm(formData) {
 	    })
   	}
 }
+export function submitCSV(formData1, formData) {
+	//var data;
+  	//data = {student_email: formData.student_email, course_role: formData.course_role};
+  	var formDataCSV = new FormData();
+	formDataCSV.append("complete", "false");
+
+        formDataCSV.append("WhoseIdeaWasThis", formData1.files[0]);
+        
+  	return function (dispatch) {
+  		dispatch(resetError());
+  		if(formData.course_num == ""){
+  			return dispatch(throwError("Course not found. How did you even get here?", "error"));
+  		}
+  		
+	    dispatch(() => {return {type:"wait"};});
+	    	  return callApiWithFiles("courses/" + formData.course_num + "/importRoster", formDataCSV).then(formDataCSV => {
+	       	console.log(formDataCSV);
+	       	if(formDataCSV.Status == "404"){
+	       		return dispatch(throwError(JSON.stringify(formDataCSV)), "error");
+	       	}
+	       	return dispatch(throwError("User added successfully.", "success"));
+	    })
+  	}
+
+
+}
