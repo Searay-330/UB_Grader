@@ -10,7 +10,7 @@ var async = require('async');
  * Gets all the user submissions of a specific assignment.
  * @param req : User's request (should contain course_num, assignment_num, email as a parameter)
  * @param res : The response back to the caller.
- * Sends a list of the submissions of a user in a perticular assignment back as the response (a list of json objects)
+ * Sends a list of the submissions of a user in a particular assignment back as the response (a list of json objects)
  */
 
 export function getUserSubmissions(req, res, next) {
@@ -21,11 +21,11 @@ export function getUserSubmissions(req, res, next) {
         'user_email': req.params.email
     }, (err, submissions) => {
         if (err){
-            res.status(500).send(err);   
+            res.status(500).send(err);
         } else {
             var submissionList = []
             submissions.forEach((submission) => {
-                submissionFound = true; 
+                submissionFound = true;
                 submissionList.push(submission);
             });
             if(submissionFound){
@@ -34,14 +34,14 @@ export function getUserSubmissions(req, res, next) {
                 res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
             }
         }
-    });   
+    });
 }
 
 /**
  * Gets the latest user submission of a specific assignment.
  * @param req : User's request (should contain course_num, assignment_num and email as a parameter)
  * @param res : The response back to the caller.
- * Sends the latest submissions of a user in a perticular assignment back as the response (a list of json object)
+ * Sends the latest submissions of a user in a particular assignment back as the response (a list of json object)
  */
 
 export function getLatestSubmission(req, res, next) {
@@ -57,8 +57,8 @@ export function getLatestSubmission(req, res, next) {
                             submissionFound = true;
                             var latest_version = sub.submissions;
                             Submission.findOne({
-                                version: latest_version, 
-                                user_email: req.params.email, 
+                                version: latest_version,
+                                user_email: req.params.email,
                                 assignment_num: req.params.assignment_num,
                                 course_num: req.params.course_num
                             }, (err, submissionObj) => {
@@ -69,19 +69,19 @@ export function getLatestSubmission(req, res, next) {
                     if(!submissionFound) res.status(404).send({Status: 404, Message: "No submissions from this user"});
                 }
             });
-        } 
-    });   
+        }
+    });
 }
 
- /**
+/**
  * Gets the latest submissions of all users in a specific assignment.
  * @param req : User's request (should contain course_num, assignment_num as a parameter)
  * @param res : The response back to the caller.
- * Sends the latest submissions of all the users in a perticular assignment back as the response (a list of json object)
+ * Sends the latest submissions of all the users in a particular assignment back as the response (a list of json object)
  */
 
 export function getAllLatestSubmissions(req, res, next) {
-    
+
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
             res.status(500).send(err);
@@ -94,8 +94,8 @@ export function getAllLatestSubmissions(req, res, next) {
                         submissionFound = true;
                         submissionList.push(function(callback) {
                             var temp = Submission.findOne({
-                                version: sub.submissions, 
-                                user_email: sub.email, 
+                                version: sub.submissions,
+                                user_email: sub.email,
                                 assignment_num: req.params.assignment_num,
                                 course_num: req.params.course_num
                             }, (err, submissionObj) => {
@@ -105,7 +105,7 @@ export function getAllLatestSubmissions(req, res, next) {
                     });
 
                     async.parallel(submissionList, function(err, result) {
-                        if (err) 
+                        if (err)
                             return res.status(500).send(err);
                         if(submissionFound){
                             res.status(200).send(result);
@@ -115,11 +115,11 @@ export function getAllLatestSubmissions(req, res, next) {
                     });
                 }
             });
-        } 
+        }
     });
 }
 
- /**
+/**
  * Gets the latest submissions of a user in a all assignments.
  * @param req : User's request (should contain course_num, assignment_num, email as a parameter)
  * @param res : The response back to the caller.
@@ -139,8 +139,8 @@ export function getLatestSubmissionsInAssignments(req, res, next) {
                         submissionFound = true;
                         submissionList.push(function(callback) {
                             var temp = Submission.findOne({
-                                version: sub.submissions, 
-                                user_email: sub.email, 
+                                version: sub.submissions,
+                                user_email: sub.email,
                                 assignment_num: assignment.assignment_num,
                                 course_num: req.params.course_num
                             }, (err, submissionObj) => {
@@ -151,7 +151,7 @@ export function getLatestSubmissionsInAssignments(req, res, next) {
                 });
             });
             async.parallel(submissionList, function(err, result) {
-                if (err) 
+                if (err)
                     return res.status(500).send(err);
                 if(submissionFound){
                     res.status(200).send(result);
@@ -159,11 +159,11 @@ export function getLatestSubmissionsInAssignments(req, res, next) {
                     res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
                 }
             });
-        } 
+        }
     });
 }
 
- /**
+/**
  * Gets the latest submissions of all users in all assignments.
  * @param req : User's request (should contain course_num, assignment_num as a parameter)
  * @param res : The response back to the caller.
@@ -182,8 +182,8 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                     submissionFound = true;
                     submissionList.push(function(callback) {
                         var temp = Submission.findOne({
-                            version: sub.submissions, 
-                            user_email: sub.email, 
+                            version: sub.submissions,
+                            user_email: sub.email,
                             assignment_num: assignment.assignment_num,
                             course_num: req.params.course_num
                         }, (err, submissionObj) => {
@@ -193,7 +193,7 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                 });
             });
             async.parallel(submissionList, function(err, result) {
-                if (err) 
+                if (err)
                     return res.status(500).send(err);
                 if(submissionFound){
                     res.status(200).send(result);
@@ -201,7 +201,131 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
                     res.status(404).send({Status: 404, Message: "No submissions at the moment"});
                 }
             });
-        } 
+        }
+    });
+}
+
+/**
+ * Gets the max submissions of a user in all assignments.
+ * @param req : User's request (should contain course_num, assignment_num, email as a parameter)
+ * @param res : The response back to the caller.
+ * Sends the max submissions of a user in all assignments back as the response (a list of json object)
+ */
+
+export function getMaxSubmissionsInAssignments(req, res, next) {
+    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
+        if (err){
+            res.status(500).send(err);
+        } else {
+            var submissionFound = false;
+            var submissionList = [];
+            course.assignments.forEach((assignment) => {
+                assignment.user_submissions.forEach((sub) => {
+                    if(sub.email == req.params.email){
+                        submissionFound = true;
+                        submissionList.push(function(callback) {
+                            var temp = Submission.find({
+                                user_email: sub.email,
+                                assignment_num: assignment.assignment_num,
+                                course_num: req.params.course_num
+                            }, (err, submissionObj) => {
+                                callback(err, submissionObj);
+                            });
+                        });
+                    }
+                });
+            });
+            async.parallel(submissionList, function(err, result) {
+                if (err)
+                    return res.status(500).send(err);
+                if(submissionFound) {
+                    var assignments = {};
+                    result.forEach((assignment) => {
+                        var assignmentName = null;
+                        assignment.forEach((submission) => {
+                            var scoreTotal = 0;
+                            assignmentName = submission.assignment_num;
+                            if (assignments[assignmentName] == null)
+                                assignments[assignmentName] = [null, 0];
+                            submission.scores.forEach((problem) => {
+                                scoreTotal += problem.score;
+                            });
+                            if (scoreTotal > assignments[assignmentName][1])
+                                assignments[assignmentName] = [submission, scoreTotal];
+                        });
+                    });
+                    var maxSubmissions = [];
+                    for (var assignmentNum in assignments) {
+                        var assignment = assignments[assignmentNum];
+                        maxSubmissions.push(assignment[0]);
+                    }
+                    res.status(200).send(maxSubmissions);
+                } else {
+                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+                }
+            });
+        }
+    });
+}
+
+/**
+ * Gets the max submissions of all users in a specific assignment.
+ * @param req : User's request (should contain course_num, assignment_num as a parameter)
+ * @param res : The response back to the caller.
+ * Sends the max submissions of all the users in a particular assignment back as the response (a list of json object)
+ */
+
+export function getAllMaxSubmissions(req, res, next) {
+    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
+        if (err){
+            res.status(500).send(err);
+        } else {
+            course.assignments.forEach((assignment) => {
+                if(assignment.assignment_num == req.params.assignment_num){
+                    var submissionFound = false;
+                    var submissionList = [];
+                    assignment.user_submissions.forEach((sub) => {
+                        submissionFound = true;
+                        submissionList.push(function(callback) {
+                            var temp = Submission.find({
+                                user_email: sub.email,
+                                assignment_num: req.params.assignment_num,
+                                course_num: req.params.course_num
+                            }, (err, submissionObj) => {
+                                callback(null, submissionObj);
+                            });
+                        });
+                    });
+                    async.parallel(submissionList, function(err, result) {
+                        if (err)
+                            return res.status(500).send(err);
+                        if(submissionFound){
+                            var maxSubs = {};
+                            result.forEach((student) => {
+                                student.forEach((submission) => {
+                                    var scoreTotal = 0;
+                                    if (maxSubs[submission.user_email] == null)
+                                        maxSubs[submission.user_email] = [null, 0];
+                                    submission.scores.forEach((problem) => {
+                                        scoreTotal += problem.score;
+                                    });
+                                    if (scoreTotal > maxSubs[submission.user_email][1])
+                                        maxSubs[submission.user_email] = [submission, scoreTotal];
+                                });
+                            });
+                            var maxSubmissions = [];
+                            for (var student in maxSubs){
+                                var sub = maxSubs[student];
+                                maxSubmissions.push(sub[0]);
+                            }
+                            res.status(200).send(maxSubmissions);
+                        } else {
+                            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
+                        }
+                    });
+                }
+            });
+        }
     });
 }
 
@@ -246,11 +370,11 @@ export function createSubmission(req, res, next) {
     else{
         User.findOne({"email": user_email}, (err, user) =>{
             if (err){
-                res.status(500).send(err);   
+                res.status(500).send(err);
             } else {
                 Course.findOne({'course_num': req.params.course_num }, (err,course) =>{
                     if (err){
-                        res.status(500).send(err);   
+                        res.status(500).send(err);
                     } else {
                         course.assignments.forEach((assignment) => {
                             if(assignment.assignment_num == req.params.assignment_num){
@@ -265,7 +389,7 @@ export function createSubmission(req, res, next) {
                                         submission.version = sub.submissions;
                                         submission.feedback = "Waiting for feedback";
                                         submission.form_data = "Placeholder";
-                                        
+
                                         if (assignment.auto_grader){
                                             submission.grader = "Autograder";
                                             console.log("Calling send to Tango");
@@ -290,13 +414,12 @@ export function createSubmission(req, res, next) {
                                     }
                                 })
                             }
-                        })   
+                        })
                     }
-                });   
+                });
             }
         });
     }
-
  }
 
 /**
@@ -315,8 +438,8 @@ export function updateSubmission(req, res, next) {
                 if(assignment.assignment_num == req.params.assignment_num){
                         var version = req.params.version;
                         Submission.findOne({
-                            version: version, 
-                            user_email: req.params.email, 
+                            version: version,
+                            user_email: req.params.email,
                             assignment_num: req.params.assignment_num,
                             course_num: req.params.course_num
                         }, (err, submissionObj) => {
@@ -334,7 +457,7 @@ export function updateSubmission(req, res, next) {
                     }
             });
         }
-    });   
+    });
 }
 
 /**
