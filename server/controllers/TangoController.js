@@ -33,7 +33,6 @@ function infoFromTango(submission, assignment, course) {
 		headers: {
 			'filename': filename,
 		},
-		body:,
 	}, function (err, response, body)
 	{
 		console.log(JSON.stringify(response));
@@ -56,7 +55,6 @@ function poolFromTango(autograding_image, assignment, course) {
 		headers: {
 			'image' : autograding_image,
 		}
-		body:,
 	}, function (err, response, body)
 	{
 		console.log(JSON.stringify(response));
