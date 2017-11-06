@@ -42,7 +42,7 @@ export function submitForm(formData, course) {
 
 	data = new FormData();
 
-	formData.name = formData.name.replace(/[^A-Za-z0-9\-]+/g, '');
+	formData.name = formData.name.replace(/[^A-Za-z0-9\-\_]+/g, '');
 	//must be FIRST
 	if(formData.name != "" && formData.name != "create") {
 		data.append("id", encodeURIComponent(formData.name));
