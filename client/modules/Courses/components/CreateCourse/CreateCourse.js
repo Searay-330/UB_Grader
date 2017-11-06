@@ -48,6 +48,17 @@ export class CreateCourse extends Component {
       this.setState(st);
   };
 
+  submitCreateCourse() {
+
+    var state = getEditableState(this.state);
+    this.props.submitForm(this.state);
+    state.course_num = '';
+    state.display_name = '';
+    state.semester = '';
+    state.student_email = '';
+    this.setState(state);
+  }
+
   render() {
     if(!this.props.isAdmin){
       return <div> You are not authorized. </div>;
@@ -98,7 +109,7 @@ export class CreateCourse extends Component {
               floatingLabelText="Instructor Email"
             />  
             <br />
-            <RaisedButton label='Create Course' onClick={() => {this.props.submitForm(this.state)}} primary={true} />
+            <RaisedButton label='Create Course' onClick={() => this.submitCreateCourse()} primary={true} />
           </CardText>
         </Card>
       </div>

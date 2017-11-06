@@ -77,7 +77,6 @@ const course_assignmentSchema = new Schema({
 course_assignmentSchema.virtual('assignment_num').get(function() {
     return this._id;
 });
-
 course_assignmentSchema.set('toJSON', { virtuals: true});
 course_assignmentSchema.set('toObject', { virtuals: true});
 
