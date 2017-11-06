@@ -25,13 +25,16 @@ export function Alert(props) {
 			classname = styles.message;
 		break;
 	}
-
-
-
-
-	return (<div className={[styles.alert, classname].join(" ")}><span>{props.text}</span></div>);
   
+  
+  
+  
+		return (<div id = "alert" className={[styles.alert, classname].join(" ") } onClick = { () => wasClicked() }><span>{props.text}</span></div>);	
+
 }
 
+function wasClicked(){
+	document.getElementById("alert").setAttribute("hidden", "true");
+}
 
 export default Alert;
