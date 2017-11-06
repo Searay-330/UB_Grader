@@ -21,12 +21,12 @@ export async function getUserSubmissions(req, res) {
             'user_email': req.params.email
         });
         if(submissions.length){
-            res.status(200).send(submissions);
+            res.status(200).send({Status: 200, Message: "Submissions sent successfully", Content: submissions});
         } else {
-            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
         }
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
     }
 }
 
@@ -44,13 +44,13 @@ export async function getLatestSubmission(req, res) {
             'course_num': req.params.course_num, 
             "assignment_num": req.params.assignment_num}).sort('-version').exec(function (err, submission) {
             if(submission){
-                res.status(200).send(submission);
+                res.status(200).send({Status: 200, Message: "Submission sent successfully", Content: submission});
             } else {
-                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
             }
         });
     } catch (err) {
-                res.status(500).send(err);
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
     }
 }
 
@@ -81,16 +81,16 @@ export async function getAllLatestSubmissions(req, res) {
         });
 
         async.parallel(submissionList, function(err, result) {
-            if (err) return res.status(500).send(err);
+            if (err) return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
             if(submissionList.length){
-                res.status(200).send(result);
+                res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: result});
             } else {
-                res.status(404).send({Status: 404, Message: "No submissions at the moment"});
+                res.status(404).send({Status: 404, Message: "No submissions at the moment", Content: null});
             }
         }); 
 
     } catch(err){
-        res.status(500).send(err);
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
     }
 }
 
@@ -124,16 +124,16 @@ export async function getLatestSubmissionsInAssignments(req, res) {
         });
 
         async.parallel(submissionList, function(err, result) {
-            if (err) return res.status(500).send(err);
+            if (err) return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
             if(submissionList.length){
-                res.status(200).send(result);
+                res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: result});
             } else {
-                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
             }
         });
         
     } catch(err){
-        res.status(500).send(err);
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
     }
 }
 
@@ -165,16 +165,16 @@ export async function getAllLatestSubmissionsInAssignments(req, res) {
         });
         async.parallel(submissionList, function(err, result) {
             if (err) 
-                return res.status(500).send(err);
+                return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
             if(submissionList.length){
-                res.status(200).send(result);
+                res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: result});
             } else {
-                res.status(404).send({Status: 404, Message: "No submissions at the moment"});
+                res.status(404).send({Status: 404, Message: "No submissions at the moment", Content: null});
             }
         });
 
     } catch(err){
-        res.status(500).send(err);
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
     }
 }
 
@@ -188,7 +188,7 @@ export async function getAllLatestSubmissionsInAssignments(req, res) {
 export function getMaxSubmissionsInAssignments(req, res, next) {
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         } else {
             var submissionFound = false;
             var submissionList = [];
@@ -210,7 +210,7 @@ export function getMaxSubmissionsInAssignments(req, res, next) {
             });
             async.parallel(submissionList, function(err, result) {
                 if (err)
-                    return res.status(500).send(err);
+                    return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
                 if(submissionFound) {
                     var assignments = {};
                     result.forEach((assignment) => {
@@ -232,9 +232,9 @@ export function getMaxSubmissionsInAssignments(req, res, next) {
                         var assignment = assignments[assignmentNum];
                         maxSubmissions.push(assignment[0]);
                     }
-                    res.status(200).send(maxSubmissions);
+                    res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: maxSubmissions});
                 } else {
-                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
                 }
             });
         }
@@ -251,7 +251,7 @@ export function getMaxSubmissionsInAssignments(req, res, next) {
 export function getAllMaxSubmissions(req, res, next) {
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         } else {
             course.assignments.forEach((assignment) => {
                 if(assignment.assignment_num == req.params.assignment_num){
@@ -271,7 +271,7 @@ export function getAllMaxSubmissions(req, res, next) {
                     });
                     async.parallel(submissionList, function(err, result) {
                         if (err)
-                            return res.status(500).send(err);
+                            return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
                         if(submissionFound){
                             var maxSubs = {};
                             result.forEach((student) => {
@@ -291,9 +291,9 @@ export function getAllMaxSubmissions(req, res, next) {
                                 var sub = maxSubs[student];
                                 maxSubmissions.push(sub[0]);
                             }
-                            res.status(200).send(maxSubmissions);
+                            res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: maxSubmissions});
                         } else {
-                            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
+                            res.status(404).send({Status: 404, Message: "No submissions at the moment", Content: null});
                         }
                     });
                 }
@@ -315,12 +315,12 @@ export async function getAllSubmissions(req, res){
             'course_num': req.params.course_num,
         });
         if(submissions.length){
-            res.status(200).send(submissions);
+            res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: submissions});
         } else {
-            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
         }
     } catch(err) {
-        res.status(500).send(err);
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
     }
 }
 
@@ -333,7 +333,7 @@ export async function getAllSubmissions(req, res){
 
 export async function createSubmission(req, res) {
     if (!req.files){
-        res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
+        res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file', Content: null});
     }
     else{
         try{
@@ -361,14 +361,14 @@ export async function createSubmission(req, res) {
                     }
                     
                     submission.save((err, submissionObj) => {
-                        if (err) res.status(500).send(err);
-                        res.status(200).send(submissionObj);
+                        if (err) res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+                        res.status(200).send({Status: 200, Message: "Submission created succefully", Content: submissionObj});
                     });
                 }
             });
 
         } catch(err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         }
     }
  }
@@ -383,7 +383,7 @@ export async function createSubmission(req, res) {
 export function updateSubmission(req, res) {
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         } else {
             course.assignments.forEach((assignment) => {
                 if(assignment.assignment_num == req.params.assignment_num){
@@ -401,8 +401,8 @@ export function updateSubmission(req, res) {
                                 }
                             }
                             submissionObj.save((err, updatedsubmissionObj) => {
-                                if (err) res.status(500).send(err);
-                                else res.status(200).send(updatedsubmissionObj);
+                                if (err) res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+                                else res.status(200).send({Status: 200, Message: "Submission updated succefully", Content: updatedsubmissionObj});
                             });
                         });
                     }
