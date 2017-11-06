@@ -93,6 +93,20 @@ export class CreateAssignment extends Component {
       this.setState(st);
   };
 
+  problemChange = (event) => {
+      var st = getEditableState(this.state);
+      st.p_name = document.getElementById("p_name").value;
+      st.max_score = document.getElementById("max_score").value;
+      this.setState(st);
+  };
+
+  problemChange = (event) => {
+      var st = getEditableState(this.state);
+      st.p_name = document.getElementById("p_name").value;
+      st.max_score = document.getElementById("max_score").value;
+      this.setState(st);
+  };
+
   render() {
     if(!this.authed){
       return(null);
