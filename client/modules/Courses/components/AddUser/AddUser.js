@@ -90,9 +90,17 @@ export class AddUser extends Component {
             <div>Default role choices are student or instructor. Support for custom roles will be added in the future.</div>
             <br/>
             <RaisedButton label='Add User' onClick={() => this.sendAddUser()} primary={true} />
-	    <br/>
-	    <b>CSV File</b> <input type="file" id="csvfile" accept=".csv"/>
-            <br/>
+	         <br/>
+           <br/>
+           <br/>
+           <br/>
+            <RaisedButton
+          primary={false}
+          style={{'margin-right': '10px'}}
+          label='Choose CSV'
+          containerElement='label'>
+          <input type="file" id="csvfile" accept=".csv" style={{'display':'none'}}/>
+        </RaisedButton>
 	    <RaisedButton label="Add from CSV" onClick={() => {this.props.submitCSV(document.getElementById("csvfile"),this.state)}} primary={true} />
           </CardText>
         </Card>
