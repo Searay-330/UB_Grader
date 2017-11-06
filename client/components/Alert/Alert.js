@@ -9,10 +9,9 @@ import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 
 import styles from './Alert.css';
 
-var classname;
 
 export function Alert(props) {
-
+	var classname = "";
 	switch(props.type){
 		case "error":
 			classname = styles.error;
@@ -26,7 +25,12 @@ export function Alert(props) {
 			classname = styles.message;
 		break;
 	}
+  
+  
+  
+  
 		return (<div id = "alert" className={[styles.alert, classname].join(" ") } onClick = { () => wasClicked() }><span>{props.text}</span></div>);	
+
 }
 
 function wasClicked(){
