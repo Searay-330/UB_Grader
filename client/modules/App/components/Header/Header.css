@@ -50,5 +50,30 @@
 .headerIcon{
   line-height: 2.2 !important;
   cursor: pointer;
+}
+
+.unselectable{
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.nav{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  background-color: #E4E1E1;
+  min-height: 50px;
+/*  box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.12), 0px 1px 4px rgba(0, 0, 0, 0.12);*/
+}
+
+.travelLink {
+  white-space: nowrap;
+  letter-spacing: 0px;
+  font-size: 24px;
+  font-weight: 900;
+  margin-left: 25px;
+  width: 0px;
 
 }
