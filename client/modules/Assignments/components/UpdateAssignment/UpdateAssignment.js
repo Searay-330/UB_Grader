@@ -81,8 +81,8 @@ export class UpdateAssignment extends Component {
         dueTime: new Date(assign.due_date),
         endTime:  new Date(assign.end_date),
         category: assign.category,
-        p_name: "",
-        max_score: "",
+        p_name: assign.problems[0].problem_name,
+        max_score: assign.problems[0].score,
       });
     }
 
