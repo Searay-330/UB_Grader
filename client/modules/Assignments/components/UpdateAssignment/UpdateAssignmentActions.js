@@ -12,6 +12,7 @@ export function getCategories(assignmentsData){
 	return categories;    
 }
 
+
 export function throwError(message){
 	return {type:"error", error: message};
 }

@@ -5,7 +5,7 @@ import {Alert} from '../../../../components/Alert/Alert';
 
 
 // Import Style
-// import styles from './CreateAssignment.css';
+import styles from './UpdateAssignment.css';
 
 //Import Actions
 import { getCategories, submitForm } from './UpdateAssignmentActions'
@@ -55,14 +55,37 @@ export class UpdateAssignment extends Component {
     if(nextProps.admin){
       this.authed = true;
     }
+    
     else if(nextProps.perms[nextProps.params.course] == "student"){
       window.location = "/courses/" + nextProps.params.course + "/assignments"; 
-    }else if(nextProps.perms[nextProps.params.course]){
+    }
+    
+    else if(nextProps.perms[nextProps.params.course]){
       this.authed = true;
     }
+    
     if(nextProps.redirect){
       this.context.router.push("/courses/" + nextProps.params.course + "/assignments");
     }
+
+    if(this.state.name == "" && nextProps.assignmentsMap[nextProps.params.assignment] != undefined){
+      var assign = nextProps.assignmentsMap[nextProps.params.assignment];
+      console.log(assign);
+      this.setState({
+        name: assign.id,
+        displayName: assign.name,
+        startDate: new Date(assign.start_date),
+        dueDate: new Date(assign.due_date),
+        endDate: new Date(assign.end_date),
+        startTime: new Date(assign.start_date),
+        dueTime: new Date(assign.due_date),
+        endTime:  new Date(assign.end_date),
+        category: assign.category,
+        p_name: "",
+        max_score: "",
+      });
+    }
+
   }
 
   wrapperFunction = (location)=>{return (event,date) => {this.dateChange(event,date,location)}};
@@ -81,7 +104,6 @@ export class UpdateAssignment extends Component {
   otherChange = (event) => {
       var st = getEditableState(this.state);
       st.displayName = document.getElementById("displayName").value;
-      st.name = document.getElementById("name").value;
       st.category = (typeof event == "string") ? event : st.category;
       this.setState(st);
   };
@@ -108,7 +130,6 @@ export class UpdateAssignment extends Component {
     />
     <CardText expandable={true}>
     <TextField id="displayName" value={this.state.displayName} onChange={this.otherChange}  hintText="Display Name" floatingLabelText="Assignment Display Name"/>
-    <TextField id="name" value={this.state.name} onChange={this.otherChange} className = {styles.adjust} hintText="Name" floatingLabelText="Assignment Name"/>
       <br />
       <DatePicker id="startDate" value={this.state.startDate} onChange={this.wrapperFunction("startDate")} style={{display: 'inline-block'}} floatingLabelText= "Start Date" hintText="Start Date" autoOk={true}/>
       <TimePicker id="startTime" value={this.state.startTime} onChange={this.wrapperFunction("startTime")} className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="Start Time" hintText="Start Time"/>
@@ -119,7 +140,7 @@ export class UpdateAssignment extends Component {
       <DatePicker id="endDate" value={this.state.endDate} onChange={this.wrapperFunction("endDate")} style={{display: 'inline-block'}} floatingLabelText= "End Date" hintText="End Date" autoOk={true}/>
       <TimePicker id="endTime" value={this.state.endTime} onChange={this.wrapperFunction("endTime")} className = {styles.adjust} style={{display: 'inline-block'}} floatingLabelText="End Time" hintText="End Time" />
       <br />
-      <AutoComplete id="category" value={this.state.category} onUpdateInput={this.otherChange} floatingLabelText="Category" filter={AutoComplete.noFilter} openOnFocus={true} dataSource = {getCategories(this.props.assignmentsData)}/>
+      <AutoComplete id="category" searchText={this.state.category} onUpdateInput={this.otherChange} floatingLabelText="Category" filter={AutoComplete.noFilter} openOnFocus={true} dataSource = {getCategories(this.props.assignmentsData)}/>
       <br />
       <br />
       <br />
@@ -185,6 +206,7 @@ UpdateAssignment.contextTypes = {
 // Retrieve data from store as props
 function mapStateToProps(state) {
   return {
+    assignmentsMap: state.assignments.assignmentsMap,
     assignmentsData: state.assignments.assignmentsData,
     errorObject: state.create.errorObject,
     redirect: state.create.redirect,
@@ -195,7 +217,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    submitForm: submitForm
+    submitForm: submitForm,
   }, dispatch);
 }
 
