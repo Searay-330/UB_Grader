@@ -42,6 +42,7 @@ export class CreateAssignment extends Component {
       category: "",
       p_name: "",
       max_score: "",
+      problems: [],
     };
     this.authed = false;
   }
@@ -93,7 +94,22 @@ export class CreateAssignment extends Component {
       this.setState(st);
   };
 
+
+  addProblem = () => {
+    var st = getEditableState(this.state);
+    st.problems.push({p_name: st.p_name, score: st.score})
+    this.setState(st);
+  };
+
+
+
+  switchProblem = (source) =>{
+
+  };
+
+
   render() {
+    console.log(this.state.problems);
     if(!this.authed){
       return(null);
     }
@@ -164,6 +180,10 @@ export class CreateAssignment extends Component {
       <TextField id="p_name" value={this.state.p_name} onChange={this.problemChange}  hintText="Problem Name" floatingLabelText="Problem Name"/>
       <br />
       <TextField id="max_score" value={this.state.max_score} onChange={this.problemChange}  hintText="Max Score" floatingLabelText="Max Score"/>
+      <br />
+      <br />
+      <br />
+      <RaisedButton label='Add Problem' onClick={() => {this.addProblem()}} primary={true} />
     </CardText>
   </Card>
 
@@ -213,6 +233,7 @@ function getEditableState(state){
       name: state.name,
       p_name: state.p_name,
       max_score: state.max_score,
+      problems: state.problems,
     });
 }
 
