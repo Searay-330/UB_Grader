@@ -40,9 +40,8 @@ export class CreateAssignment extends Component {
       dueTime: null,
       endTime: null,
       category: "",
-      p_name: "",
-      max_score: "",
       problems: [],
+      num_probs: 0
     };
     this.authed = false;
   }
@@ -68,6 +67,7 @@ export class CreateAssignment extends Component {
 
   wrapperFunction = (location)=>{return (event,date) => {this.dateChange(event,date,location)}};
 
+
   dateChange = (event, date, location) => {
     var st  = getEditableState(this.state);
     st.startDate = (location == "startDate") ? date : st.startDate;
@@ -87,31 +87,29 @@ export class CreateAssignment extends Component {
       this.setState(st);
   };
 
-  problemChange = (event) => {
-      var st = getEditableState(this.state);
-      st.p_name = document.getElementById("p_name").value;
-      st.max_score = document.getElementById("max_score").value;
-      this.setState(st);
+  problemChange = (event,newValue) => {
+    console.log(event);
+    console.log(newValue);
   };
 
 
   addProblem = () => {
     var st = getEditableState(this.state);
-    st.problems.push({p_name: st.p_name, score: st.score})
+    st.problems.push({p_name:"", max_score: ""});
+    st.num_probs++;
     this.setState(st);
   };
 
 
 
-  switchProblem = (source) =>{
-
-  };
-
-
   render() {
-    console.log(this.state.problems);
     if(!this.authed){
       return(null);
+    }
+    var problemHTML = (id_num) => {return(<span><TextField id={"p_name_" + id_num}  value={this.state.problems[id_num].p_name} onChange={this.problemChange}  hintText="Problem Name" floatingLabelText="Problem Name"/><br /><TextField id="max_score" value={this.state.problems[id_num].max_score} onChange={this.problemChange}  hintText="Max Score" floatingLabelText="Max Score"/><br /><br/></span>)};
+    var displayProblems = [];
+    for (var i = 0; i < this.state.num_probs; i++) {
+      displayProblems.push(problemHTML(i));
     }
     return (
       <div>
@@ -177,12 +175,8 @@ export class CreateAssignment extends Component {
       showExpandableButton={true}
     />
     <CardText expandable={true}>
-      <TextField id="p_name" value={this.state.p_name} onChange={this.problemChange}  hintText="Problem Name" floatingLabelText="Problem Name"/>
-      <br />
-      <TextField id="max_score" value={this.state.max_score} onChange={this.problemChange}  hintText="Max Score" floatingLabelText="Max Score"/>
-      <br />
-      <br />
-      <br />
+
+      {displayProblems}
       <RaisedButton label='Add Problem' onClick={() => {this.addProblem()}} primary={true} />
     </CardText>
   </Card>
@@ -231,9 +225,8 @@ function getEditableState(state){
       endTime: state.endTime,
       category: state.category,
       name: state.name,
-      p_name: state.p_name,
-      max_score: state.max_score,
       problems: state.problems,
+      num_probs: state.num_probs,
     });
 }
 
