@@ -13,28 +13,21 @@ var async = require('async');
  * Sends a list of the submissions of a user in a particular assignment back as the response (a list of json objects)
  */
 
-export function getUserSubmissions(req, res, next) {
-    var submissionFound = false;
-    Submission.find({
-        'course_num': req.params.course_num,
-        'assignment_num': req.params.assignment_num,
-        'user_email': req.params.email
-    }, (err, submissions) => {
-        if (err){
-            res.status(500).send(err);
+export async function getUserSubmissions(req, res) {
+    try{
+        let submissions = await Submission.find({
+            'course_num': req.params.course_num,
+            'assignment_num': req.params.assignment_num,
+            'user_email': req.params.email
+        });
+        if(submissions.length){
+            res.status(200).send({Status: 200, Message: "Submissions sent successfully", Content: submissions});
         } else {
-            var submissionList = []
-            submissions.forEach((submission) => {
-                submissionFound = true;
-                submissionList.push(submission);
-            });
-            if(submissionFound){
-                res.status(200).send(submissionList);
-            } else {
-                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
-            }
+            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
         }
-    });
+    } catch(err) {
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+    }
 }
 
 /**
@@ -44,33 +37,21 @@ export function getUserSubmissions(req, res, next) {
  * Sends the latest submissions of a user in a particular assignment back as the response (a list of json object)
  */
 
-export function getLatestSubmission(req, res, next) {
-    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
-        if (err){
-            res.status(500).send(err);
-        } else {
-            var submissionFound = false;
-            course.assignments.forEach((assignment) => {
-                if(assignment.assignment_num == req.params.assignment_num){
-                    assignment.user_submissions.forEach((sub) => {
-                        if(sub.email == req.params.email){
-                            submissionFound = true;
-                            var latest_version = sub.submissions;
-                            Submission.findOne({
-                                version: latest_version,
-                                user_email: req.params.email,
-                                assignment_num: req.params.assignment_num,
-                                course_num: req.params.course_num
-                            }, (err, submissionObj) => {
-                                res.status(200).send(submissionObj);
-                            });
-                        }
-                    });
-                    if(!submissionFound) res.status(404).send({Status: 404, Message: "No submissions from this user"});
-                }
-            });
-        }
-    });
+export async function getLatestSubmission(req, res) {
+    try {
+        let submissions = await Submission.findOne({
+            "user_email": req.params.email, 
+            'course_num': req.params.course_num, 
+            "assignment_num": req.params.assignment_num}).sort('-version').exec(function (err, submission) {
+            if(submission){
+                res.status(200).send({Status: 200, Message: "Submission sent successfully", Content: submission});
+            } else {
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
+            }
+        });
+    } catch (err) {
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+    }
 }
 
 /**
@@ -80,43 +61,37 @@ export function getLatestSubmission(req, res, next) {
  * Sends the latest submissions of all the users in a particular assignment back as the response (a list of json object)
  */
 
-export function getAllLatestSubmissions(req, res, next) {
+export async function getAllLatestSubmissions(req, res) {
+    try {
+        let course = await Course.findOne({'course_num': req.params.course_num});
+        let assignment = course.assignments.id(req.params.assignment_num);
 
-    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
-        if (err){
-            res.status(500).send(err);
-        } else {
-            course.assignments.forEach((assignment) => {
-                if(assignment.assignment_num == req.params.assignment_num){
-                    var submissionFound = false;
-                    var submissionList = [];
-                    assignment.user_submissions.forEach((sub) => {
-                        submissionFound = true;
-                        submissionList.push(function(callback) {
-                            var temp = Submission.findOne({
-                                version: sub.submissions,
-                                user_email: sub.email,
-                                assignment_num: req.params.assignment_num,
-                                course_num: req.params.course_num
-                            }, (err, submissionObj) => {
-                                callback(null, submissionObj);
-                            });
-                        });
-                    });
-
-                    async.parallel(submissionList, function(err, result) {
-                        if (err)
-                            return res.status(500).send(err);
-                        if(submissionFound){
-                            res.status(200).send(result);
-                        } else {
-                            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
-                        }
-                    });
-                }
+        var submissionList = [];
+        assignment.user_submissions.forEach((sub) => {
+            submissionList.push(function(callback) {
+                var temp = Submission.findOne({
+                    version: sub.submissions, 
+                    user_email: sub.email, 
+                    assignment_num: req.params.assignment_num,
+                    course_num: req.params.course_num
+                }, (err, submissionObj) => {
+                    callback(null, submissionObj);
+                });
             });
-        }
-    });
+        });
+
+        async.parallel(submissionList, function(err, result) {
+            if (err) return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+            if(submissionList.length){
+                res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: result});
+            } else {
+                res.status(404).send({Status: 404, Message: "No submissions at the moment", Content: null});
+            }
+        }); 
+
+    } catch(err){
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+    }
 }
 
 /**
@@ -126,41 +101,40 @@ export function getAllLatestSubmissions(req, res, next) {
  * Sends the latest submissions of a user in all assignments back as the response (a list of json object)
  */
 
-export function getLatestSubmissionsInAssignments(req, res, next) {
-    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
-        if (err){
-            res.status(500).send(err);
-        } else {
-            var submissionFound = false;
-            var submissionList = [];
-            course.assignments.forEach((assignment) => {
-                assignment.user_submissions.forEach((sub) => {
-                    if(sub.email == req.params.email){
-                        submissionFound = true;
-                        submissionList.push(function(callback) {
-                            var temp = Submission.findOne({
-                                version: sub.submissions,
-                                user_email: sub.email,
-                                assignment_num: assignment.assignment_num,
-                                course_num: req.params.course_num
-                            }, (err, submissionObj) => {
-                                callback(err, submissionObj);
-                            });
+export async function getLatestSubmissionsInAssignments(req, res) {
+    try {
+        let course = await Course.findOne({'course_num': req.params.course_num});
+
+        var submissionList = [];
+        course.assignments.forEach((assignment) => {
+            assignment.user_submissions.forEach((sub) => {
+                if(sub.email == req.params.email){
+                    submissionList.push(function(callback) {
+                        var temp = Submission.findOne({
+                            version: sub.submissions, 
+                            user_email: sub.email, 
+                            assignment_num: assignment.assignment_num,
+                            course_num: req.params.course_num
+                        }, (err, submissionObj) => {
+                            callback(err, submissionObj);
                         });
-                    }
-                });
-            });
-            async.parallel(submissionList, function(err, result) {
-                if (err)
-                    return res.status(500).send(err);
-                if(submissionFound){
-                    res.status(200).send(result);
-                } else {
-                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+                    });
                 }
             });
-        }
-    });
+        });
+
+        async.parallel(submissionList, function(err, result) {
+            if (err) return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+            if(submissionList.length){
+                res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: result});
+            } else {
+                res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
+            }
+        });
+        
+    } catch(err){
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+    }
 }
 
 /**
@@ -170,39 +144,38 @@ export function getLatestSubmissionsInAssignments(req, res, next) {
  * Sends the latest submissions of all the users in all the assignments back as the response (a list of json object)
  */
 
-export function getAllLatestSubmissionsInAssignments(req, res, next) {
-    Course.findOne({'course_num': req.params.course_num}, (err, course) => {
-        if (err){
-            res.status(500).send(err);
-        } else {
-            var submissionList = [];
-            var submissionFound = false;
-            course.assignments.forEach((assignment) => {
-                assignment.user_submissions.forEach((sub) => {
-                    submissionFound = true;
-                    submissionList.push(function(callback) {
-                        var temp = Submission.findOne({
-                            version: sub.submissions,
-                            user_email: sub.email,
-                            assignment_num: assignment.assignment_num,
-                            course_num: req.params.course_num
-                        }, (err, submissionObj) => {
-                            callback(err, submissionObj);
-                        });
+export async function getAllLatestSubmissionsInAssignments(req, res) {
+    try{
+        let course = await Course.findOne({'course_num': req.params.course_num});
+
+        var submissionList = [];
+        course.assignments.forEach((assignment) => {
+            assignment.user_submissions.forEach((sub) => {
+                submissionList.push(function(callback) {
+                    var temp = Submission.findOne({
+                        version: sub.submissions, 
+                        user_email: sub.email, 
+                        assignment_num: assignment.assignment_num,
+                        course_num: req.params.course_num
+                    }, (err, submissionObj) => {
+                        callback(err, submissionObj);
                     });
                 });
             });
-            async.parallel(submissionList, function(err, result) {
-                if (err)
-                    return res.status(500).send(err);
-                if(submissionFound){
-                    res.status(200).send(result);
-                } else {
-                    res.status(404).send({Status: 404, Message: "No submissions at the moment"});
-                }
-            });
-        }
-    });
+        });
+        async.parallel(submissionList, function(err, result) {
+            if (err) 
+                return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+            if(submissionList.length){
+                res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: result});
+            } else {
+                res.status(404).send({Status: 404, Message: "No submissions at the moment", Content: null});
+            }
+        });
+
+    } catch(err){
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+    }
 }
 
 /**
@@ -215,7 +188,7 @@ export function getAllLatestSubmissionsInAssignments(req, res, next) {
 export function getMaxSubmissionsInAssignments(req, res, next) {
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         } else {
             var submissionFound = false;
             var submissionList = [];
@@ -237,7 +210,7 @@ export function getMaxSubmissionsInAssignments(req, res, next) {
             });
             async.parallel(submissionList, function(err, result) {
                 if (err)
-                    return res.status(500).send(err);
+                    return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
                 if(submissionFound) {
                     var assignments = {};
                     result.forEach((assignment) => {
@@ -259,9 +232,9 @@ export function getMaxSubmissionsInAssignments(req, res, next) {
                         var assignment = assignments[assignmentNum];
                         maxSubmissions.push(assignment[0]);
                     }
-                    res.status(200).send(maxSubmissions);
+                    res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: maxSubmissions});
                 } else {
-                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment"});
+                    res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
                 }
             });
         }
@@ -278,7 +251,7 @@ export function getMaxSubmissionsInAssignments(req, res, next) {
 export function getAllMaxSubmissions(req, res, next) {
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         } else {
             course.assignments.forEach((assignment) => {
                 if(assignment.assignment_num == req.params.assignment_num){
@@ -298,7 +271,7 @@ export function getAllMaxSubmissions(req, res, next) {
                     });
                     async.parallel(submissionList, function(err, result) {
                         if (err)
-                            return res.status(500).send(err);
+                            return res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
                         if(submissionFound){
                             var maxSubs = {};
                             result.forEach((student) => {
@@ -318,9 +291,9 @@ export function getAllMaxSubmissions(req, res, next) {
                                 var sub = maxSubs[student];
                                 maxSubmissions.push(sub[0]);
                             }
-                            res.status(200).send(maxSubmissions);
+                            res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: maxSubmissions});
                         } else {
-                            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
+                            res.status(404).send({Status: 404, Message: "No submissions at the moment", Content: null});
                         }
                     });
                 }
@@ -336,22 +309,19 @@ export function getAllMaxSubmissions(req, res, next) {
  * Sends a list of all the submissions in a specific assignment back as the response (a list of json objects)
  */
 
-export function getAllSubmissions(req, res, next){
-    Submission.find({"course_num":req.params.course_num}, (err, submissions) => {
-        var submissionList = []
-        var submissionFound = false;
-        submissions.forEach((submission) => {
-            if(submission.assignment_num == req.params.assignment_num){
-                submissionFound = true;
-                submissionList.push(submission);
-            }
+export async function getAllSubmissions(req, res){
+    try{
+        let submissions = await Submission.find({
+            'course_num': req.params.course_num,
         });
-        if(submissionFound){
-            res.status(200).send(submissionList);
+        if(submissions.length){
+            res.status(200).send({Status: 200, Message: "Submissions sent succefully", Content: submissions});
         } else {
-            res.status(404).send({Status: 404, Message: "No submissions at the moment"});
+            res.status(404).send({Status: 404, Message: "No submissions from this user at the moment", Content: null});
         }
-    });
+    } catch(err) {
+        res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+    }
 }
 
 /**
@@ -361,64 +331,45 @@ export function getAllSubmissions(req, res, next){
  * Sends back a JSON object of the created submission.
  */
 
-export function createSubmission(req, res, next) {
-    var user_email = req.user.email;
-    var submissionFound = false;
+export async function createSubmission(req, res) {
     if (!req.files){
-        res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file'});
+        res.status(400).send({Status: 400, Message: 'Sorry, you must submit exactly one file', Content: null});
     }
     else{
-        User.findOne({"email": user_email}, (err, user) =>{
-            if (err){
-                res.status(500).send(err);
-            } else {
-                Course.findOne({'course_num': req.params.course_num }, (err,course) =>{
-                    if (err){
-                        res.status(500).send(err);
+        try{
+            let user = await User.findOne({"email": req.user.email});
+            let course = await Course.findOne({'course_num': req.params.course_num});
+            let assignment = course.assignments.id(req.params.assignment_num);
+            assignment.user_submissions.forEach((sub) => {
+                if(sub.email == user.email){
+                    var submission = new Submission();
+                    submission.user_id = user.id;
+                    submission.user_email = user.email;
+                    submission.course_num = course.course_num;
+                    submission.assignment_num = assignment.assignment_num;
+                    submission.file_name = req.files[0].filename;
+                    submission.version = sub.submissions;
+                    submission.feedback = "Waiting for feedback";
+                    submission.form_data = "Placeholder";
+
+                    if (assignment.auto_grader){
+                        submission.grader = "Autograder";
+                        console.log("Calling send to Tango");
+                        TangoController.sendToTango(submission, assignment, course);
                     } else {
-                        course.assignments.forEach((assignment) => {
-                            if(assignment.assignment_num == req.params.assignment_num){
-                                assignment.user_submissions.forEach((sub) => {
-                                    if(sub.email == user_email){
-                                        var submission = new Submission();
-                                        submission.user_id = user.id;
-                                        submission.user_email = user_email;
-                                        submission.course_num = req.params.course_num;
-                                        submission.assignment_num = req.params.assignment_num;
-                                        submission.file_name = req.files[0].filename;
-                                        submission.version = sub.submissions;
-                                        submission.feedback = "Waiting for feedback";
-                                        submission.form_data = "Placeholder";
-
-                                        if (assignment.auto_grader){
-                                            submission.grader = "Autograder";
-                                            console.log("Calling send to Tango");
-                                            TangoController.sendToTango(submission, assignment, course);
-                                        } else {
-                                            submission.grader = "Manual Grader";
-                                        }
-
-                                        course.save((e, courseObj) => {
-                                            if (e){
-                                                res.status(500).send(e);
-                                            } else {
-                                                submission.save((err, submissionObj) => {
-                                                    if (err){
-                                                        res.status(500).send(err);
-                                                    } else{
-                                                         res.status(200).send(submissionObj);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                })
-                            }
-                        })
+                        submission.grader = "Manual Grader";
                     }
-                });
-            }
-        });
+                    
+                    submission.save((err, submissionObj) => {
+                        if (err) res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+                        res.status(200).send({Status: 200, Message: "Submission created succefully", Content: submissionObj});
+                    });
+                }
+            });
+
+        } catch(err){
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+        }
     }
  }
 
@@ -429,10 +380,10 @@ export function createSubmission(req, res, next) {
  * Sends back a JSON object of the updated submission.
  */
 
-export function updateSubmission(req, res, next) {
+export function updateSubmission(req, res) {
     Course.findOne({'course_num': req.params.course_num}, (err, course) => {
         if (err){
-            res.status(500).send(err);
+            res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
         } else {
             course.assignments.forEach((assignment) => {
                 if(assignment.assignment_num == req.params.assignment_num){
@@ -450,8 +401,8 @@ export function updateSubmission(req, res, next) {
                                 }
                             }
                             submissionObj.save((err, updatedsubmissionObj) => {
-                                if (err) res.status(500).send(err);
-                                else res.status(200).send(updatedsubmissionObj);
+                                if (err) res.status(500).send({Status: 500, Message: "Internal Server Error", Content: err});
+                                else res.status(200).send({Status: 200, Message: "Submission updated succefully", Content: updatedsubmissionObj});
                             });
                         });
                     }
@@ -467,7 +418,7 @@ export function updateSubmission(req, res, next) {
  * Sends back a JSON object of the deleted submission.
  */
 
-export function deleteSubmission(req, res, next) {
+export function deleteSubmission(req, res) {
     Submission.findByIdAndRemove(req.params.submission_id, (err, submissionObj) =>{
 //        if (err) res.status(500).send(err);
         res.status(200).send(submissionObj);
