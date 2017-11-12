@@ -88,14 +88,17 @@ export class CreateAssignment extends Component {
   };
 
   problemChange = (event,newValue) => {
-    console.log(event);
-    console.log(newValue);
+    var data = event.target.id.split("-");
+    var st = getEditableState(this.state);
+  
+    st.problems[data[1]][data[0]] = newValue;
+    this.setState(st);
   };
 
 
   addProblem = () => {
     var st = getEditableState(this.state);
-    st.problems.push({p_name:"", max_score: ""});
+    st.problems.push({problem_name:"", score: ""});
     st.num_probs++;
     this.setState(st);
   };
@@ -106,7 +109,7 @@ export class CreateAssignment extends Component {
     if(!this.authed){
       return(null);
     }
-    var problemHTML = (id_num) => {return(<span><TextField id={"p_name_" + id_num}  value={this.state.problems[id_num].p_name} onChange={this.problemChange}  hintText="Problem Name" floatingLabelText="Problem Name"/><br /><TextField id="max_score" value={this.state.problems[id_num].max_score} onChange={this.problemChange}  hintText="Max Score" floatingLabelText="Max Score"/><br /><br/></span>)};
+    var problemHTML = (id_num) => {return(<span key={id_num}><TextField  id={"problem_name-" + id_num}  value={this.state.problems[id_num].problem_name} onChange={this.problemChange}  hintText="Problem Name" floatingLabelText="Problem Name"/><br /><TextField id={"score-" + id_num} value={this.state.problems[id_num].score} onChange={this.problemChange}  hintText="Max Score" floatingLabelText="Max Score"/><br /><br/></span>)};
     var displayProblems = [];
     for (var i = 0; i < this.state.num_probs; i++) {
       displayProblems.push(problemHTML(i));
