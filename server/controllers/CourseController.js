@@ -406,6 +406,10 @@ function addStudentFromCSV (data){
             }
             else{
                 Course.findOne({'course_num': data[3]}, (err, courseobj) => {
+                    if (!courseobj){
+                        reject(new Error('Sorry, unable to find that course'));                                    
+                    }
+                    else{
                     var alreadyEnrolled = false;
                     var user_email = data[0];
                     var course_num = data[3];
@@ -449,6 +453,7 @@ function addStudentFromCSV (data){
                             });
                         }
                     }
+                }
                 });
             }
         });
@@ -513,12 +518,13 @@ export function importRoster(req, res){
         .then((userobj) => {
         })
         .catch((err) => {
-            error = true;
+            console.log(err);
         });
     })
     .on('end', (data) => {
+        console.log(error);
         if (error) {
-            res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
+            return res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
         }
         else {
             if (req.body.complete == 'true'){
