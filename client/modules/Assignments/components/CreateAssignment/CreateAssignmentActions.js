@@ -160,6 +160,7 @@ function validateFiles(){
 }
 
 function validateProblems(problems){
+	var problemNames = [];
 	if(problems.length == 0){
 		return "skip";
 	}
