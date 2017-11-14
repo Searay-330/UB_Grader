@@ -99,6 +99,7 @@ export class Gradebook extends Component {
     }
 
     getStudentSubMap(submissions) {
+        console.log(submissions)
         var studentSubMap = {};
         for (var i = 0; i < submissions.length; i++) {
             var submission = submissions[i];
