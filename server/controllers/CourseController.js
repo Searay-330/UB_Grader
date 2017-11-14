@@ -518,12 +518,14 @@ export function importRoster(req, res){
         .then((userobj) => {
         })
         .catch((err) => {
-            console.log(err);
+            error = true;
+            console.log(err)
+            return error;
         });
     })
-    .on('end', (data) => {
+    .on('end', (error) => {
         console.log(error);
-        if (error) {
+        if (error == 'true') {
             return res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
         }
         else {

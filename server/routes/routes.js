@@ -90,7 +90,7 @@ router.post('/courses/:course_num/:section_name/drop', AuthCheck.isAuthenticated
 router.post('/courses/:course_num/drop', AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.removeCourseFromUser);
 
 //Import a roster for a course
-router.post('/courses/:course_num/importRoster', rosterUpload.any(), AuthCheck.isAuthenticated, AuthCheck.isInstructor, CourseController.importRoster);
+router.post('/courses/:course_num/importRoster', AuthCheck.isAuthenticated, AuthCheck.isInstructor, rosterUpload.any(), CourseController.importRoster);
 
 //Create an assignment for a course
 router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, tangoUpload.any(), AssignmentController.createAssignment);
