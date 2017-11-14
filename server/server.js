@@ -3,6 +3,7 @@ import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import path from 'path';
+import 'babel-polyfill';
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
