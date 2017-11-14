@@ -48,7 +48,7 @@ export class Assignment extends Component {
 
   componentWillReceiveProps(NextProps) {
     var courseNum = NextProps.params.course;
-    var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].assignment_num;
+    var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].id;
     var userEmail = NextProps.user.email;
     this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
@@ -56,17 +56,17 @@ export class Assignment extends Component {
   render() {
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
     if (assignmentData == null) { return null; }
-    // console.log(assignmentData);
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
-    console.log(this.props.score.toString());
     var problemsArray = assignmentData.problems;
+
     //Determine maxScore
     var maxScore = 0;
     for(var i = 0; i < problemsArray.length; i++){
       maxScore = maxScore + problemsArray[i].score;
     }
+
     var displayName = this.props.assignmentData[this.props.params.assignment].name;
     return (
       <Card>
@@ -150,7 +150,7 @@ export class Assignment extends Component {
       return;
     }
     var courseNum = this.props.params.course;
-    var assignmentNum = this.props.assignmentData[this.props.params.assignment].assignment_num;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].id;
     this.props.submitFile(courseNum, assignmentNum, file);
     this.setState({ 
       fileChosen: false,
@@ -164,7 +164,7 @@ export class Assignment extends Component {
       return;
     }
     var courseNum = this.props.params.course;
-    var assignmentNum = this.props.assignmentData[this.props.params.assignment].assignment_num;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].id;
     var userEmail = this.props.user.email;
     this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }

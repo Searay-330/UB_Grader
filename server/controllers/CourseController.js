@@ -521,7 +521,7 @@ export function importRoster(req, res){
             res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
         }
         else {
-            if (req.body.complete){
+            if (req.body.complete == 'true'){
                 removeStudentsBasedOnCSV(students, course)
                 .then(() => {
                     res.status(200).send({Status: 200, Message: "Successfully updated the course's student list"});                    

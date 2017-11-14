@@ -4,11 +4,11 @@ import callApi, {callApiWithFiles} from '../../../../util/apiCaller';
 
 export function getCategories(assignmentsData){
 	var categories = [];
-    for (var i = 0; i < assignmentsData.length; ++i) {
-      if (!categories.includes(assignmentsData[i].category)) {
-        categories.push(assignmentsData[i].category);
-      }
-    }
+	for (var i = 0; i < assignmentsData.length; ++i) {
+		if (!categories.includes(assignmentsData[i].category)) {
+			categories.push(assignmentsData[i].category);
+		}
+	}
 	return categories;    
 }
 
@@ -33,19 +33,19 @@ export function redirectReset(){
 
 
 export function submitForm(formData, course) {
-  return function (dispatch) {
-    dispatch(resetError());
-  	var hold = undefined;
-	var data;
+	return function (dispatch) {
+		dispatch(resetError());
+		var hold = undefined;
+		var data;
 
 
 
-	data = new FormData();
+		data = new FormData();
 
-	formData.name = formData.name.replace(/[^A-Za-z0-9._~:\.\/\[\]@!$&'()*+,;=`\-_]+/g, '');
+		formData.name = formData.name.replace(/[^A-Za-z0-9\-\_]+/g, '');
 	//must be FIRST
 	if(formData.name != "" && formData.name != "create") {
-		data.append("assignment_num", encodeURIComponent(formData.name));
+		data.append("id", encodeURIComponent(formData.name));
 	}else{ 
 		return dispatch(throwError("Assignment Name Is A Required Field Or Your String Contained No Urlable Chars")); 
 	};
@@ -74,13 +74,13 @@ export function submitForm(formData, course) {
 	}
 
 	//problems
-	hold = validateProblems(formData);
+	hold = validateProblems(formData.problems);
 	if(hold == "skip"){
 		hold = undefined;
 	}else if(hold){
 		return dispatch(throwError(hold));
 	}else{
-		data.append("problems", JSON.stringify([{problem_name:formData.p_name, score : parseInt(formData.max_score) }]));
+		data.append("problems", JSON.stringify(formData.problems));
 	}
 	
 	//everything else
@@ -93,15 +93,17 @@ export function submitForm(formData, course) {
 	if(hold){
 		return dispatch(throwError(hold));
 	}
-    return callApiWithFiles("courses/" + course + "/assignments/create", data)
-      .then(data => {
-      	if(data.hasOwnProperty("Message")){
-        dispatch(throwError(data["Message"]));
-      	}else{
-      		dispatch(redirect());
-      	}
-      })
-  }
+	return callApiWithFiles("courses/" + course + "/assignments/create", data)
+	.then(data => {
+		if(data.hasOwnProperty("Message")){
+			dispatch(throwError(data["Message"]));
+		}else{
+			dispatch(redirect());
+		}
+	});
+}
+	
+    
 }
 
 function validateDates(formData){
@@ -157,20 +159,29 @@ function validateFiles(){
 	return undefined;
 }
 
-function validateProblems(formData){
-	if(formData.p_name != "" && !isNaN(parseInt(formData.max_score))){
-		return undefined;
+function validateProblems(problems){
+	var problemNames = [];
+	if(problems.length == 0){
+		return "skip";
 	}
-	if(formData.p_name != "" && isNaN(parseInt(formData.max_score))){
-		return "Please Enter A Vaild Number For Score";
-	}
-	if(formData.p_name == "" && !isNaN(parseInt(formData.max_score))){
-		return "Plesea Enter A Vaild Name For The Problem";
-	}
-	if(formData.p_name == "" && isNaN(parseInt(formData.max_score)) && formData.max_score != ""){
-		return "Plesea Enter A Vaild Name For The Problem And A Vaild Score";
-	}
+	for(var i = 0; i < problems.length; ++i){
+		if(problems[i].problem_name == "" && isNaN(parseInt(problems[i].score))){
+			continue;
+		}
+		if(problems[i].problem_name != "" && isNaN(parseInt(problems[i].score))){
+			return "Please Enter A Vaild Number For Score In Problem " + i;
+		}
+		if(problems[i].problem_name == "" && !isNaN(parseInt(problems[i].score))){
+			return "Please Enter A Vaild Name For Problem " + i;
+		}
+		if(problems[i].problem_name == "" && isNaN(parseInt(problems[i].score)) && problems[i].score != ""){
+			return "Please Enter A Vaild Name For The Problem And A Vaild Score For Problem " + i;
+		}
+		if(problemNames.includes(problems[i].problem_name)){
+			return "Problem " + problemNames.indexOf(problems[i].problem_name) + " And Problem " + i + " Have The Same Name";
+		}
 
-	return "skip";
-
+		problemNames.push(problems[i].problem_name);
+	}
+	return undefined;
 }
