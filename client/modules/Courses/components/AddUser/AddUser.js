@@ -86,10 +86,15 @@ export class AddUser extends Component {
             <RaisedButton label="Add User" onClick={() => this.sendAddUser()} primary={true} />
             <br />
             <br />
+            <hr/>
+            <br />
+             CSV Import
             <br />
             <br />
+           
+
             <Checkbox
-              label="Is this CSV Complete Anyone Not In The CSV Will Be Removed From The Course"
+              label="Is this CSV file a complete list? (DANGER: If checked, anyone not in the CSV file will be removed from the course!)"
               checked={this.state.completeCSV}
               onCheck={updateCheck.bind(this)}
               style={styles.checkbox}
