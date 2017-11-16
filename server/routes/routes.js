@@ -96,9 +96,9 @@ router.post('/courses/:course_num/importRoster', rosterUpload.any(), AuthCheck.i
 router.post('/courses/:course_num/assignments/create', AuthCheck.isAuthenticated, AuthCheck.isInstructor, tangoUpload.any(), AssignmentController.createAssignment);
 
 //Updates an assignment for a course
-router.post('/courses/:course_num/assignments/:assignment_num/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.updateAssignment);
-
-router.post('/courses/:course_num/assignments/:assignment_num/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.deleteAssignment);
+router.post('/courses/:course_num/assignments/:id/update', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.updateAssignment);
+//Deletes and assignment for a course
+router.post('/courses/:course_num/assignments/:id/delete', AuthCheck.isAuthenticated, AuthCheck.isInstructor, AssignmentController.deleteAssignment);
 
 //Creates a new Submission
 router.post('/courses/:course_num/assignments/:assignment_num/submissions/create', AuthCheck.isAuthenticated, submissionsUpload.any(), SubmissionController.createSubmission);
