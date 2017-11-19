@@ -9,7 +9,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 export function Login() {
   return (
-    <center><RaisedButton label='Login' primary={true} href="/api/auth/google"/></center>
+
+    <center><div className={styles.div}>AutoGrader 3.0</div><RaisedButton className={styles.butt} label='Sign in with google' primary={true} href="/api/auth/google"/></center>
   );
 }
 
