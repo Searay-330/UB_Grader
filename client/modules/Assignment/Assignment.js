@@ -60,7 +60,14 @@ export class Assignment extends Component {
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
     var problemsArray = assignmentData.problems;
-
+    var latest_stamp;
+    if(this.props.latest_timestamp == 'never'){
+      latest_stamp = 'never';
+    }
+    else{
+      latest_stamp = moment(this.props.latest_timestamp).format('LLL');
+    }
+  
     //Determine maxScore
     var maxScore = 0;
     for(var i = 0; i < problemsArray.length; i++){
@@ -86,10 +93,15 @@ export class Assignment extends Component {
                 <TableRowColumn>Most recent score: </TableRowColumn>
                 <TableRowColumn>{(typeof this.props.score === 'number') ? (this.props.score.toString() + "/" + maxScore.toString()) : this.props.score}</TableRowColumn>
               </TableRow>
+
             </TableBody>
           </Table>
         </CardMedia>
+
         <CardText>
+      
+        <div>Last submitted {latest_stamp}</div>
+        <br/>
           {
             this.state.feedbackVisible
               ? <Feedback rawFeedback={this.props.feedback} />
@@ -177,6 +189,7 @@ function mapStateToProps(state) {
     maxScore: state.assignment.maxScore,
     feedback: state.assignment.feedback,
     assignmentData: state.assignments.assignmentsMap,
+    latest_timestamp: state.assignment.latest_timestamp,
   };
 }
 
