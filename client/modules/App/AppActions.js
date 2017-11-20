@@ -20,7 +20,7 @@ export function perms(user){
 export function getUserLoggedIn() {
   return function (dispatch) {
     dispatch(() => {return {type:"wait"};});
-    return callApi("/current_user","get")
+    return callApi("current_user","get")
       .then(text => {
         dispatch(userSwap(text));
         dispatch(perms(text));

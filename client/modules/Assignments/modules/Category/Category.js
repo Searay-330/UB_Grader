@@ -28,9 +28,9 @@ export function Category(category) {
  
         <Menu maxHeight={300} className={ [styles.menu, styles.menuDiv].join(' ')}>
           {category.assignments.map(assignment => (
-            <MenuItem key={assignment._id}
+            <MenuItem key={assignment.id}
               primaryText={assignment.name}
-              onClick={() => { window.location = "/courses/"  + category.courseNum + "/assignments/" + assignment.assignment_num; }} />
+              onClick={() => { window.location = "/courses/"  + category.courseNum + "/assignments/" + assignment.id; }} />
           ))}
         </Menu>
 

@@ -48,7 +48,7 @@ export class Assignment extends Component {
 
   componentWillReceiveProps(NextProps) {
     var courseNum = NextProps.params.course;
-    var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].assignment_num;
+    var assignmentNum = NextProps.assignmentData[NextProps.params.assignment].id;
     var userEmail = NextProps.user.email;
     this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
@@ -56,20 +56,28 @@ export class Assignment extends Component {
   render() {
     var assignmentData = this.props.assignmentData[this.props.params.assignment];
     if (assignmentData == null) { return null; }
-    // console.log(assignmentData);
     var due_date = moment(assignmentData.due_date).format('LLL');
     var end_date = moment(assignmentData.end_date).format('LLL');
     var asst_desc = assignmentData.description;
-    console.log(this.props.score.toString());
     var problemsArray = assignmentData.problems;
+    var latest_stamp;
+    if(this.props.latest_timestamp == 'never'){
+      latest_stamp = 'never';
+    }
+    else{
+      latest_stamp = moment(this.props.latest_timestamp).format('LLL');
+    }
+  
     //Determine maxScore
     var maxScore = 0;
     for(var i = 0; i < problemsArray.length; i++){
       maxScore = maxScore + problemsArray[i].score;
     }
+
+    var displayName = this.props.assignmentData[this.props.params.assignment].name;
     return (
       <Card>
-        <CardTitle title={this.props.params.assignment} subtitle={asst_desc} />
+        <CardTitle title={displayName} subtitle={asst_desc} />
         <CardMedia>
           <Table>
             <TableBody displayRowCheckbox={false}>
@@ -85,10 +93,15 @@ export class Assignment extends Component {
                 <TableRowColumn>Most recent score: </TableRowColumn>
                 <TableRowColumn>{(typeof this.props.score === 'number') ? (this.props.score.toString() + "/" + maxScore.toString()) : this.props.score}</TableRowColumn>
               </TableRow>
+
             </TableBody>
           </Table>
         </CardMedia>
+
         <CardText>
+      
+        <div>Last submitted {latest_stamp}</div>
+        <br/>
           {
             this.state.feedbackVisible
               ? <Feedback rawFeedback={this.props.feedback} />
@@ -149,7 +162,7 @@ export class Assignment extends Component {
       return;
     }
     var courseNum = this.props.params.course;
-    var assignmentNum = this.props.assignmentData[this.props.params.assignment].assignment_num;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].id;
     this.props.submitFile(courseNum, assignmentNum, file);
     this.setState({ 
       fileChosen: false,
@@ -163,7 +176,7 @@ export class Assignment extends Component {
       return;
     }
     var courseNum = this.props.params.course;
-    var assignmentNum = this.props.assignmentData[this.props.params.assignment].assignment_num;
+    var assignmentNum = this.props.assignmentData[this.props.params.assignment].id;
     var userEmail = this.props.user.email;
     this.props.getRecentSubmission(courseNum, assignmentNum, userEmail);
   }
@@ -176,6 +189,7 @@ function mapStateToProps(state) {
     maxScore: state.assignment.maxScore,
     feedback: state.assignment.feedback,
     assignmentData: state.assignments.assignmentsMap,
+    latest_timestamp: state.assignment.latest_timestamp,
   };
 }
 
