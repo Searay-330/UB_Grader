@@ -31,9 +31,10 @@ export function submitForm(formData) {
 	   		return dispatch(throwError("Please enter an Instructor Email", "error"));
 	   	}
 	    return callApi("courses/create", 'post', data).then(data => {
-	        dispatch(() => {return {type:"wait"};});
+	        if(data.errmsg){
+	        	return dispatch(throwError(data.errmsg, "error"));
+	        }
 	    	return callApi("courses/" + formData.course_num + "/enroll", 'post', instructorData).then(instructorData => {
-	        		console.log(instructorData);
 	        		if(instructorData.Status == "404"){
 	        			return dispatch(throwError(JSON.stringify(instructorData), "error"));
 	        		}
