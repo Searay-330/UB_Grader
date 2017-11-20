@@ -67,7 +67,8 @@ export class Gradebook extends Component {
         if (nextProps.submissions != undefined && nextProps.submissions.length > 0) {
             submissions = nextProps.submissions;
         }
-        if (submissions.length > 0 && roster.length > 0) {
+
+        if (submissions.length > 0 && roster.length > 0 || this.state.role == 'student') {
             callsComplete = true;
         }
         var state = getEditableState(this.state);
