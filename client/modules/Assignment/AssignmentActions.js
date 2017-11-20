@@ -25,7 +25,7 @@ export function getRecentSubmission(courseNum, assignmentId, userEmail) {
         dispatch(() => {return {type:"wait"};});
         var path = "courses/" + courseNum+ "/assignments/" + assignmentId + "/submissions/user/" + userEmail;
         return callApi(path, "get").then(
-            data => {dispatch(createRecentSubmission(data))}
+            data => {dispatch(createRecentSubmission(data.Content))}
         )
       }
 }
