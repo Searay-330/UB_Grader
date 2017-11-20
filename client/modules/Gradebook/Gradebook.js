@@ -58,12 +58,24 @@ export class Gradebook extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            render: true,
-            submissions: nextProps.submissions,
-            role: this.state.role,
-            roster: nextProps.roster,
-        })
+        var callsComplete = false;
+        var roster = this.state.roster;
+        var submissions = this.state.submissions;
+        if (nextProps.roster != undefined && nextProps.roster.length > 0) {
+            roster = nextProps.roster;
+        }
+        if (nextProps.submissions != undefined && nextProps.submissions.length > 0) {
+            submissions = nextProps.submissions;
+        }
+        if (submissions.length > 0 && roster.length > 0) {
+            callsComplete = true;
+        }
+        var state = getEditableState(this.state);
+        state.role = this.state.role;
+        state.render = callsComplete;
+        state.submissions = submissions;
+        state.roster = roster;
+        this.setState(state);
     }
 
     render() {
@@ -99,7 +111,6 @@ export class Gradebook extends Component {
     }
 
     getStudentSubMap(submissions) {
-        console.log(submissions)
         var studentSubMap = {};
         for (var i = 0; i < submissions.length; i++) {
             var submission = submissions[i];
@@ -205,6 +216,15 @@ export class Gradebook extends Component {
             </Table>
         )
     }
+}
+
+function getEditableState(state) {
+    return {
+        render: state.roster,
+        submissions: state.submissions,
+        role: state.role,
+        roster: state.roster,
+    };
 }
 
 function mapStateToProps(state) {
