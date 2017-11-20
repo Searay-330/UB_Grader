@@ -1,7 +1,7 @@
 import callApi from '../../util/apiCaller';
 
 export function createStudentGrades(data) {
-  return { type: "student_grades", gradeData: data.Content };
+  return { type: "student_grades", gradeData: data };
 }
 
 export function getStudentGrades(courseNum, email) {
@@ -14,7 +14,7 @@ export function getStudentGrades(courseNum, email) {
 }
 
 export function createProfessorGrades(data) {
-  return { type: "professor_grades", gradeData: data.Content };
+  return { type: "professor_grades", gradeData: data };
 }
 
 export function getProfessorGrades(courseNum) {
@@ -27,7 +27,7 @@ export function getProfessorGrades(courseNum) {
 }
 
 export function createCourseRoster(data) {
-  return { type: "roster", roster: data};
+  return { type: "roster", roster: data };
 }
 
 export function getCourseRoster(courseNum) {
