@@ -397,7 +397,7 @@ export function removeCourseFromUser(req,res){
  * @param data : A row from the inputted CSV roster file
  * Returns a promise.
  */
-function addStudentFromCSV (data){
+function addStudentFromCSV (data, course_num){
     return new Promise((resolve, reject) => {
 
         User.findOne({'email': data[0]}, (err, userobj) => {
@@ -406,6 +406,10 @@ function addStudentFromCSV (data){
             }
             else{
                 Course.findOne({'course_num': data[3]}, (err, courseobj) => {
+                    if (!courseobj || course_num!=data[3]){
+                        reject(new Error('Sorry, cannot add students to that course'));                                    
+                    }
+                    else{
                     var alreadyEnrolled = false;
                     var user_email = data[0];
                     var course_num = data[3];
@@ -449,6 +453,7 @@ function addStudentFromCSV (data){
                             });
                         }
                     }
+                }
                 });
             }
         });
@@ -499,41 +504,49 @@ function removeStudentsBasedOnCSV (updated_student_list, course_num){
  */
 
 export function importRoster(req, res){
-
-    var roster = req.files[0].path;
-    var error = false;
-    var students = [];
-    var course = null;
-    fs.createReadStream(roster)
-    .pipe(csv())
-    .on('data', (data) => {
-        students.push(data[0]);
-        course = data[3];
-        addStudentFromCSV(data)
-        .then((userobj) => {
+    if (req.files[0] && req.files[0].mimetype == 'text/csv'){
+        var roster = req.files[0].path;
+        var error = false;
+        var students = [];
+        var course = null;
+        var stream = fs.createReadStream(roster);
+        var csvStream = csv()
+        .on('data', (data) => {
+            console.log('MADE IT!!!');
+            students.push(data[0]);
+            course = data[3];
+            csvStream.pause();
+            addStudentFromCSV(data, req.params.course_num)
+            .then((userobj) => {
+                csvStream.resume();
+            })
+            .catch((err) => {
+                error = true;
+                csvStream.resume();
+            });
         })
-        .catch((err) => {
-            error = true;
+        .on('end', () => {
+            if (error) {
+                res.status(406).send({Status: 406, Message: 'Sorry there was an error adding students!'});
+            }
+            else {
+                if (req.body.complete == 'true'){
+                    removeStudentsBasedOnCSV(students, course)
+                    .then(() => {
+                        res.status(200).send({Status: 200, Message: "Successfully updated the course's student list"});                    
+                    })
+                    .catch((err) => {
+                        res.status(500).send({Status: 500, Message: "Sorry, unable to update the course's student list"});                    
+                    });
+                }
+                else{
+                    res.status(200).send({Status: 200, Message: "Successfully added students to the course"});                                    
+                }
+            }
         });
-    })
-    .on('end', (data) => {
-        if (error) {
-            res.status(500).send({Status: 500, Message: 'Sorry there was an error adding students!'});
-        }
-        else {
-            if (req.body.complete == 'true'){
-                removeStudentsBasedOnCSV(students, course)
-                .then(() => {
-                    res.status(200).send({Status: 200, Message: "Successfully updated the course's student list"});                    
-                })
-                .catch((err) => {
-                    res.status(500).send({Status: 500, Message: "Sorry, unable to update the course's student list"});                    
-                });
-            }
-            else{
-                res.status(200).send({Status: 200, Message: "Successfully added students to the course"});                                    
-            }
-        }
-    });
-
+        stream.pipe(csvStream);
+    }
+    else {
+        res.status(406).send({Status: 406, Message: 'You must provide a csv file'});        
+    }
 }
